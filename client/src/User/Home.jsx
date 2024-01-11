@@ -189,14 +189,8 @@ const Home = () => {
               <div className="productsdropdown-content">
                 <div className='productHoverItems' >
                   <div style={{ marginLeft: "18px", width: "100%" }}>
-                    <div className='prdctNameDiv' >Home Furnishings</div>
-                    <div className='prdctNameDiv' >furniture Studio</div>
-                    <div className='prdctNameDiv'>living Room Furniture</div>
-                    <div className='prdctNameDiv'>Kitchen & Dining</div>
-                    <div className='prdctNameDiv'>Home Decor </div>
-                    <div className='prdctNameDiv'>Lightings & Electricals </div>
-                    <div className='prdctNameDiv'>Cleaning & And Bath </div>
-                    <div className='prdctNameDiv'>Tools & Utility </div>
+                    <div className='prdctNameDiv' >Petrol Vehicle</div>
+                    <div className='prdctNameDiv' >Electric Vehicle </div>
                   </div>
 
                 </div>
