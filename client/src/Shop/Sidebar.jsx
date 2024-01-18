@@ -5,24 +5,26 @@ import './ShopStyle.css'
 const Sidebar = () => {
   return (
     <div>
-        <h2>SHOP</h2>
-        <div className='shoplinks'>
-        <div className='prdctlinks'>
-        <Link to={'/Shop/AddProduct'} className='prdctlinks'>AddProduct</Link>
-        </div>
-        <div className='Stocklinks'>
-        <Link to={'/Shop/AddStock'} className='Stocklinks'>AddStock</Link>
-        </div>
-        <div className='Stocklinks'>
-        <Link to={'/Shop/Myprofile'} className='Stocklinks'>Myprofile</Link>
-        </div>
-        <div className='Stocklinks'>
-        <Link to={'/Shop/Editprofile'} className='Stocklinks'>EditProfile</Link>
-        </div>
-        <div className='Stocklinks'>
-        <Link to={'/Shop/Changepassword'} className='Stocklinks'>Changepassword</Link>
-        </div>
-        </div>
+      
+
+
+
+      <Link to={'/Shop'} className='shoplinks'><div className='shopSideBarLinks'> Home</div></Link>
+
+      <Link to={'/Shop/AddProduct'} className='shoplinks'><div className='shopSideBarLinks'> AddProduct</div></Link>
+
+
+      <Link to={'/Shop/AddStock'} className='shoplinks'> <div className='shopSideBarLinks'> AddStock</div></Link>
+      <Link to={'/Shop/Myprofile'} className='shoplinks'> <div className='shopSideBarLinks'> Myprofile</div></Link>
+      <Link to={'/Shop/Editprofile'} className='shoplinks'> <div className='shopSideBarLinks'> EditProfile</div></Link>
+      <Link to={'/Shop/Changepassword'} className='shoplinks'> <div className='shopSideBarLinks'> Changepassword</div></Link>
+
+
+
+
+
+
+
     </div>
   )
 }

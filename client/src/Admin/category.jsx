@@ -1,6 +1,61 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 const Category = () => {
+ const [Category,setCategory] = useState('');
+ const [showCategory,setShowCategory] = useState([]);
+ const [editCategory,setEditCategory] = useState('');
+
+ const insertCategory = () =>{
+  const data = {
+    category :  Category
+  }
+
+  if(editCategory === ""){
+    axios.post('http://localhost:5000/shopCategory',data).then((response)=>{
+      console.log(response.data);
+      setCategory("");
+      fetchCategory();
+      
+    })
+  }
+
+  else{
+    axios.put(`http://localhost:5000/updateCategory/${editCategory}`,data).then((response)=>{
+      console.log(response.data);
+      setEditCategory("");
+      setCategory("");
+      fetchCategory();
+    })
+  }
+ }
+
+const fetchCategory = () =>{
+  axios.get('http://localhost:5000/getCategory').then((response)=>{
+    console.log(response.data);
+    const data = response.data;
+    setShowCategory(data);
+  })
+}
+
+ const updateCategory = (id) =>{
+  axios.get(`http://localhost:5000/getCategoryById/${id}`).then((response)=>{
+    console.log(response.data);
+    const data = response.data[0];
+    setCategory(data.category);
+    setEditCategory(data._id);
+  })
+ }
+
+ const deleteCategory = (id) =>{
+  axios.delete(`http://localhost:5000/deleteCategory/${id}`).then((response)=>{
+    fetchCategory();
+  })
+ }
+
+ useEffect(()=>{
+  fetchCategory();
+ })
   return (
     <div><div className='category'>
       <div className='containercategory'>
@@ -13,12 +68,12 @@ const Category = () => {
             Category:
           </div>
           <div >
-            <input type='text' name='Category' placeholder='Category...' className='inputcategory' />
+            <input type='text' name='Category' value={Category} placeholder='Category...' className='inputcategory' onChange={(event) => setCategory(event.target.value)}/>
           </div>
         </div>
 
         <div className='btndis'>
-          <button>Submit</button>
+          <button onClick={insertCategory}>Submit</button>
         </div>
         <div className='tabledis'>
           <table>
@@ -26,12 +81,18 @@ const Category = () => {
               <th>SINO.</th>
               <th> Category</th>
               <th>Action</th>
+              <th>update</th>
             </tr>
-            <tr>
-              <td>1</td>
-              <td>Vehicles</td>
-              <td><button>Delete</button></td>
-            </tr>
+
+            {showCategory.map((categories,key)=>(
+                <tr>
+                <td>{key+1}</td>
+                <td>{categories.category}</td>
+                <td><button onClick={() => deleteCategory(categories._id)}>Delete</button></td>
+                <td><button onClick={() => updateCategory(categories._id)}>Update</button></td>
+              </tr>
+            ))}
+            
           </table>
         </div>
       </div>

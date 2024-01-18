@@ -102,7 +102,7 @@ h2{
     justify-content: center;
     align-items: center;
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
-   height: 500px;
+  
    width: 600px;
    margin-left: 320px;
    margin-top: 30px;
@@ -122,17 +122,7 @@ h2{
     justify-content: center;
     padding: 10px;
  }
- table,td,th{
-    border: 1px solid black;
-    
-    width: 400px;
- }
- .tabledis{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
- }
+ 
  .place{
    font-size: 18px;
    color: rgb(12, 11, 11);
@@ -140,7 +130,6 @@ h2{
    justify-content: center;
    align-items: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
-  height: 500px;
   width: 600px;
   margin-left: 320px;
   margin-top: 30px;
@@ -166,7 +155,6 @@ h2{
    justify-content: center;
    align-items: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
-  height: 500px;
   width: 600px;
   margin-left: 320px;
   margin-top: 30px;
@@ -186,7 +174,6 @@ h2{
    justify-content: center;
    align-items: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
-  height: 500px;
   width: 600px;
   margin-left: 320px;
   margin-top: 30px;
@@ -323,10 +310,11 @@ h2{
   color: #2874f0;
     background-color: #f5faff;
 }
-.floating-label-group {
+.floating-label-groupAdmin {
 	position: relative;
 	margin-top: 15px;
 	margin-bottom: 25px;
+  margin-left: 60px;
 }
 
 	.floating-label {
@@ -358,4 +346,73 @@ h2{
    width: 400px;
    border-radius: 5px;
    border: none;
+}
+
+/* .districtDltBtn{
+  background-color: rgb(243, 5, 5);
+  border: 1px solid #c9c8ce;
+  margin-left: 15px;
+  color: white;
+  width: 80px;
+  height: 25px;
+  border-radius: 5px;
+} */
+.districtUpdatebtn{
+  background-color: rgb(4, 161, 4);
+  border: 1px solid #c9c8ce;
+  margin-left: 15px;
+  color: white;
+  width: 80px;
+  height: 25px;
+  border-radius: 5px;
+}
+.th,td{
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #080404;
+}
+
+
+
+.districtDltBtn {
+  background: #e3403a;
+  border: 1px solid #da251f;
+  box-shadow: 0px 2px 0 #d6251f, 2px 4px 6px #e02a24;
+  font-weight: 900;
+  letter-spacing: 1px;
+  transition: all 150ms linear;
+  width: 80px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.districtDltBtn:hover {
+  background: #e02c26;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: -1px -1px 0 #c2211c;
+  transition: all 250ms linear;
+}
+
+.districtUpdatebtn {
+  background: #2b5711;
+  border: 1px solid #297926;
+  box-shadow: 0px 2px 0 #62a524, 2px 4px 6px #2e2d2d;
+  font-weight: 900;
+  letter-spacing: 1px;
+  transition: all 150ms linear;
+  width: 80px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.districtUpdatebtn:hover {
+  background: #38b34c;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 250ms linear;
 }

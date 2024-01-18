@@ -30,6 +30,13 @@ const SideBar = () => {
             </ul>
           </div></Link>
 
+          <Link to={'/Admin/category'} className='Llinks'>
+          <div className='AdminInfoPages'>
+            <ul style={{ listStyleType: "circle", color: "black",paddingTop:"10px" }}>
+              <li>Category</li>
+            </ul>
+          </div> </Link>
+
         <Link to={'/Admin/SubCategory'} className='Llinks'>
           <div className='AdminInfoPages'>
             <ul style={{ listStyleType: "circle", color: "black",paddingTop:"10px" }}>
@@ -37,12 +44,7 @@ const SideBar = () => {
             </ul>
           </div> </Link>
 
-        <Link to={'/Admin/category'} className='Llinks'>
-          <div className='AdminInfoPages'>
-            <ul style={{ listStyleType: "circle", color: "black",paddingTop:"10px" }}>
-              <li>Category</li>
-            </ul>
-          </div> </Link>
+       
       </div>
     </div>
 

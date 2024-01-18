@@ -11,7 +11,7 @@ const Head = () => {
   return (
     <div className='homeHead'>
       <div className='logoSearch'>
-        <img src={homelogo} alt='img' style={{ width: "100px", height: "100px",objectFit:"contain" }} />
+        <img src={homelogo} alt='img' style={{ width: "160px", height: "100px",objectFit:"contain" }} />
         <div className='searchdiv'>
           <button className='searchiconbtn' ><img src={searchicon} alt='img' className='searchicon'></img></button>
           <input type='search' name='search' className='searchbox' placeholder='Search for Products, Brands and More'></input>

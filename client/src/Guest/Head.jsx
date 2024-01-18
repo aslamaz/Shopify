@@ -9,7 +9,7 @@ const Head = () => {
   return (
     <div className='headfulldiv'>
       <div className='headcontainer'>
-        <div className='sidelogodiv'><img src={logo} alt='img' style={{ width: "120px", height: "80px", objectFit: "contain" }} /></div>
+        <div className='sidelogodiv'><img src={logo} alt='img' style={{ width: "160px", height: "100px", objectFit: "contain" }} /></div>
        
 
         <div className='linksUS'>

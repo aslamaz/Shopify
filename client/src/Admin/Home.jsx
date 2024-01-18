@@ -49,6 +49,7 @@ const Home = () => {
           </div>
 
           <div className='card6'>
+            
            
 
           </div>

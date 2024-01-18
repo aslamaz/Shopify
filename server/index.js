@@ -8,11 +8,11 @@ const port = 5000;
 
 app.use(cors());
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended : true}));
+app.use(bodyparser.urlencoded({ extended: true }));
 
 const db = "mongodb+srv://muhammedazeez473:IUZmfC5BvwcRW5oe@cluster0.wconiyx.mongodb.net/db_Shopify";
 
-app.listen(port, async () =>{
+app.listen(port, async () => {
     console.log("Server is Running")
     try {
         await connect(db)
@@ -20,31 +20,31 @@ app.listen(port, async () =>{
     } catch (err) {
         console.error(err.message);
         process.exit(1)
-        
+
     }
 });
 //shema.....
 //AdminShema........
 const collectionAdminSchema = new Schema({
-    adminName:{
-        type:String,
-        require:true,
+    adminName: {
+        type: String,
+        require: true,
     },
-    adminEmail:{
-        type:String,
-        require:true,
+    adminEmail: {
+        type: String,
+        require: true,
     },
-    adminPassword:{
-        type:String,
-        require:true,
+    adminPassword: {
+        type: String,
+        require: true,
     }
 })
-const modelAdmin = model("tblAdmin",collectionAdminSchema);
+const modelAdmin = model("tblAdmin", collectionAdminSchema);
 
 //Create Admin.......
-app.post('/Admin', async (req,res)=>{
+app.post('/Admin', async (req, res) => {
     try {
-        const {adminName,adminEmail,adminPassword}=req.body
+        const { adminName, adminEmail, adminPassword } = req.body
         const newAdmin = new modelAdmin({
             adminName,
             adminEmail,
@@ -59,7 +59,7 @@ app.post('/Admin', async (req,res)=>{
 });
 
 //Get Admin.....
-app.get("/GetAdmin", async (req,res)=>{
+app.get("/GetAdmin", async (req, res) => {
     try {
         const Admins = await modelAdmin.find();
         res.json(Admins);
@@ -70,15 +70,15 @@ app.get("/GetAdmin", async (req,res)=>{
 });
 
 //Upadte Admin......
-app.put("/UpadteAdmin/:id",async (req,res)=>{
+app.put("/UpadteAdmin/:id", async (req, res) => {
     const id = req.params.id
     try {
-         const {adminName,adminEmail,adminPassword}=req.body;
+        const { adminName, adminEmail, adminPassword } = req.body;
 
         const UpadteAdmin = await modelAdmin.findByIdAndUpdate(
             id,
-            {adminName,adminEmail,adminPassword},
-             {new:true}
+            { adminName, adminEmail, adminPassword },
+            { new: true }
         );
         res.json(UpadteAdmin);
     } catch (err) {
@@ -88,7 +88,7 @@ app.put("/UpadteAdmin/:id",async (req,res)=>{
 });
 
 //Delete Admin.....
-app.delete("/deleteAdmin/:id",async(req,res)=>{
+app.delete("/deleteAdmin/:id", async (req, res) => {
     const id = req.params.id
     try {
         await modelAdmin.findByIdAndDelete(id);
@@ -106,17 +106,17 @@ app.delete("/deleteAdmin/:id",async(req,res)=>{
 
 //DistrictShema......
 const collectionDistrictShema = new Schema({
-    districtName:{
-        type:String,
-        require:true,
+    districtName: {
+        type: String,
+        require: true,
     }
 })
-const modelDistrict = model("tblDistrict",collectionDistrictShema);
+const modelDistrict = model("tblDistrict", collectionDistrictShema);
 
 //Create district........
-app.post("/district",async(req,res)=>{
+app.post("/district", async (req, res) => {
     try {
-        const{districtName}=req.body;
+        const { districtName } = req.body;
         const newDistricts = new modelDistrict({
             districtName
         });
@@ -126,12 +126,12 @@ app.post("/district",async(req,res)=>{
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
-        
+
     }
 });
 
 //GET dISTRICT.......
-app.get("/GetDistrict",async(req,res)=>{
+app.get("/GetDistrict", async (req, res) => {
     try {
         const getDistricts = await modelDistrict.find();
         res.json(getDistricts);
@@ -141,14 +141,27 @@ app.get("/GetDistrict",async(req,res)=>{
     }
 });
 
-//upadte District.......
-app.put("/upadteDistrict/:id",async(req,res)=>{
-    const id =req.params.id
+
+//GET dISTRICT By Id.......
+app.get("/GetDistrict/:Id", async (req, res) => {
     try {
-        const {districtName}=req.body;
+        const Id = req.params.Id
+        const getDistricts = await modelDistrict.find({ _id : Id });;
+        res.json(getDistricts);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//upadte District.......
+app.put("/upadteDistrict/:id", async (req, res) => {
+    const id = req.params.id
+    try {
+        const { districtName } = req.body;
         const upadteDistrict = await modelDistrict.findByIdAndUpdate(
             id,
-            {districtName},{new:true}
+            { districtName }, { new: true }
         )
         res.json(upadteDistrict);
     } catch (err) {
@@ -158,7 +171,7 @@ app.put("/upadteDistrict/:id",async(req,res)=>{
 });
 
 //Delete District.......
-app.delete("/deleteDistrict/:id",async(req,res)=>{
+app.delete("/deleteDistrict/:id", async (req, res) => {
     const id = req.params.id
     try {
         await modelDistrict.findByIdAndDelete(id);
@@ -176,25 +189,25 @@ app.delete("/deleteDistrict/:id",async(req,res)=>{
 
 //Placeshema.......
 const collectionPlaceShema = new Schema({
-    place:{
-        type:String,
-        require:true,
+    place: {
+        type: String,
+        require: true,
     },
-    districtId:{
-        type:Schema.Types.ObjectId,
-        ref:"tblDistrict",
-        require:true
-        
+    districtId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblDistrict",
+        require: true
+
     }
 })
-const modelPlaces = model("tblPlaces",collectionPlaceShema);
+const modelPlaces = model("tblPlaces", collectionPlaceShema);
 
 //Create Place................
-app.post("/Place",async(req,res)=>{
+app.post("/Place", async (req, res) => {
     try {
-        const {place,districtId}=req.body;
+        const { place, districtId } = req.body;
         const newPlaces = new modelPlaces({
-            place,districtId
+            place, districtId
         });
         await newPlaces.save();
         res.json(newPlaces);
@@ -205,9 +218,21 @@ app.post("/Place",async(req,res)=>{
 });
 
 //Get Places...............
-app.get("/getPlaces",async(req,res)=>{
+app.get("/getPlaces", async (req, res) => {
     try {
-       const getPlaces = await modelPlaces.find();
+        const getPlaces = await modelPlaces.find();
+        res.json(getPlaces);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Get Places by Id...............
+app.get("/getPlacesById/:id", async (req, res) => {
+    try {
+        const Id = req.params.id;
+        const getPlaces = await modelPlaces.find({_id : Id});
         res.json(getPlaces);
     } catch (err) {
         console.error(err.message);
@@ -216,7 +241,7 @@ app.get("/getPlaces",async(req,res)=>{
 });
 
 //Get Places with district id...............
-app.get("/placeWithDistrict",async(req,res)=>{
+app.get("/placeWithDistrict", async (req, res) => {
     try {
         const Places = await modelPlaces.find().populate("districtId");
         const filteredPlaces = Places.filter(
@@ -230,12 +255,12 @@ app.get("/placeWithDistrict",async(req,res)=>{
 });
 
 //Get  district based places...............
-app.get("/placeWithDistrict/:id",async(req,res)=>{
+app.get("/districtWithPlaces/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const place = await modelPlaces.find({districtId:id});
-        if(place.length === 0){
-        return res.status(404).json({msg:"no place found"});
+        const place = await modelPlaces.find({ districtId: id });
+        if (place.length === 0) {
+            return res.status(404).json({ msg: "no place found" });
         }
         res.json(place).status(200);
     } catch (err) {
@@ -248,24 +273,24 @@ app.get("/placeWithDistrict/:id",async(req,res)=>{
 
 
 //Update Places.............
-app.put("/updatePlace/:id",async(req,res)=>{
- const id = req.params.id
- try {
-    const {place,districtId}=req.body;
-     const updatePlaces = await modelPlaces.findByIdAndUpdate(
-        id,
-        {place,districtId},
-        {new:true}
-     );
-     res.json(updatePlaces);
- } catch (err) {
-    console.error(err.message);
-    res.status(500).send("server Error");
- }
+app.put("/updatePlace/:id", async (req, res) => {
+    const id = req.params.id
+    try {
+        const { place, districtId } = req.body;
+        const updatePlaces = await modelPlaces.findByIdAndUpdate(
+            id,
+            { place, districtId },
+            { new: true }
+        );
+        res.json(updatePlaces);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
 });
 
 //Delete Places...............
-app.delete("/deletePlace/:id",async(req,res)=>{
+app.delete("/deletePlace/:id", async (req, res) => {
     const id = req.params.id
     try {
         await modelPlaces.findByIdAndDelete(id);
@@ -283,23 +308,23 @@ app.delete("/deletePlace/:id",async(req,res)=>{
 
 //CategoryShema.....
 const colletionCategoryShema = new Schema({
-    category:{
-        type:String,
-        require:true,
+    category: {
+        type: String,
+        require: true,
     }
 })
-const modelCategory = model("tblCategory",colletionCategoryShema);
+const modelCategory = model("tblCategory", colletionCategoryShema);
 
 //Create category...............
-app.post("/shopCategory",async(req,res)=>{
+app.post("/shopCategory", async (req, res) => {
     try {
-        const {category}=req.body;
+        const { category } = req.body;
         const newCategory = new modelCategory({
             category,
         });
         await newCategory.save();
         res.json(newCategory);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -308,7 +333,7 @@ app.post("/shopCategory",async(req,res)=>{
 });
 
 //Get Category..............
-app.get("/getCategory",async(req,res)=>{
+app.get("/getCategory", async (req, res) => {
     try {
         const getCategory = await modelCategory.find();
         res.json(getCategory);
@@ -318,14 +343,26 @@ app.get("/getCategory",async(req,res)=>{
     }
 });
 
+//Get Category by id..............
+app.get("/getCategoryById/:id", async (req, res) => {
+    try {
+        const Id = req.params.id;
+        const getCategory = await modelCategory.find({_id : Id});
+        res.json(getCategory);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
 //Update Category...................
-app.put("/updateCategory/:id",async(req,res)=>{
+app.put("/updateCategory/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {category}=req.body;
+        const { category } = req.body;
         const updateCategory = await modelCategory.findByIdAndUpdate(
             id,
-            {category},{new:true}
+            { category }, { new: true }
         );
         res.json(updateCategory);
     } catch (err) {
@@ -335,11 +372,11 @@ app.put("/updateCategory/:id",async(req,res)=>{
 });
 
 //Delete Category.................
-app.delete("/deleteCategory/:id",async(req,res)=>{
+app.delete("/deleteCategory/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelCategory.findByIdAndDelete(id);
-      res.json("Category Removed");
+        await modelCategory.findByIdAndDelete(id);
+        res.json("Category Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -353,23 +390,24 @@ app.delete("/deleteCategory/:id",async(req,res)=>{
 
 //SubCategoryShema......
 const collectionSubCategory = new Schema({
-    subCategoryName:{
-        type:String,
-        require:true,
+    subCategoryName: {
+        type: String,
+        require: true,
     },
-    categoryId:{
-        type:String,
-        require:true,
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCategory",
+        require: true,
     }
 })
-const modelSubCategory = model("tblSubCategory",collectionSubCategory);
+const modelSubCategory = model("tblSubCategory", collectionSubCategory);
 
 //Create subCategory................
-app.post("/subCategory",async(req,res)=>{
+app.post("/subCategory", async (req, res) => {
     try {
-        const {subCategoryName,categoryId}=req.body;
+        const { subCategoryName, categoryId } = req.body;
         const newsubCategory = new modelSubCategory({
-            subCategoryName,categoryId
+            subCategoryName, categoryId
         });
         await newsubCategory.save();
         res.json(newsubCategory);
@@ -380,9 +418,9 @@ app.post("/subCategory",async(req,res)=>{
 });
 
 //Get subCategory...............
-app.get("/getSubCategory",async(req,res)=>{
+app.get("/getSubCategory", async (req, res) => {
     try {
-       const getsubCategory = await modelSubCategory.find();
+        const getsubCategory = await modelSubCategory.find();
         res.json(getsubCategory);
     } catch (err) {
         console.error(err.message);
@@ -390,25 +428,66 @@ app.get("/getSubCategory",async(req,res)=>{
     }
 });
 
+//Get subCategory...............
+app.get("/getSubCategoryById/:id", async (req, res) => {
+    try {
+        const Id = req.params.id
+        const getsubCategory = await modelSubCategory.find({_id : Id});
+        res.json(getsubCategory);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// subCategory with category.............
+app.get("/subCategoryWithCategory", async (req, res) => {
+    try {
+        const subCategories = await modelSubCategory.find().populate("categoryId");
+        const filteredSubCategories = subCategories.filter(
+            (SubCategory) => SubCategory.categoryId
+        );
+        res.json(filteredSubCategories);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Category Based Subcategories.................
+app.get("/categoryWithSubcategory/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const subCategorys = await modelSubCategory.find({ categoryId: id })
+        if (subCategorys.length === 0) {
+            return res.status(404).json({ msg: "no subCategories found" });
+        }
+        res.json(subCategorys).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 //Update subCategory.............
-app.put("/updateSubCategory/:id",async(req,res)=>{
- const id = req.params.id
- try {
-    const {subCategoryName,categoryId}=req.body;
-     const updateSubCategory = await modelSubCategory.findByIdAndUpdate(
-        id,
-        {subCategoryName,categoryId},
-        {new:true}
-     );
-     res.json(updateSubCategory);
- } catch (err) {
-    console.error(err.message);
-    res.status(500).send("server Error");
- }
+app.put("/updateSubCategory/:id", async (req, res) => {
+    const id = req.params.id
+    try {
+        const { subCategoryName, categoryId } = req.body;
+        const updateSubCategory = await modelSubCategory.findByIdAndUpdate(
+            id,
+            { subCategoryName, categoryId },
+            { new: true }
+        );
+        res.json(updateSubCategory);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
 });
 
 //Delete subCategory...............
-app.delete("/deleteSubCategory/:id",async(req,res)=>{
+app.delete("/deleteSubCategory/:id", async (req, res) => {
     const id = req.params.id
     try {
         await modelSubCategory.findByIdAndDelete(id);
@@ -425,51 +504,52 @@ app.delete("/deleteSubCategory/:id",async(req,res)=>{
 
 //Shop shema......
 const collectionShopShema = new Schema({
-    shopName:{
+    shopName: {
         type: String,
-        require:true,
+        require: true,
     },
-    shopEmail:{
-         type: String,
-        require:true,
+    shopEmail: {
+        type: String,
+        require: true,
     },
-    ShopContact:{
-         type: Number,
-        require:true,
+    ShopContact: {
+        type: Number,
+        require: true,
     },
-    shopAddress:{
-         type: String,
-        require:true,
+    shopAddress: {
+        type: String,
+        require: true,
     },
-    placeId:{
-         type: String,
-        require:true,
+    placeId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblPlaces",
+        require: true,
     },
-    ShopPhoto:{
-         type: String,
-        require:true,
+    ShopPhoto: {
+        type: String,
+        require: true,
     },
-    shopProof:{
-         type: String,
-        require:true,
+    shopProof: {
+        type: String,
+        require: true,
     },
-    shopPassword:{
-         type: String,
-        require:true,
+    shopPassword: {
+        type: String,
+        require: true,
     },
-    shopVStatus:{
-         type: String,
-        require:true,
+    shopVStatus: {
+        type: String,
+        require: true,
     },
 })
-const modelShop = model("tblShop",collectionShopShema);
+const modelShop = model("tblShop", collectionShopShema);
 
 //Create Shop...............
-app.post("/Shop",async(req,res)=>{
+app.post("/Shop", async (req, res) => {
     try {
-        const {shopName,shopEmail,ShopContact,shopAddress,placeId,ShopPhoto,shopProof,shopPassword,shopVStatus}=req.body;
+        const { shopName, shopEmail, ShopContact, shopAddress, placeId, ShopPhoto, shopProof, shopPassword, shopVStatus } = req.body;
         const newShop = new modelShop({
-            shopName,shopEmail,ShopContact,shopAddress,placeId,ShopPhoto,shopProof,shopPassword,shopVStatus
+            shopName, shopEmail, ShopContact, shopAddress, placeId, ShopPhoto, shopProof, shopPassword, shopVStatus
         });
         await newShop.save();
         res.json(newShop);
@@ -480,7 +560,7 @@ app.post("/Shop",async(req,res)=>{
 });
 
 //Get Shop..............
-app.get("/getShop",async(req,res)=>{
+app.get("/getShop", async (req, res) => {
     try {
         const getShop = await modelShop.find();
         res.json(getShop);
@@ -490,14 +570,43 @@ app.get("/getShop",async(req,res)=>{
     }
 });
 
-//Update Shop...................
-app.put("/updateShop/:id",async(req,res)=>{
+// shop with Place.............
+app.get("/placeWithShop", async (req, res) => {
+    try {
+        const placeWithShop = await modelShop.find().populate("placeId");
+        const filteredplaceWithShop = placeWithShop.filter(
+            (placeWithShop) => placeWithShop.placeId
+        );
+        res.json(filteredplaceWithShop);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Shop Based Places.................
+app.get("/shopWithPlace/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {shopName,shopEmail,ShopContact,shopAddress,placeId,ShopPhoto,shopProof,shopPassword,shopVStatus}=req.body;
+        const shopWithPlace = await modelShop.find({ placeId: id })
+        if (shopWithPlace.length === 0) {
+            return res.status(404).json({ msg: "no subCategories found" });
+        }
+        res.json(shopWithPlace).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update Shop...................
+app.put("/updateShop/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { shopName, shopEmail, ShopContact, shopAddress, placeId, ShopPhoto, shopProof, shopPassword, shopVStatus } = req.body;
         const updateShop = await modelShop.findByIdAndUpdate(
             id,
-            {shopName,shopEmail,ShopContact,shopAddress,placeId,ShopPhoto,shopProof,shopPassword,shopVStatus},{new:true}
+            { shopName, shopEmail, ShopContact, shopAddress, placeId, ShopPhoto, shopProof, shopPassword, shopVStatus }, { new: true }
         );
         res.json(updateShop);
     } catch (err) {
@@ -507,11 +616,11 @@ app.put("/updateShop/:id",async(req,res)=>{
 });
 
 //Delete Shop.................
-app.delete("/deleteShop/:id",async(req,res)=>{
+app.delete("/deleteShop/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelShop.findByIdAndDelete(id);
-      res.json("Shop Removed");
+        await modelShop.findByIdAndDelete(id);
+        res.json("Shop Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -525,47 +634,48 @@ app.delete("/deleteShop/:id",async(req,res)=>{
 
 //Customer Shema.....
 const collectionCustomerShema = new Schema({
-    customerName:{
-         type: String,
-        require:true,
+    customerName: {
+        type: String,
+        require: true,
     },
-    customerEmail:{
-         type: String,
-        require:true,
+    customerEmail: {
+        type: String,
+        require: true,
     },
-    customerContact:{
-         type: String,
-        require:true,
+    customerContact: {
+        type: String,
+        require: true,
     },
-    customerAddress:{
-         type: String,
-        require:true,
+    customerAddress: {
+        type: String,
+        require: true,
     },
-    placeId:{
-         type: String,
-        require:true,
+    placeId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblPlaces",
+        require: true,
     },
-    customerPhoto:{
-         type: String,
-        require:true,
+    customerPhoto: {
+        type: String,
+        require: true,
     },
-    customerPassword:{
-         type: String,
-        require:true,
+    customerPassword: {
+        type: String,
+        require: true,
     }
 })
-const modelCustomer = model("tblCustomer",collectionCustomerShema);
+const modelCustomer = model("tblCustomer", collectionCustomerShema);
 
 //Create Customer...............
-app.post("/Customer",async(req,res)=>{
+app.post("/Customer", async (req, res) => {
     try {
-        const {customerName,customerEmail,customerContact,customerAddress,placeId,customerPhoto,customerPassword}=req.body;
+        const { customerName, customerEmail, customerContact, customerAddress, placeId, customerPhoto, customerPassword } = req.body;
         const newCustomer = new modelCustomer({
-            customerName,customerEmail,customerContact,customerAddress,placeId,customerPhoto,customerPassword
+            customerName, customerEmail, customerContact, customerAddress, placeId, customerPhoto, customerPassword
         });
         await newCustomer.save();
         res.json(newCustomer);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -574,7 +684,7 @@ app.post("/Customer",async(req,res)=>{
 });
 
 //Get Customer..............
-app.get("/getCustomer",async(req,res)=>{
+app.get("/getCustomer", async (req, res) => {
     try {
         const getCustomer = await modelCustomer.find();
         res.json(getCustomer);
@@ -584,14 +694,43 @@ app.get("/getCustomer",async(req,res)=>{
     }
 });
 
-//Update Customer...................
-app.put("/updateCustomer/:id",async(req,res)=>{
+// Customer with Place.............
+app.get("/placeWithCustomer", async (req, res) => {
+    try {
+        const placeWithCustomer = await modelCustomer.find().populate("placeId");
+        const filteredplaceWithCustomer = placeWithCustomer.filter(
+            (placeWithCustomer) => placeWithCustomer.placeId
+        );
+        res.json(filteredplaceWithCustomer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Customer Based Places.................
+app.get("/customerWithPlace/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {customerName,customerEmail,customerContact,customerAddress,placeId,customerPhoto,customerPassword}=req.body;
+        const customerWithPlace = await modelCustomer.find({ placeId: id })
+        if (customerWithPlace.length === 0) {
+            return res.status(404).json({ msg: "no subCategories found" });
+        }
+        res.json(customerWithPlace).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update Customer...................
+app.put("/updateCustomer/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { customerName, customerEmail, customerContact, customerAddress, placeId, customerPhoto, customerPassword } = req.body;
         const updateCustomer = await modelCustomer.findByIdAndUpdate(
             id,
-            {customerName,customerEmail,customerContact,customerAddress,placeId,customerPhoto,customerPassword},{new:true}
+            { customerName, customerEmail, customerContact, customerAddress, placeId, customerPhoto, customerPassword }, { new: true }
         );
         res.json(updateCustomer);
     } catch (err) {
@@ -601,11 +740,11 @@ app.put("/updateCustomer/:id",async(req,res)=>{
 });
 
 //Delete Customer.................
-app.delete("/deleteCustomer/:id",async(req,res)=>{
+app.delete("/deleteCustomer/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelCustomer.findByIdAndDelete(id);
-      res.json("Customer Removed");
+        await modelCustomer.findByIdAndDelete(id);
+        res.json("Customer Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -619,43 +758,45 @@ app.delete("/deleteCustomer/:id",async(req,res)=>{
 
 //Product Shema....
 const collectionProductshema = new Schema({
-    productName:{
-         type: String,
-        require:true,
+    productName: {
+        type: String,
+        require: true,
     },
-    ProductDescription:{
-         type: String,
-        require:true,
+    ProductDescription: {
+        type: String,
+        require: true,
     },
-    productRate:{
-         type: String,
-        require:true,
+    productRate: {
+        type: String,
+        require: true,
     },
-    productPhoto:{
-         type: String,
-        require:true,
+    productPhoto: {
+        type: String,
+        require: true,
     },
-    subCategoryId:{
-         type: String,
-        require:true,
+    subCategoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblSubCategory",
+        require: true,
     },
-    shopId:{
-         type: String,
-        require:true,
+    shopId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblShop",
+        require: true,
     }
 })
-const modelProduct = model("tblProduct",collectionProductshema);
+const modelProduct = model("tblProduct", collectionProductshema);
 
 //Create product...............
-app.post("/Product",async(req,res)=>{
+app.post("/Product", async (req, res) => {
     try {
-        const {productName,ProductDescription,productRate,productPhoto,subCategoryId,shopId}=req.body;
+        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId } = req.body;
         const newProduct = new modelProduct({
-            productName,ProductDescription,productRate,productPhoto,subCategoryId,shopId,
+            productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId,
         });
         await newProduct.save();
         res.json(newProduct);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -664,7 +805,7 @@ app.post("/Product",async(req,res)=>{
 });
 
 //Get product..............
-app.get("/getProduct",async(req,res)=>{
+app.get("/getProduct", async (req, res) => {
     try {
         const getProduct = await modelProduct.find();
         res.json(getProduct);
@@ -674,14 +815,43 @@ app.get("/getProduct",async(req,res)=>{
     }
 });
 
-//Update product...................
-app.put("/updateProduct/:id",async(req,res)=>{
+// Product with Subcategory.............
+app.get("/subCategoryWithProduct", async (req, res) => {
+    try {
+        const subCategoryWithProduct = await modelProduct.find().populate("subCategoryId").populate("shopId");
+        const filteredsubCategoryWithProduct = subCategoryWithProduct.filter(
+            (subCategoryWithProduct) => subCategoryWithProduct.subCategoryId
+        );
+        res.json(filteredsubCategoryWithProduct);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Product Based subCategory.................
+app.get("/productWithSubCategory/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {productName,ProductDescription,productRate,productPhoto,subCategoryId,shopId}=req.body;
+        const productWithSubCategory = await modelProduct.find({ subCategoryId: id }).populate("subCategoryId").populate("shopId")
+        if (productWithSubCategory.length === 0) {
+            return res.status(404).json({ msg: "no products found" });
+        }
+        res.json(productWithSubCategory).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update product...................
+app.put("/updateProduct/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId } = req.body;
         const updateProduct = await modelProduct.findByIdAndUpdate(
             id,
-            {productName,ProductDescription,productRate,productPhoto,subCategoryId,shopId},{new:true}
+            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId }, { new: true }
         );
         res.json(updateProduct);
     } catch (err) {
@@ -691,11 +861,11 @@ app.put("/updateProduct/:id",async(req,res)=>{
 });
 
 //Delete Product.................
-app.delete("/deleteProduct/:id",async(req,res)=>{
+app.delete("/deleteProduct/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelProduct.findByIdAndDelete(id);
-      res.json("Product Removed");
+        await modelProduct.findByIdAndDelete(id);
+        res.json("Product Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -709,31 +879,32 @@ app.delete("/deleteProduct/:id",async(req,res)=>{
 
 //Gallery Shema.....
 const collectionGalleryShema = new Schema({
-    galleryImage:{
-         type: String,
-        require:true,
+    galleryImage: {
+        type: String,
+        require: true,
     },
-    galleryCaption:{
-         type: String,
-        require:true,
+    galleryCaption: {
+        type: String,
+        require: true,
     },
-    productId:{
-         type: String,
-        require:true,
+    productId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblProduct",
+        require: true,
     }
 })
-const modelGallery = model("tblGallery",collectionGalleryShema);
+const modelGallery = model("tblGallery", collectionGalleryShema);
 
 //Create Gallery...............
-app.post("/Gallery",async(req,res)=>{
+app.post("/Gallery", async (req, res) => {
     try {
-        const {galleryImage,galleryCaption,productId}=req.body;
+        const { galleryImage, galleryCaption, productId } = req.body;
         const newGallery = new modelGallery({
-            galleryImage,galleryCaption,productId
+            galleryImage, galleryCaption, productId
         });
         await newGallery.save();
         res.json(newGallery);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -742,7 +913,7 @@ app.post("/Gallery",async(req,res)=>{
 });
 
 //Get Galley..............
-app.get("/getGallery",async(req,res)=>{
+app.get("/getGallery", async (req, res) => {
     try {
         const getGallery = await modelGallery.find();
         res.json(getGallery);
@@ -752,14 +923,43 @@ app.get("/getGallery",async(req,res)=>{
     }
 });
 
-//Update Gallery...................
-app.put("/updateGallery/:id",async(req,res)=>{
+// gallery with Product.............
+app.get("/productWithGallery", async (req, res) => {
+    try {
+        const productWithGallery = await modelGallery.find().populate("productId");
+        const filteredproductWithGallery = productWithGallery.filter(
+            (productWithGallery) => productWithGallery.productId
+        );
+        res.json(filteredproductWithGallery);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Gallery Based Product.................
+app.get("/galleryWithProduct/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {galleryImage,galleryCaption,productId}=req.body;
+        const galleryWithProduct = await modelGallery.find({ productId: id })
+        if (galleryWithProduct.length === 0) {
+            return res.status(404).json({ msg: "no Gallery found" });
+        }
+        res.json(galleryWithProduct).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update Gallery...................
+app.put("/updateGallery/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { galleryImage, galleryCaption, productId } = req.body;
         const updateGallery = await modelGallery.findByIdAndUpdate(
             id,
-            {galleryImage,galleryCaption,productId},{new:true}
+            { galleryImage, galleryCaption, productId }, { new: true }
         );
         res.json(updateGallery);
     } catch (err) {
@@ -769,11 +969,11 @@ app.put("/updateGallery/:id",async(req,res)=>{
 });
 
 //Delete Gallery.................
-app.delete("/deleteGallery/:id",async(req,res)=>{
+app.delete("/deleteGallery/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelGallery.findByIdAndDelete(id);
-      res.json("Category Removed");
+        await modelGallery.findByIdAndDelete(id);
+        res.json("Category Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -787,39 +987,40 @@ app.delete("/deleteGallery/:id",async(req,res)=>{
 
 //booking Shema....
 const collectionBookingShema = new Schema({
-    bookingDate:{
-         type: String,
-        require:true,
+    bookingDate: {
+        type: String,
+        require: true,
     },
-    bookingTotalAmount:{
-         type: String,
-        require:true,
+    bookingTotalAmount: {
+        type: String,
+        require: true,
     },
-    bookingStatus:{
-         type: String,
-        require:true,
+    bookingStatus: {
+        type: String,
+        require: true,
     },
-    paymentStatus:{
-         type: String,
-        require:true,
+    paymentStatus: {
+        type: String,
+        require: true,
     },
-    customerId:{
-         type: String,
-        require:true,
+    customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCustomer",
+        require: true,
     }
 })
-const modelBooking = model("tblBooking",collectionBookingShema);
+const modelBooking = model("tblBooking", collectionBookingShema);
 
 //Create Booking...............
-app.post("/Booking",async(req,res)=>{
+app.post("/Booking", async (req, res) => {
     try {
-        const {bookingDate,bookingTotalAmount,bookingStatus,paymentStatus,customerId}=req.body;
+        const { bookingDate, bookingTotalAmount, bookingStatus, paymentStatus, customerId } = req.body;
         const newBooking = new modelBooking({
-            bookingDate,bookingTotalAmount,bookingStatus,paymentStatus,customerId
+            bookingDate, bookingTotalAmount, bookingStatus, paymentStatus, customerId
         });
         await newBooking.save();
         res.json(newBooking);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -828,7 +1029,7 @@ app.post("/Booking",async(req,res)=>{
 });
 
 //Get Booking..............
-app.get("/getBooking",async(req,res)=>{
+app.get("/getBooking", async (req, res) => {
     try {
         const getBooking = await modelBooking.find();
         res.json(getBooking);
@@ -838,14 +1039,43 @@ app.get("/getBooking",async(req,res)=>{
     }
 });
 
-//Update Booking...................
-app.put("/updateBooking/:id",async(req,res)=>{
+// Booking with Customer.............
+app.get("/bookingWithCustomer", async (req, res) => {
+    try {
+        const bookingWithCustomer = await modelBooking.find().populate("customerId");
+        const filteredbookingWithCustomer = bookingWithCustomer.filter(
+            (bookingWithCustomer) => bookingWithCustomer.customerId
+        );
+        res.json(filteredbookingWithCustomer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// booking Based Customer.................
+app.get("/customerWithBooking/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {bookingDate,bookingTotalAmount,bookingStatus,paymentStatus,customerId}=req.body;
+        const customerWithBooking = await modelBooking.find({ customerId: id })
+        if (customerWithBooking.length === 0) {
+            return res.status(404).json({ msg: "no booking found" });
+        }
+        res.json(customerWithBooking).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update Booking...................
+app.put("/updateBooking/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { bookingDate, bookingTotalAmount, bookingStatus, paymentStatus, customerId } = req.body;
         const updateBooking = await modelBooking.findByIdAndUpdate(
             id,
-            {bookingDate,bookingTotalAmount,bookingStatus,paymentStatus,customerId},{new:true}
+            { bookingDate, bookingTotalAmount, bookingStatus, paymentStatus, customerId }, { new: true }
         );
         res.json(updateBooking);
     } catch (err) {
@@ -855,11 +1085,11 @@ app.put("/updateBooking/:id",async(req,res)=>{
 });
 
 //Delete Booking.................
-app.delete("/deleteBooking/:id",async(req,res)=>{
+app.delete("/deleteBooking/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelBooking.findByIdAndDelete(id);
-      res.json("Booking Removed");
+        await modelBooking.findByIdAndDelete(id);
+        res.json("Booking Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -873,35 +1103,37 @@ app.delete("/deleteBooking/:id",async(req,res)=>{
 
 //Cart Shema....
 const collectionCartShema = new Schema({
-    cartQuantity:{
-         type: String,
-        require:true,
+    cartQuantity: {
+        type: String,
+        require: true,
     },
-    bookingId:{
-         type: String,
-        require:true,
+    bookingId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblBooking",
+        require: true,
     },
-    productId:{
-         type: String,
-        require:true,
+    productId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblProduct",
+        require: true,
     },
-    cartStatus:{
-         type: String,
-        require:true,
+    cartStatus: {
+        type: String,
+        require: true,
     }
 })
-const modelCart = model("tblCart",collectionCartShema);
+const modelCart = model("tblCart", collectionCartShema);
 
 //Create Cart...............
-app.post("/Cart",async(req,res)=>{
+app.post("/Cart", async (req, res) => {
     try {
-        const {cartQuantity,bookingId,productId,cartStatus}=req.body;
+        const { cartQuantity, bookingId, productId, cartStatus } = req.body;
         const newCart = new modelCart({
-            cartQuantity,bookingId,productId,cartStatus
+            cartQuantity, bookingId, productId, cartStatus
         });
         await newCart.save();
         res.json(newCart);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -910,7 +1142,7 @@ app.post("/Cart",async(req,res)=>{
 });
 
 //Get Cart..............
-app.get("/getCart",async(req,res)=>{
+app.get("/getCart", async (req, res) => {
     try {
         const getCart = await modelCart.find();
         res.json(getCart);
@@ -920,14 +1152,43 @@ app.get("/getCart",async(req,res)=>{
     }
 });
 
-//Update Cart...................
-app.put("/updateCart/:id",async(req,res)=>{
+// Booking with cart.............
+app.get("/cartWithBooking", async (req, res) => {
+    try {
+        const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        const filteredcartWithBooking = cartWithBooking.filter(
+            (cartWithBooking) => cartWithBooking.productId
+        );
+        res.json(filteredcartWithBooking);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// cart Based booking.................
+app.get("/bookingWithCart/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {cartQuantity,bookingId,productId,cartStatus}=req.body;
+        const bookingWithCart = await modelCart.find({ bookingId: id }).populate("bookingId").populate("productId")
+        if (bookingWithCart.length === 0) {
+            return res.status(404).json({ msg: "Empty Cart" });
+        }
+        res.json(bookingWithCart).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update Cart...................
+app.put("/updateCart/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { cartQuantity, bookingId, productId, cartStatus } = req.body;
         const updateCart = await modelCart.findByIdAndUpdate(
             id,
-            {cartQuantity,bookingId,productId,cartStatus},{new:true}
+            { cartQuantity, bookingId, productId, cartStatus }, { new: true }
         );
         res.json(updateCart);
     } catch (err) {
@@ -937,11 +1198,11 @@ app.put("/updateCart/:id",async(req,res)=>{
 });
 
 //Delete Cart.................
-app.delete("/deleteCart/:id",async(req,res)=>{
+app.delete("/deleteCart/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelCart.findByIdAndDelete(id);
-      res.json("cart Removed");
+        await modelCart.findByIdAndDelete(id);
+        res.json("cart Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -955,43 +1216,45 @@ app.delete("/deleteCart/:id",async(req,res)=>{
 
 //Review Shema....
 const collectionReviewShema = new Schema({
-    reviewRating:{
-         type: String,
-        require:true,
+    reviewRating: {
+        type: String,
+        require: true,
     },
-    reviewContent:{
-         type: String,
-        require:true,
+    reviewContent: {
+        type: String,
+        require: true,
     },
-    customerId:{
-         type: String,
-        require:true,
+    customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCustomer",
+        require: true,
     },
-    shopId:{
-         type: String,
-        require:true,
+    shopId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblShop",
+        require: true,
     },
-    reviewDateTime:{
-         type: String,
-        require:true,
+    reviewDateTime: {
+        type: String,
+        require: true,
     },
-    customerName:{
-         type: String,
-        require:true,
+    customerName: {
+        type: String,
+        require: true,
     }
 })
-const modelReview = model("tblReview",collectionReviewShema);
+const modelReview = model("tblReview", collectionReviewShema);
 
 //Create Review...............
-app.post("/Review",async(req,res)=>{
+app.post("/Review", async (req, res) => {
     try {
-        const {reviewRating,reviewContent,customerId,shopId,reviewDateTime,customerName}=req.body;
-        const newCart = new modelReview({
-            reviewRating,reviewContent,customerId,shopId,reviewDateTime,customerName
+        const { reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName } = req.body;
+        const newReview = new modelReview({
+            reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName
         });
         await newReview.save();
         res.json(newReview);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -1000,7 +1263,7 @@ app.post("/Review",async(req,res)=>{
 });
 
 //Get review..............
-app.get("/getReview",async(req,res)=>{
+app.get("/getReview", async (req, res) => {
     try {
         const getReview = await modelReview.find();
         res.json(getReview);
@@ -1010,14 +1273,43 @@ app.get("/getReview",async(req,res)=>{
     }
 });
 
-//Update review...................
-app.put("/updateReview/:id",async(req,res)=>{
+// review with customer.............
+app.get("/reviewWithCustomer", async (req, res) => {
+    try {
+        const reviewWithCustomer = await modelReview.find().populate("customerId").populate("shopId")
+        const filteredreviewWithCustomer = reviewWithCustomer.filter(
+            (reviewWithCustomer) => reviewWithCustomer.customerId
+        );
+        res.json(filteredreviewWithCustomer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// customer based Review.................
+app.get("/customerWithReview/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {reviewRating,reviewContent,customerId,shopId,reviewDateTime,customerName}=req.body;
+        const customerWithReview = await modelReview.find({ customerId: id }).populate("customerId").populate("shopId")
+        if (customerWithReview.length === 0) {
+            return res.status(404).json({ msg: "no Review Found" });
+        }
+        res.json(customerWithReview).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//Update review...................
+app.put("/updateReview/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName } = req.body;
         const updateReview = await modelReview.findByIdAndUpdate(
             id,
-            {reviewRating,reviewContent,customerId,shopId,reviewDateTime,customerName},{new:true}
+            { reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName }, { new: true }
         );
         res.json(updateReview);
     } catch (err) {
@@ -1026,12 +1318,12 @@ app.put("/updateReview/:id",async(req,res)=>{
     }
 });
 
-//Delete Cart.................
-app.delete("/deleteReview/:id",async(req,res)=>{
+//Delete Review.................
+app.delete("/deleteReview/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelReview.findByIdAndDelete(id);
-      res.json("cart Removed");
+        await modelReview.findByIdAndDelete(id);
+        res.json("cart Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -1045,43 +1337,44 @@ app.delete("/deleteReview/:id",async(req,res)=>{
 
 //Complaint Shemaa.....
 const collectionComplaintShema = new Schema({
-    complaintTitle:{
-         type: String,
-        require:true,
+    complaintTitle: {
+        type: String,
+        require: true,
     },
-    complaintContent:{
-         type: String,
-        require:true,
+    complaintContent: {
+        type: String,
+        require: true,
     },
-    complaintDate:{
-         type: String,
-        require:true,
+    complaintDate: {
+        type: String,
+        require: true,
     },
-    complaintStatus:{
-         type: String,
-        require:true,
+    complaintStatus: {
+        type: String,
+        require: true,
     },
-    complaintReplay:{
-         type: String,
-        require:true,
+    complaintReplay: {
+        type: String,
+        require: true,
     },
-    customerId:{
-         type: String,
-        require:true,
+    customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCustomer",
+        require: true,
     }
 })
-const modelComplaint = model("tblComplaint",collectionComplaintShema);
+const modelComplaint = model("tblComplaint", collectionComplaintShema);
 
 //Create Complaint...............
-app.post("/Complaint",async(req,res)=>{
+app.post("/Complaint", async (req, res) => {
     try {
-        const {complaintTitle,complaintContent,complaintDate,complaintStatus,complaintReplay,customerId}=req.body;
+        const { complaintTitle, complaintContent, complaintDate, complaintStatus, complaintReplay, customerId } = req.body;
         const newComplaint = new modelComplaint({
-            complaintTitle,complaintContent,complaintDate,complaintStatus,complaintReplay,customerId
+            complaintTitle, complaintContent, complaintDate, complaintStatus, complaintReplay, customerId
         });
-        await newReview.save();
+        await newComplaint.save();
         res.json(newComplaint);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -1090,24 +1383,54 @@ app.post("/Complaint",async(req,res)=>{
 });
 
 //Get Complaint..............
-app.get("/getComplaint",async(req,res)=>{
+app.get("/getComplaint", async (req, res) => {
     try {
         const getComplaint = await modelComplaint.find();
         res.json(getComplaint);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("server eror");
+        res.status(500).send("server error");
     }
 });
 
-//Update Complaint...................
-app.put("/updateComplaint/:id",async(req,res)=>{
+// Complaint with customer.............
+app.get("/complaintWithCustomer", async (req, res) => {
+    try {
+        const complaintWithCustomer = await modelComplaint.find().populate("customerId");
+        const filteredcomplaintWithCustomer = complaintWithCustomer.filter(
+            (complaintWithCustomer) => complaintWithCustomer.customerId
+        );
+        res.json(filteredcomplaintWithCustomer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// customer based Review.................
+app.get("/customerWithComplaint/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {complaintTitle,complaintContent,complaintDate,complaintStatus,complaintReplay,customerId}=req.body;
+        const customerWithComplaint = await modelComplaint.find({ customerId: id }).populate("customerId");
+        if (customerWithComplaint.length === 0) {
+            return res.status(404).json({ msg: "no complaint found" });
+        }
+        res.json(customerWithComplaint).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+
+//Update Complaint...................
+app.put("/updateComplaint/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { complaintTitle, complaintContent, complaintDate, complaintStatus, complaintReplay, customerId } = req.body;
         const updateComplaint = await modelComplaint.findByIdAndUpdate(
             id,
-            {complaintTitle,complaintContent,complaintDate,complaintStatus,complaintReplay,customerId},{new:true}
+            { complaintTitle, complaintContent, complaintDate, complaintStatus, complaintReplay, customerId }, { new: true }
         );
         res.json(updateComplaint);
     } catch (err) {
@@ -1117,11 +1440,11 @@ app.put("/updateComplaint/:id",async(req,res)=>{
 });
 
 //Delete Complaint.................
-app.delete("/deleteComplaint/:id",async(req,res)=>{
+app.delete("/deleteComplaint/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelComplaint.findByIdAndDelete(id);
-      res.json("Complaint Removed");
+        await modelComplaint.findByIdAndDelete(id);
+        res.json("Complaint Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");
@@ -1135,31 +1458,32 @@ app.delete("/deleteComplaint/:id",async(req,res)=>{
 
 //FeedBack Shema....
 const collectionFeedbackShema = new Schema({
-    feedbackContent:{
-         type: String,
-        require:true,
+    feedbackContent: {
+        type: String,
+        require: true,
     },
-    feedbackDate:{
-         type: String,
-        require:true,
+    feedbackDate: {
+        type: String,
+        require: true,
     },
-    customerId:{
-         type: String,
-        require:true,
+    customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCustomer",
+        require: true,
     }
 })
-const modelFeedback = model("tblFeedback",collectionFeedbackShema);
+const modelFeedback = model("tblFeedback", collectionFeedbackShema);
 
 //Create Feedback...............
-app.post("/Feedback",async(req,res)=>{
+app.post("/Feedback", async (req, res) => {
     try {
-        const {feedbackContent,feedbackDate,customerId}=req.body;
+        const { feedbackContent, feedbackDate, customerId } = req.body;
         const newFeedback = new modelFeedback({
-            feedbackContent,feedbackDate,customerId
+            feedbackContent, feedbackDate, customerId
         });
         await newFeedback.save();
         res.json(newFeedback);
-           
+
 
     } catch (err) {
         console.error(err.message);
@@ -1167,25 +1491,55 @@ app.post("/Feedback",async(req,res)=>{
     }
 });
 
-//Get Complaint..............
-app.get("/getComplaint",async(req,res)=>{
+//Get FeedBack..............
+app.get("/getFeedback", async (req, res) => {
     try {
-        const getComplaint = await modelComplaint.find();
-        res.json(getComplaint);
+        const getFeedback = await modelFeedback.find();
+        res.json(getFeedback);
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server eror");
     }
 });
 
-//Update Feedback...................
-app.put("/updateFeedback/:id",async(req,res)=>{
+// feedback with customer.............
+app.get("/feedbackWithCustomer", async (req, res) => {
+    try {
+        const feedbackWithCustomer = await modelFeedback.find().populate("customerId")
+        const filteredfeedbackWithCustomer = feedbackWithCustomer.filter(
+            (feedbackWithCustomer) => feedbackWithCustomer.customerId
+        );
+        res.json(filteredfeedbackWithCustomer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// customer based feedback.................
+app.get("/customerWithFeedback/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const {feedbackContent,feedbackDate,customerId}=req.body;
+        const customerWithFeedback = await modelFeedback.find({ customerId: id }).populate("customerId")
+        if (customerWithFeedback.length === 0) {
+            return res.status(404).json({ msg: "no feedback found" });
+        }
+        res.json(customerWithFeedback).status(200);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+
+//Update Feedback...................
+app.put("/updateFeedback/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const { feedbackContent, feedbackDate, customerId } = req.body;
         const updateFeedback = await modelFeedback.findByIdAndUpdate(
             id,
-            {feedbackContent,feedbackDate,customerId},{new:true}
+            { feedbackContent, feedbackDate, customerId }, { new: true }
         );
         res.json(updateFeedback);
     } catch (err) {
@@ -1195,11 +1549,11 @@ app.put("/updateFeedback/:id",async(req,res)=>{
 });
 
 //Delete Feedback.................
-app.delete("/deleteFeedback/:id",async(req,res)=>{
+app.delete("/deleteFeedback/:id", async (req, res) => {
     const id = req.params.id;
     try {
-      await modelFeedback.findByIdAndDelete(id);
-      res.json("Feedback Removed");
+        await modelFeedback.findByIdAndDelete(id);
+        res.json("Feedback Removed");
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server error");

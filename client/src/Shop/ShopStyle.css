@@ -2,57 +2,80 @@
     display: grid;
     width: 100%;
     min-height: 100vh;
-    grid-template-areas: 
-                         "Sidebar home home home home  home  home"
-                         "Sidebar home home home home  home  home"
-                         "Sidebar home home home home  home  home"
-                         "Sidebar home home home home  home  home"
-                         "Sidebar home home home home  home  home"
-                         "Sidebar home home home home  home  home";
+    grid-template-areas: "nav nav nav nav nav nav nav"
+                          "Sidebar home home home home  home  home"
+                          "Sidebar home home home home  home  home"
+                          "Sidebar home home home home  home  home"
+                          "Sidebar home home home home  home  home"
+                          "Sidebar home home home home  home  home"
+                          "Sidebar home home home home  home  home"
+                                              
 }
 .shop-sidebar{ 
-    background-color: lightgreen;
-    grid-area: Sidebar;
+  grid-area: Sidebar;
+  width: 200px;
+    background-color: #FFFFFF;
+    
+
+    
+}
+.shop-head{
+  grid-area: nav;
+  height: 80px;
+  background-color: #FFFFFF;
+  
+  width: 100%;
+  border-bottom: 1px solid rgb(235, 235, 236);
+}
+.shoptxtHead{
+  color: black;
+  margin-left: 300px;
+}
+.sitelogo{
+  width: 160px;
+  height: 80px;
+  object-fit: contain;
+  margin-left: 150px;
+ margin-bottom: 10px;
 }
 .ShopHome{
-    grid-area:home ;
-    background-color: lightblue;
+  grid-area:home ;
+  background-color: #FFFFFF;
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 h2{
     display: flex;
     align-items: center;
     justify-content: center;
 }
+.homeDivShopPage{
+  display: flex;
+   
+    align-items: center;
+   
+   background-color:#FFFFFF;
+}
 .addproduct{
     display: flex;
     justify-content: center;
     align-items: center;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-   width: 500px;
-   height: 500px;
-   margin: 100px;
-   margin-left: 300px;
-   background-color:#f2f2f2;
-   padding: 10px;
-  
-   background-size: cover;
-}
+   
+   background-color:#FFFFFF;
+  }
 .tagname{
-    padding: 2px;
-    width: 100%;
+    
     padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
+    
     border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    
 }
 .btnSubmit{
     width: 100px;
     background-color: #0fe03c;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+ height: 30px;
+  margin-right: 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -61,8 +84,10 @@ h2{
     width: 100px;
     background-color: #db1414;
   color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
+  height: 30px;
+  margin-left: 20px;
+
+  
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -72,37 +97,37 @@ h2{
     justify-content: center;
     padding: 2px;
 }
-.shoplinks{
-    padding-top: 50px;
-    display: flex;  
-    flex-direction: column;
-     align-items: center;
-     justify-content: center;
+.shopSideBarLinks{
+    width:100px;
+  height: 19.594px;
+  padding-top: 12px;
+  padding-right: 5px;
+  padding-left: 66px;
+  padding-bottom: 12px;
+  background-color: #FFFFFF;
+ 
+  
+  
+}
 
+.shopSideBarLinks:hover{
+  color: #2874f0;
+  font-weight: bold;
+    
 }
-.prdctlinks{
-    padding: 10px;
+.shoplinks{
     text-decoration: none;
-    color: black;
-    font-size: 20px;
-}
-.Stocklinks{
-    padding: 10px;
-    text-decoration: none;
-    color: black;
-    font-size: 20px;
+    color: #333333;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+  width: 232.759px;
+  height: 19.594px;
 }
 .addstock{
     display: flex;
     justify-content: center;
     align-items: center;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-   width: 500px;
-   height: 500px;
-   margin: 100px;
-   margin-left: 300px;
-   background-color:#f2f2f2;
-   padding: 10px;
+   background-color:#FFFFFF;
    background-size: cover;
 }
 .txtarea{
@@ -111,23 +136,24 @@ h2{
     align-items: center;
 }
 .btnStock{
-    padding: 10px;
     display: flex;
     justify-content: center;
+    width: 100px;
+    background-color: #0fe03c;
+  color: white;
+ height: 30px;
+ margin-left: 150px;
+ margin-top: 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 .profileDiv{
     display: flex;
     justify-content: center;
     align-items: center;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-   width: 500px;
-   height: 500px;
-   margin: 100px;
-   margin-left: 300px;
-   background-color:#f2f2f2;
-   padding: 10px;
-  
-   background-size: cover;
+   background-color:#FFFFFF;
+   
 }
 .profileArea{
     padding: 2px;
@@ -145,43 +171,135 @@ h2{
     display: flex;
     justify-content: center;
     align-items: center;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-   width: 500px;
-   height: 500px;
-   margin: 100px;
-   margin-left: 300px;
-   background-color:#f2f2f2;
-   padding: 10px;
-   
-   background-size: cover;
+   background-color:#FFFFFF;
 }
 .editbtn{
     display: flex;
-    justify-content: center;
-    padding: 10px;
 }
 .changepsswrd{
     display: flex;
     justify-content: center;
     align-items: center;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-   width: 500px;
-   height: 500px;
-   margin: 100px;
-   margin-left: 300px;
-   background-color:#f2f2f2;
-   padding: 10px;
+   background-color:#FFFFFF;
+  
    
-   background-size: cover;
 }
-.changepsswrdArea{
-    padding: 2px;
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    color: white;
-}
+
+
+
+.sbtbtnEdtPrF{
+    padding: 15px 40px;
+    background: #000;
+    border:0;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: helvetica;
+    font-size: 12px;
+    letter-spacing: 3px;
+    position: relative;
+    transition:all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+    display: block;
+    margin-right: 90px;
+    
+  }
+  
+  .sbtbtnEdtPrF::after,
+  .sbtbtnEdtPrF::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+      opacity: 0;
+    transition:         all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  
+  .sbtbtnEdtPrF::after{
+      width: 30px;
+      height: 1px;
+      background: white;
+      transform: translateX(-3px);
+      margin-top: 0px;
+  }
+  
+  .sbtbtnEdtPrF::before{
+      content: "";
+      transform: rotate(-135deg) translateX(50%);
+      width: 11px;
+      height: 11px;
+      background: transparent;
+      border-left: 1px solid white;
+      border-bottom: 1px solid white;
+    margin-top: -1px;
+  }
+  
+  
+  .sbtbtnEdtPrF:hover{
+    padding: 15px 60px 15px 20px;
+  }
+  
+  .sbtbtnEdtPrF:hover::after,
+  .sbtbtnEdtPrF:hover::before{
+    opacity: 1;
+    right: 15px;
+  }
+
+  .cancelBtnEdtPRF{
+    padding: 15px 40px;
+    background: #000;
+    border:0;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: helvetica;
+    font-size: 12px;
+    letter-spacing: 3px;
+    position: relative;
+    transition:all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+    display: block;
+    margin-right: 90px;
+    
+  }
+  
+  .cancelBtnEdtPRF::after,
+  .cancelBtnEdtPRF::before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+      opacity: 0;
+    transition:         all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  
+  .cancelBtnEdtPRF::after{
+      width: 30px;
+      height: 1px;
+      background: white;
+      transform: translateX(-3px);
+      margin-top: 0px;
+  }
+  
+  .cancelBtnEdtPRF::before{
+      content: "";
+      transform: rotate(-135deg) translateX(50%);
+      width: 11px;
+      height: 11px;
+      background: transparent;
+      border-left: 1px solid white;
+      border-bottom: 1px solid white;
+    margin-top: -1px;
+  }
+  
+  
+  .cancelBtnEdtPRF:hover{
+    padding: 15px 60px 15px 20px;
+  }
+  
+  .cancelBtnEdtPRF:hover::after,
+  .cancelBtnEdtPRF:hover::before{
+    opacity: 1;
+    right: 15px;
+  }
+  

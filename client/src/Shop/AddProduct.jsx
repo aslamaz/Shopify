@@ -5,34 +5,39 @@ const AddProduct = () => {
   return (
     <div className='addproduct'>
       <div className='fullcontainer'>
-      <div style={{
+        <div style={{
           marginBottom: "30px"
-        }}><h2>SHOPPING PAGE</h2></div>
+        }}><h2>ADD PRODUCT  </h2></div>
         <div className='tagname'>
-        <div>Photo:</div>
-       <button>Browse</button>
+          <div >
+            Photo:</div>
+          <button className='enterarea'>Browse</button>
 
-       <div> Name:</div>
-        <input type='text' name='name'/>
-    
+          <div class="floating-label-group">
+            <input type="text" id="District" class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} />
+            <label class="floating-label">Name...</label>
+          </div>
 
-    
-        <div>Details:</div>
-        
-        <input type="text" name='dtls' />
-   
 
-       <div> Price:</div>
-       
-        <input type="text" name='dtls' />
+
+          <div class="floating-label-group">
+            <input type="text" id="District" class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} />
+            <label class="floating-label">product-Details...</label>
+          </div>
+
+
+          <div class="floating-label-group">
+            <input type="text" id="District" class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} />
+            <label class="floating-label">Price...</label>
+          </div>
         </div>
 
-    <div className='butngroup'>
-        <button className='btnSubmit'>Submit</button>
-        <button className='btncancel'>Cancel</button>
+        <div className='butngroup'>
+          <button className='btnSubmit'>Submit</button>
+          <button className='btncancel'>Cancel</button>
+        </div>
+      </div>
     </div>
-    </div>
-</div>
   )
 }
 

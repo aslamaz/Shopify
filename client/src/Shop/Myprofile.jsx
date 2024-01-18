@@ -1,40 +1,41 @@
 import React from 'react'
-import Profilelogo from './profile-icon.jpg'
+import Profilelogo from './shopImages/profile-icon.jpg'
 import './ShopStyle.css'
 
 const Myprofile = () => {
-  return (
-    <div className='profileDiv'>
-        <div className='profilecontainer'>
-            <h2 style={{color:"white"}}>MY PROFILE</h2>
-            <div className='img'><img src={Profilelogo} alt="img" style={{
-                height:"100px",
-                width:"100px",
-                borderRadius:"50%",
-                display:"flex",
-                marginLeft:"70px"
-            }}/></div>
+    return (
+        <div className='profileDiv'>
+            <div className='profilecontainer'>
+                <h2 style={{ color: "black" }}>MY PROFILE</h2>
+                <div className='img'><img src={Profilelogo} alt="img" style={{
+                    height: "100px",
+                    width: "100px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    marginLeft: "150px",
+                    marginBottom: "20px"
+                }} /></div>
+                <div style={{ border: "1px solid #ccc", padding: " 12px 20px" }}>
+                    <div class="floating-label-group">
+                        <input type="text" id="District" class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} />
+                        <label class="floating-label">Name...</label>
+                    </div>
 
-            <div className='profileArea'>
-            Name:
-            
-            </div>
-            
-            <div className='profileArea' > 
-                Email:
-                
-            </div>
+                    <div class="floating-label-group">
+                        <input type="text" id="District" class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} />
+                        <label class="floating-label">Email...</label>
+                    </div>
 
-            <div className='profileArea'>
-                Contact:
-                
-            </div>
+                    <div class="floating-label-group">
+                        <input type="text" id="District" class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} />
+                        <label class="floating-label" >Contact...</label>
+                    </div>
+                </div>
 
-           
-            
+
+            </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Myprofile

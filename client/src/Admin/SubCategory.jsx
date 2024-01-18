@@ -1,6 +1,73 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 const SubCategory = () => {
+  const [Subcategory,setSubCategory] = useState('');
+  const [showSubcategory,setShowSubCategory] = useState([]);
+  const [Category,setCategory] = useState('');
+  const [showCategory,setShowCategory] = useState([]);
+  const [editSubcategory,setEditSubcategory] = useState('');
+
+  const insertSubCategory = () =>{
+    const data = {
+      subCategoryName : Subcategory,
+      categoryId : Category
+    }
+
+    if(editSubcategory === ""){
+      axios.post('http://localhost:5000/subcategory',data).then((response)=>{
+        console.log(response.data);
+        setSubCategory("");
+        fetchSubCategory();
+      })
+    }
+
+    else{
+      axios.put(`http://localhost:5000/updateSubCategory/${editSubcategory}`,data).then((response)=>{
+        console.log(response.data);
+        setSubCategory("");
+        setEditSubcategory("");
+        fetchSubCategory();
+      })
+    }
+  }
+
+  const fetchSubCategory = () =>{
+    axios.get('http://localhost:5000/subCategoryWithCategory').then((response)=>{
+      console.log(response.data);
+      const data = response.data;
+      setShowSubCategory(data);
+    })
+  }
+
+  const fetchCategory = () =>{
+    axios.get('http://localhost:5000/getCategory').then((response)=>{
+      console.log(response.data);
+      const data = response.data;
+      setShowCategory(data)
+    })
+  }
+
+  const updateSubCategory = (id) =>{
+    axios.get(`http://localhost:5000/getSubCategoryById/${id}`).then((response)=>{
+      console.log(response.data);
+      const data = response.data[0];
+      setCategory(data.categoryId);
+      setSubCategory(data.subCategoryName);
+      setEditSubcategory(data._id);
+    })
+  }
+
+  const deleteSubCategory = (id)=>{
+    axios.delete(`http://localhost:5000/deleteSubCategory/${id}`).then((response)=>{
+      fetchSubCategory();
+    })
+  }
+
+  useEffect(()=>{
+    fetchCategory();
+    fetchSubCategory();
+  },[])
   return (
    <div className='SubCategory'>
     <div className='containerSubCat'>
@@ -13,25 +80,27 @@ const SubCategory = () => {
       Category:
     </div>
     <div >
-    <select name="SubCategory" id="selectCategory">
+    <select name="SubCategory" id="selectCategory"  onChange={(event) => setCategory(event.target.value)}>
+
     <option value="">---select---</option>
-    <option value="">4</option>
-    <option value="">3</option>
-    <option value="">2</option>
-    <option value="">heavy  </option>
+    {showCategory.map((Categories,key)=>(
+        <option value={Categories._id}>{Categories.category}</option>
+    ))}
+    
+    
   </select>
   </div>
       <div style={{padding:"5px"}}>
         <div style={{fontSize:"20px"}}>
        SubCategory:
         </div>
-      <input type='text' name='cate' placeholder='Subcategory' className='inputsubcategory'/>
+      <input type='text' name='cate'  value={Subcategory}  placeholder='Subcategory' className='inputsubcategory' onChange={(event)=> setSubCategory(event.target.value)}/>
       </div>
       </div>
       
       
       <div className='btndis'>
-        <button>Submit</button>
+        <button onClick={insertSubCategory}>Submit</button>
       </div>
      <div className='tabledis'>
      <table>
@@ -40,13 +109,18 @@ const SubCategory = () => {
   <th> Category</th>
   <th>Subcategory</th>
   <th>Action</th>
+  <th>Update</th>
 </tr>
-<tr>
-  <td>1</td>
-  <td>truck</td>
-  <td>Heavy</td>
-  <td><button>Delete</button></td>
-</tr>
+{showSubcategory.map((subCategories,key)=>(
+    <tr>
+    <td>{key+1}</td>
+    <td>{subCategories.categoryId.category}</td>
+    <td>{subCategories.subCategoryName}</td>
+    <td><button className='districtDltBtn' onClick={() => deleteSubCategory(subCategories._id)}>Delete</button></td>
+    <td><button className='districtUpdatebtn' onClick={() => updateSubCategory(subCategories._id)}>Update</button></td>
+  </tr>
+))}
+
 </table>
      </div>
      </div>
