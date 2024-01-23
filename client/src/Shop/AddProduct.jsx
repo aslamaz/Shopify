@@ -9,8 +9,7 @@ const AddProduct = () => {
           marginBottom: "30px"
         }}><h2>ADD PRODUCT  </h2></div>
         <div className='tagname'>
-          <div >
-            Photo:</div>
+          <div >Photo:</div>
           <button className='enterarea'>Browse</button>
 
           <div class="floating-label-group">
@@ -33,8 +32,8 @@ const AddProduct = () => {
         </div>
 
         <div className='butngroup'>
-          <button className='btnSubmit'>Submit</button>
-          <button className='btncancel'>Cancel</button>
+          <button className='addPrdctbtnSubmit'>Submit</button>
+          <button className='addPrdctbtncancel'>Cancel</button>
         </div>
       </div>
     </div>

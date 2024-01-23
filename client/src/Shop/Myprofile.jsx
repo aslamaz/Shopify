@@ -6,13 +6,13 @@ const Myprofile = () => {
     return (
         <div className='profileDiv'>
             <div className='profilecontainer'>
-                <h2 style={{ color: "black" }}>MY PROFILE</h2>
+                <h2 style={{ color: "black",marginLeft:"13px" }}>MY PROFILE</h2>
                 <div className='img'><img src={Profilelogo} alt="img" style={{
                     height: "100px",
                     width: "100px",
                     borderRadius: "50%",
                     display: "flex",
-                    marginLeft: "150px",
+                    marginLeft: "180px",
                     marginBottom: "20px"
                 }} /></div>
                 <div style={{ border: "1px solid #ccc", padding: " 12px 20px" }}>

@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
-const { connect, Schema, model } = require("mongoose");
+const { connect, Schema, model, default: mongoose } = require("mongoose");
 
 const app = express();
 const port = 5000;
@@ -134,6 +134,7 @@ app.post("/district", async (req, res) => {
 app.get("/GetDistrict", async (req, res) => {
     try {
         const getDistricts = await modelDistrict.find();
+
         res.json(getDistricts);
     } catch (err) {
         console.error(err.message);
@@ -260,9 +261,12 @@ app.get("/districtWithPlaces/:id", async (req, res) => {
     try {
         const place = await modelPlaces.find({ districtId: id });
         if (place.length === 0) {
-            return res.status(404).json({ msg: "no place found" });
+            return res.json([]);
         }
-        res.json(place).status(200);
+        else{
+            res.json(place).status(200);
+        }
+      
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
@@ -525,6 +529,11 @@ const collectionShopShema = new Schema({
         ref: "tblPlaces",
         require: true,
     },
+    districtId:{
+        type:Schema.Types.ObjectId,
+        ref:"tblDistrict",
+        require:true,
+    },
     ShopPhoto: {
         type: String,
         require: true,
@@ -547,9 +556,10 @@ const modelShop = model("tblShop", collectionShopShema);
 //Create Shop...............
 app.post("/Shop", async (req, res) => {
     try {
-        const { shopName, shopEmail, ShopContact, shopAddress, placeId, ShopPhoto, shopProof, shopPassword, shopVStatus } = req.body;
+        const { shopName, shopEmail, ShopContact, shopAddress, placeId,shopPassword, shopVStatus } = req.body;
+        console.log(placeId);
         const newShop = new modelShop({
-            shopName, shopEmail, ShopContact, shopAddress, placeId, ShopPhoto, shopProof, shopPassword, shopVStatus
+            shopName, shopEmail, ShopContact, shopAddress, placeId, shopPassword, shopVStatus
         });
         await newShop.save();
         res.json(newShop);
@@ -573,7 +583,7 @@ app.get("/getShop", async (req, res) => {
 // shop with Place.............
 app.get("/placeWithShop", async (req, res) => {
     try {
-        const placeWithShop = await modelShop.find().populate("placeId");
+        const placeWithShop = await modelShop.find().populate("placeId").populate("districtId");
         const filteredplaceWithShop = placeWithShop.filter(
             (placeWithShop) => placeWithShop.placeId
         );
@@ -588,9 +598,9 @@ app.get("/placeWithShop", async (req, res) => {
 app.get("/shopWithPlace/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const shopWithPlace = await modelShop.find({ placeId: id })
+        const shopWithPlace = await modelShop.find({ placeId: id }).populate("placeId").populate("districtId");
         if (shopWithPlace.length === 0) {
-            return res.status(404).json({ msg: "no subCategories found" });
+            return res.status(404).json({ msg: "no Shops found" });
         }
         res.json(shopWithPlace).status(200);
     } catch (err) {

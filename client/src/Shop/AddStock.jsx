@@ -13,7 +13,11 @@ const AddStock = () => {
             <label class="floating-label">Add-Stock...</label>
           </div>
         </div>
-        <div className='btnStock'><button >Submit</button></div>
+        <div style={{display:"flex",justifyContent:"center",marginTop:"10px"}}>
+          <div>
+          <button className='btnStock'>Submit</button>
+          </div>
+          </div>
 
 
       </div>

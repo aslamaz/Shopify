@@ -8,7 +8,7 @@ const Place = () => {
   const [showPlace, setShowPlace] = useState([]);
   const [editPlace, setEditPlace] = useState('');
 
-  const insertPalce = () => {
+  const insertPlace = () => {
     const data = {
       place: Place,
       districtId: district
@@ -93,16 +93,18 @@ const Place = () => {
 
             </select>
           </div>
+
           <div >
             <div style={{ fontSize: "20px" }}>
               Place:
             </div>
             <input type='text' name='Place' value={Place} placeholder='Place...' className='inputplace' onChange={(event) => setPlace(event.target.value)} />
           </div>
+
         </div>
 
         <div className='btndis'>
-          <button onClick={insertPalce}>Submit</button>
+          <button onClick={insertPlace}>Submit</button>
         </div>
 
         <div className='tabledis'>

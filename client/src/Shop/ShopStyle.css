@@ -30,6 +30,8 @@
 .shoptxtHead{
   color: black;
   margin-left: 300px;
+  font-size: 32px;
+  
 }
 .sitelogo{
   width: 160px;
@@ -42,7 +44,6 @@
   grid-area:home ;
   background-color: #FFFFFF;
   width: 100%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 h2{
     display: flex;
@@ -51,9 +52,7 @@ h2{
 }
 .homeDivShopPage{
   display: flex;
-   
     align-items: center;
-   
    background-color:#FFFFFF;
 }
 .addproduct{
@@ -70,32 +69,59 @@ h2{
     border: 1px solid #ccc;
     
 }
-.btnSubmit{
+
+.chngPassbtnSubmit{
     width: 100px;
-    background-color: #0fe03c;
+    box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+  background-color:  #0a0a23;
   color: white;
  height: 30px;
-  margin-right: 20px;
+ margin-right: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-.btncancel{
+
+.chngPassbtncancel{
     width: 100px;
-    background-color: #db1414;
+    box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+  background-color:  #0a0a23;
   color: white;
   height: 30px;
-  margin-left: 20px;
-
+  margin-left: 10px;
   
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
+
+.addPrdctbtnSubmit{
+  width: 100px;
+  background-color: #0a0a23;
+color: white;
+height: 30px;
+margin-right: 10px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+}
+
+.addPrdctbtncancel{
+  width: 100px;
+  background-color:  #0a0a23;
+color: white;
+height: 30px;
+margin-left: 10px;
+border: none;
+border-radius: 4px;
+box-shadow: 0px 0px 2px 2px rgb(0,0,0);
+}
+
 .butngroup{
     display: flex;
     justify-content: center;
-    padding: 2px;
+    margin-top: 10px;
 }
 .shopSideBarLinks{
     width:100px;
@@ -136,17 +162,15 @@ h2{
     align-items: center;
 }
 .btnStock{
-    display: flex;
-    justify-content: center;
-    width: 100px;
-    background-color: #0fe03c;
-  color: white;
- height: 30px;
- margin-left: 150px;
- margin-top: 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  width: 100px;
+  background-color: #0a0a23;
+color: white;
+height: 30px;
+margin-right: 10px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+box-shadow: 0px 0px 2px 2px rgb(0,0,0);
 }
 .profileDiv{
     display: flex;
@@ -159,7 +183,7 @@ h2{
     padding: 2px;
     width: 100%;
     padding: 12px 20px;
-    margin: 8px 0;
+   
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -175,6 +199,8 @@ h2{
 }
 .editbtn{
     display: flex;
+   
+   
 }
 .changepsswrd{
     display: flex;
@@ -258,7 +284,7 @@ h2{
     transition:all .4s cubic-bezier(0.645, 0.045, 0.355, 1);
     cursor: pointer;
     display: block;
-    margin-right: 90px;
+   
     
   }
   
@@ -302,4 +328,50 @@ h2{
     opacity: 1;
     right: 15px;
   }
-  
+
+
+  .enterarea{
+    height: 30px;
+    width: 400px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ccc;
+}
+.floating-label-group {
+	position: relative;
+	margin-top: 15px;
+	margin-bottom: 25px;
+  width: 404px;
+  height: 32;
+}
+
+	.floating-label {
+		font-size: 16px;
+		color: #000000;
+		position: absolute;
+		pointer-events: none;
+		top: 9px;
+		left: 12px;
+		transition: all 0.1s ease;
+	}
+
+	input:focus ~ .floating-label,
+	input:not(:focus):valid ~ .floating-label {
+		top: -20px;
+		bottom: 80px;
+		left: 0px;
+		font-size: 18px;
+		opacity: 1;
+		color: #000000;
+	}
+
+
+.row {
+	margin-top: 50px;
+}
+.form-control{
+  height: 30px;
+   width: 400px;
+   border-radius: 5px;
+   border: none;
+}
