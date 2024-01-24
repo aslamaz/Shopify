@@ -10,24 +10,26 @@ const Shop = () => {
   const [showDistrict, setShowDitrict] = useState([]);
   const [showPlace, setShowPlace] = useState([]);
   const [Place, setPlace] = useState('');
-  const [Photo, setPhoto] = useState('');
-  const [Proof, setProof] = useState('');
+  const [Photo, setPhoto] = useState([]);
+  const [Proof, setProof] = useState([]);
   const [Password, setPassword] = useState('');
 
 
 
   const insertShopData = () => {
-    const data = {
-      shopName: ShopName,
-      shopEmail: Email,
-      ShopContact: shopContact,
-      shopAddress: Address,
-      placeId: Place,
-      shopPassword: Password
 
-    }
+    const frm = new FormData();
+    frm.append("shopName", ShopName);
+    frm.append("shopEmail", Email);
+    frm.append("ShopContact", shopContact);
+    frm.append("shopAddress", Address);
+    frm.append("placeId", Place);
+    frm.append("shopPhoto",Photo);
+    frm.append("shopProof",Proof);
 
-    axios.post('http://localhost:5000/Shop', data).then((response) => {
+    frm.append("shopPassword", Password);
+
+    axios.post('http://localhost:5000/Shop', frm).then((response) => {
       console.log(response.data);
 
     })
@@ -84,9 +86,9 @@ const Shop = () => {
           <input type="password" value={Password} name="pswrd" className='enterarea' style={{ backgroundColor: "#ccc" }} onChange={(event) => setPassword(event.target.value)} />
 
           <div>Proof:</div>
-          <input type="file" value={Proof} onChange={(event) => setProof(event.target.value)} />
+          <input type="file" onChange={(event) => setProof(event.target.files[0])} />
           <div > Photo:</div>
-          <input type="file" value={Photo} onChange={(event) => setPhoto(event.target.value)} />
+          <input type="file"  onChange={(event) => setPhoto(event.target.files[0])} />
 
           <div >
             District:

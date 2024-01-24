@@ -2,6 +2,9 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const { connect, Schema, model, default: mongoose } = require("mongoose");
+const multer = require("multer");
+const { request } = require("https");
+
 
 const app = express();
 const port = 5000;
@@ -9,6 +12,20 @@ const port = 5000;
 app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
+
+
+const PATH = "./public/images";
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: PATH,
+    filename: function (req, file, cb) {
+      let origialname = file.originalname;
+      let ext = origialname.split(".").pop();
+      let filename = origialname.split(".").slice(0, -1).join(".");
+      cb(null, filename + "." + ext);
+    },
+  }),
+});
 
 const db = "mongodb+srv://muhammedazeez473:IUZmfC5BvwcRW5oe@cluster0.wconiyx.mongodb.net/db_Shopify";
 
@@ -534,11 +551,11 @@ const collectionShopShema = new Schema({
         ref:"tblDistrict",
         require:true,
     },
-    ShopPhoto: {
+    Shopimgsrc: {
         type: String,
         require: true,
     },
-    shopProof: {
+    ShopProofsrc: {
         type: String,
         require: true,
     },
@@ -554,12 +571,23 @@ const collectionShopShema = new Schema({
 const modelShop = model("tblShop", collectionShopShema);
 
 //Create Shop...............
-app.post("/Shop", async (req, res) => {
+app.post("/Shop", 
+upload.fields([
+    { name: "shopPhoto", maxCount: 1 },
+    { name: "shopProof", maxCount: 1 },
+  ]),
+
+async (req, res) => {
     try {
+        var fileValue = JSON.parse(JSON.stringify(req.files));
+        var Shopimgsrc = `http://127.0.0.1:${port}/images/${fileValue.shopPhoto[0].filename}`;
+        var ShopProofsrc = `http://127.0.0.1:${port}/images/${fileValue.shopProof[0].filename}`;
+        console.log(ShopProofsrc);
+
+
         const { shopName, shopEmail, ShopContact, shopAddress, placeId,shopPassword, shopVStatus } = req.body;
-        console.log(placeId);
         const newShop = new modelShop({
-            shopName, shopEmail, ShopContact, shopAddress, placeId, shopPassword, shopVStatus
+            shopName, shopEmail, ShopContact, shopAddress, placeId,Shopimgsrc,ShopProofsrc, shopPassword, shopVStatus
         });
         await newShop.save();
         res.json(newShop);
@@ -665,7 +693,7 @@ const collectionCustomerShema = new Schema({
         ref: "tblPlaces",
         require: true,
     },
-    customerPhoto: {
+    profileimgsrc: {
         type: String,
         require: true,
     },
@@ -677,11 +705,20 @@ const collectionCustomerShema = new Schema({
 const modelCustomer = model("tblCustomer", collectionCustomerShema);
 
 //Create Customer...............
-app.post("/Customer", async (req, res) => {
+app.post("/Customer",
+ upload.fields([
+    { name: "customerPhoto", maxCount: 1 },
+  
+  ]),
+   async (req, res) => {
     try {
-        const { customerName, customerEmail, customerContact, customerAddress, placeId, customerPhoto, customerPassword } = req.body;
+        var fileValue = JSON.parse(JSON.stringify(req.files));
+        var profileimgsrc = `http://127.0.0.1:${port}/images/${fileValue.customerPhoto[0].filename}`;
+        console.log(profileimgsrc);
+      
+        const { customerName, customerEmail, customerContact, customerAddress, placeId, customerPassword, } = req.body;
         const newCustomer = new modelCustomer({
-            customerName, customerEmail, customerContact, customerAddress, placeId, customerPhoto, customerPassword
+            customerName, customerEmail, customerContact, customerAddress, placeId, profileimgsrc, customerPassword
         });
         await newCustomer.save();
         res.json(newCustomer);
@@ -780,7 +817,7 @@ const collectionProductshema = new Schema({
         type: String,
         require: true,
     },
-    productPhoto: {
+    prdctimgsrc: {
         type: String,
         require: true,
     },
@@ -798,11 +835,21 @@ const collectionProductshema = new Schema({
 const modelProduct = model("tblProduct", collectionProductshema);
 
 //Create product...............
-app.post("/Product", async (req, res) => {
+app.post("/Product",
+upload.fields([
+    { name: "productPhoto", maxCount: 1 },
+  
+  ]),
+async (req, res) => {
     try {
-        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId } = req.body;
+
+        var fileValue = JSON.parse(JSON.stringify(req.files));
+        var prdctimgsrc = `http://127.0.0.1:${port}/images/${fileValue.productPhoto[0].filename}`;
+        console.log(prdctimgsrc);
+
+        const { productName, ProductDescription, productRate, subCategoryId, shopId } = req.body;
         const newProduct = new modelProduct({
-            productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId,
+            productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId,
         });
         await newProduct.save();
         res.json(newProduct);

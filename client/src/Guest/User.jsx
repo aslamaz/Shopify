@@ -22,17 +22,19 @@ const User = () => {
 
 
   const insertCustomerData = () => {
-    const data = {
-      customerName: customerName,
-      customerEmail: customerEmail,
-      customerContact: customerContact,
-      customerAddress: customerAddress,
-      customerPassword: customerPassword,
-      customerPhoto: customerPhoto,
-      placeId: place,
-    }
+    
 
-    axios.post('http://localhost:5000/Customer', data).then((response) => {
+    const frm = new FormData();
+    frm.append("customerName", customerName);
+    frm.append("customerEmail", customerEmail);
+    frm.append("customerContact", customerContact);
+    frm.append("customerAddress", customerAddress);
+    frm.append("customerPassword", customerPassword);
+    frm.append("customerPhoto", customerPhoto);
+    frm.append("placeId", place);
+
+
+    axios.post('http://localhost:5000/Customer', frm).then((response) => {
       console.log(response.data);
     })
   }
@@ -105,7 +107,7 @@ const User = () => {
         <div className='cstmrAdrsDiv' style={{ display: "flex" }}>
           <img src={Addressicon} alt="img" className='forminputboxicons' />
 
-          <textarea name="adrs" cols="16" rows="6" value={customerAddress} className='adrsinputuser' placeholder='Your Address' onChange={(event) => setCustomerAddress(event.target.value)} >{customerAddress}</textarea>
+          <textarea name="adrs" cols="16" rows="6" value={customerAddress} className='adrsinputuser' placeholder='Your Address' onChange={(event) => setCustomerAddress(event.target.value)} ></textarea>
         </div>
 
 
@@ -139,7 +141,7 @@ const User = () => {
 
         <div style={{ marginLeft: "25px" }}>
           <div style={{ marginTop: "5px" }}> Photo:</div>
-          <input type="file" value='' onChange={(event) => setCustomerPhoto(event.target.value)} />
+          <input type="file"  onChange={(event) => setCustomerPhoto(event.target.files[0])} />
         </div>
 
         <div className='buttongroup'>

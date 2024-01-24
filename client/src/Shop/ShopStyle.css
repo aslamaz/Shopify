@@ -375,3 +375,36 @@ box-shadow: 0px 0px 2px 2px rgb(0,0,0);
    border-radius: 5px;
    border: none;
 }
+#slct-category {
+
+  height: 34px;
+  width: 406px;
+  border-radius: 5px;
+  border: none;
+  border: 1px solid #CDD9ED;
+  transition: border .3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #275EFE;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+#slct-SubCategory{
+  height: 34px;
+  width: 406px;
+  border-radius: 5px;
+  border: none;
+  border: 1px solid #CDD9ED;
+  transition: border .3s ease;
+  margin-top: 10px;
+
+  &:focus {
+    outline: none;
+    border-color: #275EFE;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
