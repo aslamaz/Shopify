@@ -9,6 +9,7 @@ import Myprofile from './Myprofile'
 import Editprofile from './Editprofile'
 import Changepassword from './Changepassword'
 import HeadShop from './HeadShop'
+import Gallery from './Gallery'
 const App = () => {
   return (
     <div className='Shop-main'>
@@ -26,6 +27,7 @@ const App = () => {
           <Route path='Myprofile' element={<Myprofile />} />
           <Route path='Editprofile' element={<Editprofile />} />
           <Route path='Changepassword' element={<Changepassword />} />
+          <Route path='Gallery/:id' element={<Gallery />} />
         </Routes>
       </div>
     </div>

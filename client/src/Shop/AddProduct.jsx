@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './ShopStyle.css'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 const AddProduct = () => {
   const [prdctName, setPrdctName] = useState('');
@@ -12,6 +13,7 @@ const AddProduct = () => {
   const [showCategory, setShowCategory] = useState([]);
   const [subCategory, setSubCategory] = useState('');
   const [showSubCategory, setShowSubCategory] = useState([]);
+
 
   const insertPrdctDtails = () => {
 
@@ -25,9 +27,12 @@ const AddProduct = () => {
 
     axios.post('http://localhost:5000/Product', frm).then((response) => {
       console.log(response.data);
+      fetchProduct();
 
     })
   }
+
+
 
   const fetchProduct = () => {
     axios.get('http://localhost:5000/subCategoryWithProduct').then((response) => {
@@ -54,9 +59,24 @@ const AddProduct = () => {
     })
   }
 
+  const deleteProduct = (id) => {
+    axios.delete(`http://localhost:5000/deleteProduct/${id}`).then((response) => {
+      console.log(response.data);
+      fetchProduct()
+    })
+  }
+
+
+  const resetForm = () => {
+    setPrdctName();
+    setPrdctDescription();
+    setPrdctRate();
+    setPrdctPhoto();
+  }
+
   useEffect(() => {
     fetchProduct();
-    fetchCategory()
+    fetchCategory();
   }, [])
 
 
@@ -88,7 +108,7 @@ const AddProduct = () => {
 
             <select name="SubCategory" id="slct-SubCategory" onChange={(event) => {
               setSubCategory(event.target.value)
-              
+
             }}>
               <option value="">---Select SubCategory---</option>
 
@@ -101,7 +121,7 @@ const AddProduct = () => {
 
           <div class="floating-label-group">
             <input type="text" id="District" value={prdctName} class="form-control" autocomplete="off" autofocus required style={{ backgroundColor: "#ccc" }} onChange={(event) => setPrdctName(event.target.value)} />
-            <label class="floating-label">Name...</label>
+            <label class="floating-label">Product-Name...</label>
           </div>
 
 
@@ -123,37 +143,48 @@ const AddProduct = () => {
 
         <div className='butngroup'>
           <button className='addPrdctbtnSubmit' onClick={insertPrdctDtails}>Submit</button>
-          <button className='addPrdctbtncancel'>Cancel</button>
+          <button className='addPrdctbtncancel' onClick={resetForm}>Cancel</button>
         </div>
 
-        <div className='tabledis' style={{ marginTop: "30px" }}>
-          <table>
-            <tr>
-              <th>SINO.</th>
-              <th> productName</th>
-              <th>productDetails</th>
 
-              <th>productRate</th>
-              <th>productPhoto</th>
-              
-
-            </tr>
-
-            {showPrdct.map((products, key) => (
+        <div class="table-wrapper">
+          <table class="fl-table" style={{ marginTop: "30px" }}>
+            <thead>
               <tr>
-                <td>{key + 1}</td>
-                <td>{products.productName}</td>
-                <td>{products.ProductDescription}</td>
-                <td>{products.productRate}</td>
-                <td><img src={products.prdctimgsrc}/></td>
-                {/* <td><button className='districtDltBtn' onClick={() => deletePlace(places._id)}>Delete</button></td>
-                <td><button className='districtUpdatebtn' onClick={() => updatePlace(places._id)}>Upadte</button></td> */}
+                <th>SINO.</th>
+                <th> ProductName</th>
+                <th>ProductDetails</th>
+                <th>SubCategoryName</th>
+                <th>ProductRate</th>
+                <th>ProductPhoto</th>
+                <th>DELETE</th>
+                <th>AddprodctPhoto</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {showPrdct.map((products, key) => (
+                <tr>
+                  <td>{key + 1}</td>
+                  <td>{products.productName}</td>
+                  <td>{products.ProductDescription}</td>
+                  <td>{products.subCategoryId.subCategoryName}</td>
+                  <td>{products.productRate}</td>
+                  <td><img src={products.prdctimgsrc} alt='img' style={{ width: "60px", height: "60px", objectFit: "contain" }} /></td>
+                  <td><button className='districtDltBtn' onClick={() => deleteProduct(products._id)}>Delete</button></td>
+                  <td><Link to={`/Shop/Gallery/${products._id}`} className='shoplinks'><button style={{backgroundColor:"#ccc",padding:"12px",borderRadius:"5px"}}>AddProductPhoto</button></Link></td>
+                  
+                </tr>
+              ))}
 
+
+
+
+            </tbody>
           </table>
         </div>
-
+{
+  console.log(prdctPhoto)
+}
 
       </div>
 

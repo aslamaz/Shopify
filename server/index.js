@@ -12,19 +12,21 @@ const port = 5000;
 app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
+app.use(express.static("./public"));
+
 
 
 const PATH = "./public/images";
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: PATH,
-    filename: function (req, file, cb) {
-      let origialname = file.originalname;
-      let ext = origialname.split(".").pop();
-      let filename = origialname.split(".").slice(0, -1).join(".");
-      cb(null, filename + "." + ext);
-    },
-  }),
+    storage: multer.diskStorage({
+        destination: PATH,
+        filename: function (req, file, cb) {
+            let origialname = file.originalname;
+            let ext = origialname.split(".").pop();
+            let filename = origialname.split(".").slice(0, -1).join(".");
+            cb(null, filename + "." + ext);
+        },
+    }),
 });
 
 const db = "mongodb+srv://muhammedazeez473:IUZmfC5BvwcRW5oe@cluster0.wconiyx.mongodb.net/db_Shopify";
@@ -164,7 +166,7 @@ app.get("/GetDistrict", async (req, res) => {
 app.get("/GetDistrict/:Id", async (req, res) => {
     try {
         const Id = req.params.Id
-        const getDistricts = await modelDistrict.find({ _id : Id });;
+        const getDistricts = await modelDistrict.find({ _id: Id });;
         res.json(getDistricts);
     } catch (err) {
         console.error(err.message);
@@ -250,7 +252,7 @@ app.get("/getPlaces", async (req, res) => {
 app.get("/getPlacesById/:id", async (req, res) => {
     try {
         const Id = req.params.id;
-        const getPlaces = await modelPlaces.find({_id : Id});
+        const getPlaces = await modelPlaces.find({ _id: Id });
         res.json(getPlaces);
     } catch (err) {
         console.error(err.message);
@@ -280,10 +282,10 @@ app.get("/districtWithPlaces/:id", async (req, res) => {
         if (place.length === 0) {
             return res.json([]);
         }
-        else{
+        else {
             res.json(place).status(200);
         }
-      
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
@@ -368,7 +370,7 @@ app.get("/getCategory", async (req, res) => {
 app.get("/getCategoryById/:id", async (req, res) => {
     try {
         const Id = req.params.id;
-        const getCategory = await modelCategory.find({_id : Id});
+        const getCategory = await modelCategory.find({ _id: Id });
         res.json(getCategory);
     } catch (err) {
         console.error(err.message);
@@ -453,7 +455,7 @@ app.get("/getSubCategory", async (req, res) => {
 app.get("/getSubCategoryById/:id", async (req, res) => {
     try {
         const Id = req.params.id
-        const getsubCategory = await modelSubCategory.find({_id : Id});
+        const getsubCategory = await modelSubCategory.find({ _id: Id });
         res.json(getsubCategory);
     } catch (err) {
         console.error(err.message);
@@ -546,10 +548,10 @@ const collectionShopShema = new Schema({
         ref: "tblPlaces",
         require: true,
     },
-    districtId:{
-        type:Schema.Types.ObjectId,
-        ref:"tblDistrict",
-        require:true,
+    districtId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblDistrict",
+        require: true,
     },
     Shopimgsrc: {
         type: String,
@@ -571,31 +573,31 @@ const collectionShopShema = new Schema({
 const modelShop = model("tblShop", collectionShopShema);
 
 //Create Shop...............
-app.post("/Shop", 
-upload.fields([
-    { name: "shopPhoto", maxCount: 1 },
-    { name: "shopProof", maxCount: 1 },
-  ]),
+app.post("/Shop",
+    upload.fields([
+        { name: "shopPhoto", maxCount: 1 },
+        { name: "shopProof", maxCount: 1 },
+    ]),
 
-async (req, res) => {
-    try {
-        var fileValue = JSON.parse(JSON.stringify(req.files));
-        var Shopimgsrc = `http://127.0.0.1:${port}/images/${fileValue.shopPhoto[0].filename}`;
-        var ShopProofsrc = `http://127.0.0.1:${port}/images/${fileValue.shopProof[0].filename}`;
-        console.log(ShopProofsrc);
+    async (req, res) => {
+        try {
+            var fileValue = JSON.parse(JSON.stringify(req.files));
+            var Shopimgsrc = `http://127.0.0.1:${port}/images/${fileValue.shopPhoto[0].filename}`;
+            var ShopProofsrc = `http://127.0.0.1:${port}/images/${fileValue.shopProof[0].filename}`;
+            console.log(ShopProofsrc);
 
 
-        const { shopName, shopEmail, ShopContact, shopAddress, placeId,shopPassword, shopVStatus } = req.body;
-        const newShop = new modelShop({
-            shopName, shopEmail, ShopContact, shopAddress, placeId,Shopimgsrc,ShopProofsrc, shopPassword, shopVStatus
-        });
-        await newShop.save();
-        res.json(newShop);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server error");
-    }
-});
+            const { shopName, shopEmail, ShopContact, shopAddress, placeId, shopPassword, shopVStatus } = req.body;
+            const newShop = new modelShop({
+                shopName, shopEmail, ShopContact, shopAddress, placeId, Shopimgsrc, ShopProofsrc, shopPassword, shopVStatus
+            });
+            await newShop.save();
+            res.json(newShop);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server error");
+        }
+    });
 
 //Get Shop..............
 app.get("/getShop", async (req, res) => {
@@ -706,29 +708,29 @@ const modelCustomer = model("tblCustomer", collectionCustomerShema);
 
 //Create Customer...............
 app.post("/Customer",
- upload.fields([
-    { name: "customerPhoto", maxCount: 1 },
-  
-  ]),
-   async (req, res) => {
-    try {
-        var fileValue = JSON.parse(JSON.stringify(req.files));
-        var profileimgsrc = `http://127.0.0.1:${port}/images/${fileValue.customerPhoto[0].filename}`;
-        console.log(profileimgsrc);
-      
-        const { customerName, customerEmail, customerContact, customerAddress, placeId, customerPassword, } = req.body;
-        const newCustomer = new modelCustomer({
-            customerName, customerEmail, customerContact, customerAddress, placeId, profileimgsrc, customerPassword
-        });
-        await newCustomer.save();
-        res.json(newCustomer);
+    upload.fields([
+        { name: "customerPhoto", maxCount: 1 },
+
+    ]),
+    async (req, res) => {
+        try {
+            var fileValue = JSON.parse(JSON.stringify(req.files));
+            var profileimgsrc = `http://127.0.0.1:${port}/images/${fileValue.customerPhoto[0].filename}`;
+            console.log(profileimgsrc);
+
+            const { customerName, customerEmail, customerContact, customerAddress, placeId, customerPassword, } = req.body;
+            const newCustomer = new modelCustomer({
+                customerName, customerEmail, customerContact, customerAddress, placeId, profileimgsrc, customerPassword
+            });
+            await newCustomer.save();
+            res.json(newCustomer);
 
 
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server error");
-    }
-});
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server error");
+        }
+    });
 
 //Get Customer..............
 app.get("/getCustomer", async (req, res) => {
@@ -836,30 +838,30 @@ const modelProduct = model("tblProduct", collectionProductshema);
 
 //Create product...............
 app.post("/Product",
-upload.fields([
-    { name: "productPhoto", maxCount: 1 },
-  
-  ]),
-async (req, res) => {
-    try {
+    upload.fields([
+        { name: "productPhoto", maxCount: 1 },
 
-        var fileValue = JSON.parse(JSON.stringify(req.files));
-        var prdctimgsrc = `http://127.0.0.1:${port}/images/${fileValue.productPhoto[0].filename}`;
-        console.log(prdctimgsrc);
+    ]),
+    async (req, res) => {
+        try {
 
-        const { productName, ProductDescription, productRate, subCategoryId, shopId } = req.body;
-        const newProduct = new modelProduct({
-            productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId,
-        });
-        await newProduct.save();
-        res.json(newProduct);
+            var fileValue = JSON.parse(JSON.stringify(req.files));
+            var prdctimgsrc = `http://127.0.0.1:${port}/images/${fileValue.productPhoto[0].filename}`;
+            console.log(prdctimgsrc);
+
+            const { productName, ProductDescription, productRate, subCategoryId, shopId } = req.body;
+            const newProduct = new modelProduct({
+                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId,
+            });
+            await newProduct.save();
+            res.json(newProduct);
 
 
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server error");
-    }
-});
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server error");
+        }
+    });
 
 //Get product..............
 app.get("/getProduct", async (req, res) => {
@@ -936,7 +938,7 @@ app.delete("/deleteProduct/:id", async (req, res) => {
 
 //Gallery Shema.....
 const collectionGalleryShema = new Schema({
-    galleryImage: {
+    Galleryimgsrc: {
         type: String,
         require: true,
     },
@@ -953,21 +955,31 @@ const collectionGalleryShema = new Schema({
 const modelGallery = model("tblGallery", collectionGalleryShema);
 
 //Create Gallery...............
-app.post("/Gallery", async (req, res) => {
-    try {
-        const { galleryImage, galleryCaption, productId } = req.body;
-        const newGallery = new modelGallery({
-            galleryImage, galleryCaption, productId
-        });
-        await newGallery.save();
-        res.json(newGallery);
+app.post("/Gallery",
+    upload.fields([
+        { name: "galleryImage", maxCount: 1 },
+
+    ]),
+    async (req, res) => {
+        try {
+
+            var fileValue = JSON.parse(JSON.stringify(req.files));
+            var Galleryimgsrc = `http://127.0.0.1:${port}/images/${fileValue.galleryImage[0].filename}`;
+            console.log(Galleryimgsrc);
+
+            const { galleryCaption, productId } = req.body;
+            const newGallery = new modelGallery({
+                Galleryimgsrc, galleryCaption, productId
+            });
+            await newGallery.save();
+            res.json(newGallery);
 
 
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server error");
-    }
-});
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server error");
+        }
+    });
 
 //Get Galley..............
 app.get("/getGallery", async (req, res) => {
