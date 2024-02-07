@@ -44,9 +44,27 @@
 .adminHome{
     grid-area:home ;
     background-color: #f0f0f0;
-    height: 800px;
+    height: 480px;
     width: 1110px;
+    overflow-x: scroll;
 }
+.category {
+	&::-webkit-scrollbar {
+		width: 10px;
+	}
+	&::-webkit-scrollbar:horizontal {
+		height: 10px;
+	}
+	&::-webkit-scrollbar-track {
+		background-color: transparentize(#ccc, 0.7);
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background: transparentize(#ccc, 0.5);
+		box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+	}
+}
+
 h2{
     display: flex;
     align-items: center;

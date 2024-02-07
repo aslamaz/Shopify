@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import homelogo from './UserImages/images.png'
-import searchicon from './UserImages/searchicon.png'
+import searchicon from './UserImages/searchicon.svg'
 import loginicon from './UserImages/loginicon.png'
 import cart from './UserImages/cart.png'
 import seller from './UserImages/seller.png'

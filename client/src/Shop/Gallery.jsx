@@ -6,14 +6,13 @@ const Gallery = () => {
     const {id} = useParams();
     console.log(id);
     const [addPhoto, setAddPhoto] = useState('');
-    const [Caption, setCaption] = useState('');
+   
     const [showPhoto, setShowPhoto] = useState([]);
 
     const insertPhotosToGallery = () => {
 
         const frm = new FormData();
         frm.append("galleryImage", addPhoto);
-        frm.append("galleryCaption", Caption);
         frm.append("productId", id);
 
         axios.post('http://localhost:5000/Gallery/', frm).then((response) => {
@@ -63,7 +62,6 @@ const Gallery = () => {
                             <tr>
                                 <th>SINO.</th>
                                 <th> Images</th>
-                                <th>ImageCaption</th>
                                 <th>DELETE</th>
 
                             </tr>
@@ -76,7 +74,7 @@ const Gallery = () => {
                     
                                     <td>{key + 1}</td>
                                     <td><img src={galleryImages.Galleryimgsrc} alt='img' style={{ width: "60px", height: "60px", objectFit: "contain" }} /></td>
-                                    <td>{galleryImages.galleryCaption}</td>
+                                    
                                     <td><button className='districtDltBtn' onClick={() => deleteImage(galleryImages._id)}>Delete</button></td>
 
                                     { 

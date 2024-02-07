@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import grocery from './UserImages/products.jpg'
 import mobile from './UserImages/mobiles(1).jpg'
 import fashion from './UserImages/fashion.jpg'
@@ -25,24 +25,85 @@ import yoga from './UserImages/yogamat.jpg'
 import remotecar from './UserImages/remotecar.jpg'
 import trycycle from './UserImages/ridions.jpg'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 
 
 const Home = () => {
+
+  const [showPrdct, setShowPrdct] = useState([]);
+  const [showCategory, setShowCategory] = useState([]);
+  const [ShowSubCategory, setShowSubCategory] = useState([]);
+
+
+  const fetchProduct = () => {
+    axios.get('http://localhost:5000/subCategoryWithProduct').then((response) => {
+      console.log(response.data);
+      const data = response.data;
+      setShowPrdct(data);
+
+    })
+  }
+
+  const fetchCategory = async () => {
+    axios.get('http://localhost:5000/getCategory').then(async (response) => {
+      console.log(response.data);
+      const data = response.data;
+
+
+      setShowCategory(data);
+    })
+  }
+  const fetchSubCategory = () => {
+  axios.get('http://localhost:5000/subCategoryWithCategory').then((response) => {
+    console.log(response.data);
+    const data = response.data;
+    setShowSubCategory(data);
+  })
+  }
+
+  useEffect(() => {
+    fetchCategory();
+    fetchProduct();
+    fetchSubCategory();
+  }, [])
+
   return (
     <div>
       <div className='homemainDiv'>
-        <div className='linkimage'>
+
+
+        <div className='linkimage' >
           <div className='imageDiv'>
             <img src={grocery} alt="img" className='productsimage' />
 
+            <div className={'Grocery-dropdown'}>
 
-            <div className='GroceryUserlinks'>
-              <button className="Grocery-dropbtn">Grocery</button>
+              <div className='GroceryUserlinks'>
+                <button className={'Grocery-dropbtn'}>Grocery</button>
+              </div>
+              <div className={"productsdropdown-content"} >
+                <div className='productHoverItems'  >
+                  <div style={{ marginLeft: "18px", width: "100%" }}>
+                    <div className='prdctNameDiv' >Home Furnishings</div>
+                    <div className='prdctNameDiv' >furniture Studio</div>
+                    <div className='prdctNameDiv'>living Room Furniture</div>
+                    <div className='prdctNameDiv'>Kitchen & Dining</div>
+                    <div className='prdctNameDiv'>Home Decor </div>
+                    <div className='prdctNameDiv'>Lightings & Electricals </div>
+                    <div className='prdctNameDiv'>Cleaning & And Bath </div>
+                    <div className='prdctNameDiv'>Tools & Utility </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
 
           </div>
         </div>
+
+
+
 
         <div className='linkimage'>
           <div className='imageDiv'>
@@ -219,72 +280,88 @@ const Home = () => {
         </marquee>
       </div>
 
-      <div className='productsection'>
-        <div className='headandprdctimages'>
-          <div className='prdctheading'>
-            <div style={{
-              fontSize: "24px",
-              fontFamily: "inter_semi_bold,fallback-inter_semi_bold"
-            }}><b>Best Of Electronics</b></div>
-            <div className='arrowlogodiv'><img src={Arrowpath} alt="img" className='arrowpath' /></div>
+      {showCategory.map((Categories, key) => (
+
+        <div className='productsection'>
+         
+
+          <div className='headandprdctimages'>
+            <div className='prdctheading'>
+              <div style={{
+                fontSize: "24px",
+                fontFamily: "inter_semi_bold,fallback-inter_semi_bold"
+              }}><b>{Categories.category}</b></div>
+              <div className='arrowlogodiv'><img src={Arrowpath} alt="img" className='arrowpath' /></div>
+            </div>
+
+
+
+            <div className='electronicprdcts'>
+
+              {ShowSubCategory.map((subCategories, key) => (
+                <Link to={`/User/Relatedproducts/${subCategories._id}`} className='Userlinks'>
+                  <div className='priceandimage'>
+                    <div className='imagediv'>
+                      <img src={subCategories.subCategoryimgsrc} alt="img" className='eletronicsprdctimages' />
+                    </div>
+                    <div className='pricenamediv'>
+                      <div style={{ display: "flex", justifyContent: "center", }}>{subCategories.subCategoryName}</div>
+                      {/* <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>{prdctimages.productRate}</div> */}
+                    </div>
+
+                  </div>
+                  </Link>
+              ))}
+             
+                  {/* <div className='priceandimage'>
+                <div className='imagediv'>
+                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={usb} alt="img" className='eletronicsprdctimages' /></Link>
+
+                </div>
+                <div className='pricenamediv'>
+                  <div style={{ display: "flex", justifyContent: "center", }}>USB Gadjets</div>
+                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $179</div>
+                </div>
+              </div>
+              <div className='priceandimage'>
+                <div className='imagediv'>
+                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={camera} alt="img" className='eletronicsprdctimages' /></Link>
+                </div>
+                <div className='pricenamediv'>
+                  <div style={{ display: "flex", justifyContent: "center", }}>Top Mirrorless Camera</div>
+                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>Shop Now!</div>
+                </div>
+              </div>
+              <div className='priceandimage'>
+                <div className='imagediv'>
+                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={sdcard} alt="img" className='eletronicsprdctimages' /></Link>
+                </div>
+                <div className='pricenamediv'>
+                  <div style={{ display: "flex", justifyContent: "center", }}>USB & Pendrives</div>
+                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $289</div>
+                </div>
+              </div>
+              <div className='priceandimage'>
+                <div className='imagediv'>
+                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={keyboard} alt="img" className='eletronicsprdctimages' /></Link>
+                </div>
+                <div className='pricenamediv'>
+                  <div style={{ display: "flex", justifyContent: "center", }}>Keyboard & Mouse</div>
+                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $169</div>
+                </div>
+              </div> */}
+                </div>
+
           </div>
 
-          <div className='electronicprdcts'>
-            <div className='priceandimage'>
-              <div className='imagediv'>
-                <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={printer} alt="img" className='eletronicsprdctimages' /></Link>
-              </div>
-              <div className='pricenamediv'>
-                <div style={{ display: "flex", justifyContent: "center", }}>Printers</div>
-                <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $3999</div>
-              </div>
-
-            </div>
-            <div className='priceandimage'>
-              <div className='imagediv'>
-                <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={usb} alt="img" className='eletronicsprdctimages' /></Link>
-
-              </div>
-              <div className='pricenamediv'>
-                <div style={{ display: "flex", justifyContent: "center", }}>USB Gadjets</div>
-                <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $179</div>
-              </div>
-            </div>
-            <div className='priceandimage'>
-              <div className='imagediv'>
-                <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={camera} alt="img" className='eletronicsprdctimages' /></Link>
-              </div>
-              <div className='pricenamediv'>
-                <div style={{ display: "flex", justifyContent: "center", }}>Top Mirrorless Camera</div>
-                <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>Shop Now!</div>
-              </div>
-            </div>
-            <div className='priceandimage'>
-              <div className='imagediv'>
-                <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={sdcard} alt="img" className='eletronicsprdctimages' /></Link>
-              </div>
-              <div className='pricenamediv'>
-                <div style={{ display: "flex", justifyContent: "center", }}>USB & Pendrives</div>
-                <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $289</div>
-              </div>
-            </div>
-            <div className='priceandimage'>
-              <div className='imagediv'>
-                <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={keyboard} alt="img" className='eletronicsprdctimages' /></Link>
-              </div>
-              <div className='pricenamediv'>
-                <div style={{ display: "flex", justifyContent: "center", }}>Keyboard & Mouse</div>
-                <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $169</div>
-              </div>
+            <div className='add'>
+              <img src={flightadd} alt="img" className='addflight' />
             </div>
           </div>
-        </div>
-        <div className='add'>
-          <img src={flightadd} alt="img" className='addflight' />
-        </div>
-      </div>
+      ))}
 
-      <div className='bueatytoysmore'>
+
+          {/* <div className='bueatytoysmore'>
         <div className='bueatytoysprdctheading'>
           <div style={{
             fontSize: "24px",
@@ -350,9 +427,10 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  )
+      </div> */}
+        </div>
+
+      )
 }
 
-export default Home
+      export default Home

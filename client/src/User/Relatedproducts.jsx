@@ -1,14 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import sdcardimage from './UserImages/sdcardAdd.png'
 import memorycard from './UserImages/memmorycard.jpg'
 import assuredlogo from './UserImages/flipkartAssuredlogo.png'
 import ratingstar from './UserImages/ratingstar.png'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Relatedproducts = () => {
+
+  const { id } = useParams();
+
+  
+  const [showPrdcts, setShowPrdct] = useState([]);
+ 
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/productWithSubCategory/${id}`).then((response) => {
+      console.log(response.data);
+      const data = response.data;
+      setShowPrdct(data);
+    })
+  }, [])
+
+
+  const  truncateText = (text, maxWords) => {
+    const words = text.split(' ');
+    if (words.length <= maxWords) {
+      return text;
+    }
+    return words.slice(0, maxWords).join(' ');
+  }
+
   return (
     <div className='relatedProductsMainDiv'>
-
       <div className='hoverPrdctNames'>
         <span className='spanRelatedPrdctNames'>Electronics</span>
         <span className='spanRelatedPrdctNames'>TVs & Appliences</span>
@@ -219,22 +243,22 @@ const Relatedproducts = () => {
             }}>
               Computers,Lexar storage,Crucial Storage,Toshiba Storage,SSD,Sandisk Storage,HHD,Pendrives,SSD Storage,Memmory cards
             </div>
+            
+              <div style={{ display: "flex", alignItems: "center", marginTop: "10px", }}>
+                <div style={{
+                  fontSize: "18px",
+                  color: "#black",
+                  fontFamily: "Roboto,Arial,sans-serif",
+                  marginRight: "10px"
+                }}>printers</div>
 
-            <div style={{ display: "flex", alignItems: "center", marginTop: "10px", }}>
-              <div style={{
-                fontSize: "18px",
-                color: "#black",
-                fontFamily: "Roboto,Arial,sans-serif",
-                marginRight: "10px"
-              }}> Pendrives MC July</div>
-
-              <div style={{
-                fontSize: "12px",
-                color: "#878787",
-                fontFamily: "Roboto,Arial,sans-serif"
-              }}>(Showing 1 - 37 products of 37 products)</div>
-            </div>
-
+                <div style={{
+                  fontSize: "12px",
+                  color: "#878787",
+                  fontFamily: "Roboto,Arial,sans-serif"
+                }}>(Showing 1 - 37 products of 37 products)</div>
+              </div>
+           
             <div style={{ display: "flex", marginTop: "10px" }}>
               <div className='sortingProducts'>
                 Sort by
@@ -255,9 +279,53 @@ const Relatedproducts = () => {
           </div>
 
           <div className='Allprdctcards'>
-            <div className='prdctcards'>
+            {showPrdcts.map((productsdtls, key) => (
+
+
+
+              <div className='prdctcards'>
+                {
+                  console.log(productsdtls)
+                }
+                <div className='imgdiv'>
+                  <Link to={`/User/ProductDetails/${productsdtls._id
+                  }`} className='Userlinks'><img src={productsdtls.prdctimgsrc} alt="img" className='imagestyling' /></Link>
+                </div>
+
+                <div style={{ padding: "10px" }}>
+
+                  <div style={{ fontSize: "14px" }}>{truncateText(productsdtls.ProductDescription, 7 )+ '...'}</div>
+
+                  <div style={{
+                    fontSize: "12px",
+                    color: "#878787",
+                    fontFamily: "Roboto,Arial,sans-serif", marginTop: "5px"
+                  }}>with adapter</div>
+
+                  <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
+                    <div style={{
+                      width: "39.47px",
+                      height: "19px",
+                      backgroundColor: "green",
+                      color: "white",
+                      padding: "2px 4px 2px 6px",
+                      borderRadius: "3px",
+                      marginRight: "5px"
+                    }}>4.4 <img src={ratingstar} alt="img" className='ratingstar' /></div>
+
+                    <div style={{
+                      width: "70px", height: "17", padding: "0px 0px 0px 8px",
+                      backgroundColor: "#878787", marginRight: "5px",
+                    }}>(1,02,116)</div>
+                    <div><img src={assuredlogo} alt="img" className='flipkartAssuredlogo' /></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -292,7 +360,7 @@ const Relatedproducts = () => {
 
             <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -327,7 +395,7 @@ const Relatedproducts = () => {
 
             <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -358,48 +426,13 @@ const Relatedproducts = () => {
                   <div><img src={assuredlogo} alt="img" className='flipkartAssuredlogo' /></div>
                 </div>
               </div>
-            </div>
-
-            <div className='prdctcards'>
-              <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
-              </div>
-
-              <div style={{ padding: "10px" }}>
-
-                <div style={{ fontSize: "14px" }}>SAMSUNG Evo Plus 256 GB MicroSDXC Class 10 130 MB/s  Me...</div>
-
-                <div style={{
-                  fontSize: "12px",
-                  color: "#878787",
-                  fontFamily: "Roboto,Arial,sans-serif", marginTop: "5px"
-                }}>with adapter</div>
-
-                <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
-                  <div style={{
-                    width: "39.47px",
-                    height: "19px",
-                    backgroundColor: "green",
-                    color: "white",
-                    padding: "2px 4px 2px 6px",
-                    borderRadius: "3px",
-                    marginRight: "5px"
-                  }}>4.4 <img src={ratingstar} alt="img" className='ratingstar' /></div>
-
-                  <div style={{
-                    width: "70px", height: "17", padding: "0px 0px 0px 8px",
-                    backgroundColor: "#878787", marginRight: "5px",
-                  }}>(1,02,116)</div>
-                  <div><img src={assuredlogo} alt="img" className='flipkartAssuredlogo' /></div>
-                </div>
-              </div>
-            </div>
+            </div> */}
           </div>
 
-          <div className='Allprdctcards'>
+          {/* <div className='Allprdctcards'>
             <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -434,7 +467,7 @@ const Relatedproducts = () => {
 
             <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'> <img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'> <img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -469,7 +502,7 @@ const Relatedproducts = () => {
 
             <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -504,7 +537,7 @@ const Relatedproducts = () => {
 
             <div className='prdctcards'>
               <div className='imgdiv'>
-              <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
+                <Link to={'/User/ProductDetails'} className='Userlinks'><img src={memorycard} alt="img" className='imagestyling' /></Link>
               </div>
 
               <div style={{ padding: "10px" }}>
@@ -536,7 +569,7 @@ const Relatedproducts = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
 

@@ -334,26 +334,37 @@ const colletionCategoryShema = new Schema({
     category: {
         type: String,
         require: true,
+    },
+    Categoryimgsrc: {
+        type: String,
+        require: true,
     }
 })
 const modelCategory = model("tblCategory", colletionCategoryShema);
 
 //Create category...............
-app.post("/shopCategory", async (req, res) => {
-    try {
-        const { category } = req.body;
-        const newCategory = new modelCategory({
-            category,
-        });
-        await newCategory.save();
-        res.json(newCategory);
+app.post("/shopCategory",
+    upload.fields([
+        { name: "categoryPhoto", maxCount: 1 },
+    ]),
+    async (req, res) => {
+        try {
+            var fileValue = JSON.parse(JSON.stringify(req.files));
+            var Categoryimgsrc = `http://127.0.0.1:${port}/images/${fileValue.categoryPhoto[0].filename}`;
+            console.log(Categoryimgsrc);
+            const { category } = req.body;
+            const newCategory = new modelCategory({
+                category, Categoryimgsrc
+            });
+            await newCategory.save();
+            res.json(newCategory);
 
 
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server error");
-    }
-});
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server error");
+        }
+    });
 
 //Get Category..............
 app.get("/getCategory", async (req, res) => {
@@ -421,24 +432,37 @@ const collectionSubCategory = new Schema({
         type: Schema.Types.ObjectId,
         ref: "tblCategory",
         require: true,
-    }
+    },
+    subCategoryimgsrc: {
+        type: String,
+        require: true,
+    },
+
 })
 const modelSubCategory = model("tblSubCategory", collectionSubCategory);
 
 //Create subCategory................
-app.post("/subCategory", async (req, res) => {
-    try {
-        const { subCategoryName, categoryId } = req.body;
-        const newsubCategory = new modelSubCategory({
-            subCategoryName, categoryId
-        });
-        await newsubCategory.save();
-        res.json(newsubCategory);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server Error")
-    }
-});
+app.post("/subCategory",
+    upload.fields([
+        { name: "subCategoryPhoto", maxCount: 1 },
+    ]),
+    async (req, res) => {
+        try {
+            var fileValue = JSON.parse(JSON.stringify(req.files));
+            var subCategoryimgsrc = `http://127.0.0.1:${port}/images/${fileValue.subCategoryPhoto[0].filename}`;
+            console.log(subCategoryimgsrc);
+
+            const { subCategoryName, categoryId } = req.body;
+            const newsubCategory = new modelSubCategory({
+                subCategoryName, categoryId, subCategoryimgsrc
+            });
+            await newsubCategory.save();
+            res.json(newsubCategory);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send("server Error")
+        }
+    });
 
 //Get subCategory...............
 app.get("/getSubCategory", async (req, res) => {
@@ -481,9 +505,9 @@ app.get("/subCategoryWithCategory", async (req, res) => {
 app.get("/categoryWithSubcategory/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const subCategorys = await modelSubCategory.find({ categoryId: id })
+        const subCategorys = await modelSubCategory.find({ categoryId: id }).populate("categoryId")
         if (subCategorys.length === 0) {
-            return res.status(404).json({ msg: "no subCategories found" });
+            return res.json([]);
         }
         res.json(subCategorys).status(200);
     } catch (err) {
@@ -832,6 +856,11 @@ const collectionProductshema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "tblShop",
         require: true,
+    },
+    categoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCategory",
+        require: true,
     }
 })
 const modelProduct = model("tblProduct", collectionProductshema);
@@ -849,9 +878,9 @@ app.post("/Product",
             var prdctimgsrc = `http://127.0.0.1:${port}/images/${fileValue.productPhoto[0].filename}`;
             console.log(prdctimgsrc);
 
-            const { productName, ProductDescription, productRate, subCategoryId, shopId } = req.body;
+            const { productName, ProductDescription, productRate, subCategoryId, shopId, categoryId } = req.body;
             const newProduct = new modelProduct({
-                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId,
+                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId, categoryId
             });
             await newProduct.save();
             res.json(newProduct);
@@ -874,19 +903,87 @@ app.get("/getProduct", async (req, res) => {
     }
 });
 
+//Get product with id..............
+app.get("/getProductWithId/:id", async (req, res) => {
+    const Id = req.params.id
+    try {
+        const getProduct = await modelProduct.find({ _id: Id });
+        console.log(getProduct);
+        res.json(getProduct);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
 // Product with Subcategory.............
 app.get("/subCategoryWithProduct", async (req, res) => {
     try {
-        const subCategoryWithProduct = await modelProduct.find().populate("subCategoryId").populate("shopId");
-        const filteredsubCategoryWithProduct = subCategoryWithProduct.filter(
+        const id = req.params.id
+        const subCategoryWithProduct = await modelProduct
+            .find()
+            .populate("subCategoryId")
+            .populate("shopId")
+            .populate({
+                path: "subCategoryId",
+                populate: {
+                    path: "categoryId",
+                    model: "tblCategory",
+                },
+            });
+
+        const filteredSubCategoryWithProduct = subCategoryWithProduct.filter(
             (subCategoryWithProduct) => subCategoryWithProduct.subCategoryId
         );
-        res.json(filteredsubCategoryWithProduct);
+        console.log(filteredSubCategoryWithProduct);
+        res.json(filteredSubCategoryWithProduct);
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
     }
 });
+
+app.get("/subCategoryWithProduct/:id", async (req, res) => {
+    try {
+        const id = req.params.id
+        const subCategoryWithProduct = await modelProduct
+            .find({ "subCategoryId.categoryId._id": id })
+
+            .populate("subCategoryId")
+            .populate("shopId")
+            .populate({
+                path: "subCategoryId",
+                populate: {
+                    path: "categoryId",
+                    model: "tblCategory",
+                },
+            });
+
+
+        const filteredSubCategoryWithProduct = subCategoryWithProduct.filter(
+            (subCategoryWithProduct) => subCategoryWithProduct.subCategoryId
+        );
+        console.log(filteredSubCategoryWithProduct);
+        res.json(filteredSubCategoryWithProduct);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+
+// Category with Product...........
+app.get("/CategoryWithProduct", async (req, res) => {
+    try {
+        const categoryWithProduct = await modelProduct.find().populate("categoryId").populate("subCategoryId").populate("shopId");
+        const filteredCategoryWithProduct = categoryWithProduct.filter(
+            (categoryWithProduct) => categoryWithProduct.categoryId
+        );
+        res.json(filteredCategoryWithProduct);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+})
 
 // Product Based subCategory.................
 app.get("/productWithSubCategory/:id", async (req, res) => {
@@ -907,10 +1004,10 @@ app.get("/productWithSubCategory/:id", async (req, res) => {
 app.put("/updateProduct/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId } = req.body;
+        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, categoryId } = req.body;
         const updateProduct = await modelProduct.findByIdAndUpdate(
             id,
-            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId }, { new: true }
+            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, categoryId }, { new: true }
         );
         res.json(updateProduct);
     } catch (err) {
@@ -942,10 +1039,6 @@ const collectionGalleryShema = new Schema({
         type: String,
         require: true,
     },
-    galleryCaption: {
-        type: String,
-        require: true,
-    },
     productId: {
         type: Schema.Types.ObjectId,
         ref: "tblProduct",
@@ -967,9 +1060,9 @@ app.post("/Gallery",
             var Galleryimgsrc = `http://127.0.0.1:${port}/images/${fileValue.galleryImage[0].filename}`;
             console.log(Galleryimgsrc);
 
-            const { galleryCaption, productId } = req.body;
+            const { productId } = req.body;
             const newGallery = new modelGallery({
-                Galleryimgsrc, galleryCaption, productId
+                Galleryimgsrc, productId
             });
             await newGallery.save();
             res.json(newGallery);
@@ -999,7 +1092,13 @@ app.get("/productWithGallery", async (req, res) => {
         const filteredproductWithGallery = productWithGallery.filter(
             (productWithGallery) => productWithGallery.productId
         );
-        res.json(filteredproductWithGallery);
+        if (filteredproductWithGallery.length === 0) {
+            res.json(filteredproductWithGallery);
+        } else {
+            res.json([]);
+
+        }
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
@@ -1010,7 +1109,7 @@ app.get("/productWithGallery", async (req, res) => {
 app.get("/galleryWithProduct/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const galleryWithProduct = await modelGallery.find({ productId: id })
+        const galleryWithProduct = await modelGallery.find({ productId: id }).populate("productId")
         if (galleryWithProduct.length === 0) {
             return res.status(404).json({ msg: "no Gallery found" });
         }
@@ -1025,10 +1124,10 @@ app.get("/galleryWithProduct/:id", async (req, res) => {
 app.put("/updateGallery/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const { galleryImage, galleryCaption, productId } = req.body;
+        const { galleryImage, productId } = req.body;
         const updateGallery = await modelGallery.findByIdAndUpdate(
             id,
-            { galleryImage, galleryCaption, productId }, { new: true }
+            { galleryImage, productId }, { new: true }
         );
         res.json(updateGallery);
     } catch (err) {

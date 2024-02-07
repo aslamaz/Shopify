@@ -1,11 +1,41 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import memmoryCard from './UserImages/memmcard1.jpg'
 import assuredlogo from './UserImages/flipkartAssuredlogo.png'
 import ratingstar from './UserImages/ratingstar.png'
 import tag from './UserImages/tag.png'
 import sandisklogo from './UserImages/sandisklogo.png'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const ProductDetails = () => {
+
+    const { id } = useParams();
+
+    const [showProduct, setShowProduct] = useState([]);
+    const [showGallery, setShowGallery] = useState([]);
+
+    const fetchProduct = () => {
+        axios.get(`http://localhost:5000/getProductwithId/${id}`).then((response) => {
+            console.log(response.data);
+            const data = response.data[0];
+            setShowProduct(data);
+        })
+    }
+
+    const fetchGallery = () => {
+        axios.get(`http://localhost:5000/galleryWithProduct/${id}`).then((response) => {
+            console.log(response.data);
+            const data = response.data;
+            setShowGallery(data);
+        })
+    }
+
+    useEffect(() => {
+        fetchProduct();
+        fetchGallery();
+    }, [])
     return (
         <div className='productDetailsMainDiv'>
 
@@ -21,18 +51,41 @@ const ProductDetails = () => {
                 <span className='spanRelatedPrdctNames'>Offer Zone</span>
             </div>
 
+
+
+
+
             <div style={{ display: "flex", backgroundColor: "white" }}>
-                <div>
-                    <div className='prdctDetailImagediv'>
-                        <img src={memmoryCard} alt="img" className='prdctdetailimage' />
-                    </div>
+                <div className='carousel-container'>
+                    <Carousel showArrows={false} showStatus={false} showIndicators={false} axis={'horizontal'}  style={{display:'flex'}}>
+                        <div className='prdctDetailImagediv'>
+                            <img src={showProduct.prdctimgsrc} alt='img' />
+                        </div>
+                        {
+                            showGallery.map((galleryImg, key) => (
+                                <div className='prdctDetailImagediv'>
+                                    <img src={galleryImg.Galleryimgsrc} alt='img' />
+                                </div>
+
+                            ))
+                        }
+
+
+
+
+                    </Carousel>
+
+
+
+
                     <div className='buyButtons'>
                         <button className='btnAddcart'>ADD TO CART</button>
                         <button className='btnBuynow'>BUY NOW</button>
                     </div>
                 </div>
 
-                <div style={{ margin: "10px" }}>
+
+                <div style={{ margin: "10px", flex: 5 }}>
                     <div style={{
                         fontSize: "12px",
                         color: "#878787",
@@ -46,7 +99,7 @@ const ProductDetails = () => {
                         color: "#black",
                         fontFamily: "Roboto,Arial,sans-serif",
                         paddingTop: "10px"
-                    }}> SanDisk Ultra 128 GB MicroSDXC Class 10 140 MB/s Memory Card</div>
+                    }}> {showProduct.ProductDescription}</div>
 
                     <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
                         <div style={{
@@ -90,7 +143,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div style={{ fontSize: "16px", fontWeight: "500", fontFamily: "Roboto,Arial,sans-serif", marginTop: "15px" }}>Available offers</div>
-                    
+
                     <div style={{
                         display: "flex",
                         alignItems: "center",
@@ -148,38 +201,39 @@ const ProductDetails = () => {
                                     <input class="_36yFo0" placeholder="Enter Delivery Pincode" type="text" maxlength="6" id="pincodeInputId" value=""></input>
                                     <button className='pincodecheckbtn'>Check</button>
                                 </div>
-                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px",marginTop:"10px" }}>Delivery by14 Dec, Thursday|<del style={{color:"#388e3c"}}>Free<del style={{color:"#9e9e9e"}}>₹40</del></del></div>
-                                <div style={{ fontSize: "12px", fontWeight: "500", fontFamily: "Roboto,Arial,sans-serif"}}>if ordered before 1:08 PM</div>
-                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px",marginTop:"10px",color:"#2874F0" }}>View Details</div>
+                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px", marginTop: "10px" }}>Delivery by14 Dec, Thursday|<del style={{ color: "#388e3c" }}>Free<del style={{ color: "#9e9e9e" }}>₹40</del></del></div>
+                                <div style={{ fontSize: "12px", fontWeight: "500", fontFamily: "Roboto,Arial,sans-serif" }}>if ordered before 1:08 PM</div>
+                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px", marginTop: "10px", color: "#2874F0" }}>View Details</div>
                             </div>
                         </div>
                     </div>
 
-                    <div style={{marginTop:"10px"}}>
+                    <div style={{ marginTop: "10px" }}>
                         <div className='capacitydiv'>
-                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", color: "#878787", fontSize: "14px", marginTop: "10px", width: "110px" }}>Capacity</div>
-                        <div className='memoryVarients'>
-                        <div className='sizes'>64GB</div>
-                        <div className='sizes'>128GB</div>
-                        <div className='sizes'>256GB</div>
-                        <div className='sizes'>512GB</div>
+                            <div style={{ fontFamily: "Roboto,Arial,sans-serif", color: "#878787", fontSize: "14px", marginTop: "10px", width: "110px" }}>Capacity</div>
+                            <div className='memoryVarients'>
+                                <div className='sizes'>64GB</div>
+                                <div className='sizes'>128GB</div>
+                                <div className='sizes'>256GB</div>
+                                <div className='sizes'>512GB</div>
+                            </div>
+
+                            <div style={{ marginLeft: "40px", display: "flex" }}>
+                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", color: "#878787", fontSize: "14px", marginTop: "10px", width: "110px", }}>Read Speed</div>
+                                <div className='readspeed'>
+                                    <div className='speed'>140mb/s</div></div>
+                                <div className='speed'>150mb/s</div>
+                            </div>
                         </div>
 
-                        <div style={{marginLeft:"40px",display:"flex"}}>
-                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", color: "#878787", fontSize: "14px", marginTop: "10px", width: "110px", }}>Read Speed</div>
-                        <div className='readspeed'>
-                        <div className='speed'>140mb/s</div></div>
-                        <div className='speed'>150mb/s</div>
-                        </div>
-                        </div>
- 
                     </div>
 
-                    
+
 
 
                 </div>
             </div>
+
         </div>
     )
 }

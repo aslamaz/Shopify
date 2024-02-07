@@ -148,12 +148,12 @@ const AddProduct = () => {
 
 
         <div class="table-wrapper">
-          <table class="fl-table" style={{ marginTop: "30px" }}>
+          <table class="fl-table" style={{ marginTop: "30px",minWidth:"800px" }}>
             <thead>
               <tr>
                 <th>SINO.</th>
                 <th> ProductName</th>
-                <th>ProductDetails</th>
+                <th width="100px">ProductDetails</th>
                 <th>SubCategoryName</th>
                 <th>ProductRate</th>
                 <th>ProductPhoto</th>
@@ -165,8 +165,8 @@ const AddProduct = () => {
               {showPrdct.map((products, key) => (
                 <tr>
                   <td>{key + 1}</td>
-                  <td>{products.productName}</td>
-                  <td>{products.ProductDescription}</td>
+                  <td >{products.productName}</td>
+                  <td width="100px">{products.ProductDescription}</td>
                   <td>{products.subCategoryId.subCategoryName}</td>
                   <td>{products.productRate}</td>
                   <td><img src={products.prdctimgsrc} alt='img' style={{ width: "60px", height: "60px", objectFit: "contain" }} /></td>
