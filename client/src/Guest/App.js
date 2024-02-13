@@ -5,6 +5,7 @@ import Home from './Home'
 import User from './User'
 import Head from './Head'
 import Shop from './Shop'
+import Login from './Login'
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path='/' element={<Home/>}/>
         <Route path='/Guest/User' element={<User/>}/>
         <Route path='/Guest/Shop' element={<Shop/>}/>
+        <Route path='/Guest/Login' element={<Login/>}/>
       </Routes>
       </div>
       </div>

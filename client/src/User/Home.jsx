@@ -10,7 +10,9 @@ import toys from './UserImages/toys.jpg'
 import twowheelers from './UserImages/twowheeler.jpg'
 import slide1 from './UserImages/slide1.jpg'
 import slide2 from './UserImages/slide2.jpg'
-import slide3 from './UserImages/slide3.png'
+import slide3 from './UserImages/slide3.jpg'
+import slide4 from './UserImages/slide4.jpg'
+import slide5 from './UserImages/slide5.jpg'
 import printer from './UserImages/printer.jpg'
 import usb from './UserImages/usb.jpg'
 import camera from './UserImages/camera.jpg'
@@ -26,6 +28,7 @@ import remotecar from './UserImages/remotecar.jpg'
 import trycycle from './UserImages/ridions.jpg'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import {Carousel} from 'react-responsive-carousel'
 
 
 
@@ -271,13 +274,32 @@ const Home = () => {
       </div>
 
       <div className='scrollingimage'>
-        <marquee speed="500" behavior="alternate" scrollamount="10">
-          <img src={slide1} alt="img" className='slideimage' />
-          <img src={slide2} alt="img" className='slideimage' />
-          <img src={slide3} alt="img" className='slideimage' />
-          <img src={slide3} alt="img" className='slideimage' />
 
-        </marquee>
+      <Carousel showThumbs={false} showIndicators={false} showStatus={false} showArrows={false} autoPlay={true} infiniteLoop={true}>
+                <div>
+                <img src={slide1} alt="img" className='slideimage' />
+                </div>
+                <div>
+                <img src={slide2} alt="img" className='slideimage' />
+                </div>
+                <div>
+                <img src={slide3} alt="img" className='slideimage' />
+                </div>
+                <div>
+                <img src={slide4} alt="img" className='slideimage' />
+                </div>
+                <div>
+                <img src={slide5} alt="img" className='slideimage' />
+                </div>
+            </Carousel>
+        {/* <marquee speed="500" behavior="alternate" scrollamount="10"> */}
+          
+          
+          
+          {/* <img src={slide3} alt="img" className='slideimage' /> */}
+
+        {/* </marquee> */}
+
       </div>
 
       {showCategory.map((Categories, key) => (

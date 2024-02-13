@@ -14,13 +14,16 @@ const Head = () => {
 
         <div className='linksUS'>
           <Link to={'/User'} className='linkshop'>Home</Link>
-          <Link to={'/Guest/Shop'} className='linkshop'>About Us</Link>
+          <Link to={'/Guest/Login'} className='linkshop'>Login</Link>
           <Link to={'/Guest/User'} className='linkuser'>User</Link>
           <Link to={'/Guest/Shop'} className='linkshop'>Shop</Link>
           <Link to={'/Guest/Shop'} className='linkshop'>Contact Us</Link>
 
         </div>
       </div>
+
+      
+
     </div>
   )
 }

@@ -23,6 +23,7 @@ const AddProduct = () => {
     frm.append("productRate", prdctRate);
     frm.append("productPhoto", prdctPhoto);
     frm.append("subCategoryId", subCategory);
+    frm.append("shopId", sessionStorage.getItem("shopId"))
 
 
     axios.post('http://localhost:5000/Product', frm).then((response) => {
@@ -153,7 +154,7 @@ const AddProduct = () => {
               <tr>
                 <th>SINO.</th>
                 <th> ProductName</th>
-                <th width="100px">ProductDetails</th>
+                <th>ProductDetails</th>
                 <th>SubCategoryName</th>
                 <th>ProductRate</th>
                 <th>ProductPhoto</th>

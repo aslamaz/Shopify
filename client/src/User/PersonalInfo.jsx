@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import wishlistimage from './UserImages/wishlistprofile.jpg'
 import { Link } from 'react-router-dom'
 import myordericon from './UserImages/iconsMyorder.png'
@@ -8,8 +8,34 @@ import paymenticon from './UserImages/paymenticonwishlist.png'
 import mystufficon from './UserImages/mystuff.png'
 import logouticon from './UserImages/logout.jpg'
 import profilebottomimg from './UserImages/profilepagebotttomimg.png'
+import axios from 'axios'
 
 const PersonalInfo = () => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [showCustomer,setShowCustomer] = useState([]);
+
+    useEffect(()=>{
+      const Id =  sessionStorage.getItem("customerId")
+        axios.get(`http://localhost:5000/getCustomer/${Id}`).then((response)=>{
+            
+            const data = response.data;
+            setShowCustomer(data)
+        })
+
+    },[])
+
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    // const handleSaveClick = () => {
+    //     // Here you can perform any actions you want with the edited value, like saving it to a databas
+
+    //     // After saving, exit edit mode
+    //     setIsEditing(false);
+    // };
+
     return (
         <div>
             <div className='productDetailsPagehoverPrdctNames'>
@@ -30,7 +56,7 @@ const PersonalInfo = () => {
                         <div><img src={wishlistimage} alt="img" className='wishlistimage' /></div>
                         <div className='textDivwishlist'>
                             <div style={{ fontFamily: "sans-serif", fontSize: "12px" }}>Hello,</div>
-                            <div style={{ fontFamily: "sans-serif", fontSize: "16px", paddingTop: "5px", fontWeight: "bold" }}>Abi Joy</div>
+                            <div style={{ fontFamily: "sans-serif", fontSize: "16px", paddingTop: "5px", fontWeight: "bold" }}>{showCustomer.customerName}</div>
                         </div>
                     </div>
 
@@ -81,6 +107,9 @@ const PersonalInfo = () => {
                         </div>
                     </div>
 
+
+
+
                     <div className='frequentvisitFullDiv'>
                         <div class="_3dhhtB">Frequently Visited:</div>
                         <div class="OrderandHelpDiv">
@@ -90,24 +119,28 @@ const PersonalInfo = () => {
                     </div>
                 </div>
                 <div>
+
+                            
+                        
                     <div className='myprofileFullDiv'>
                         <div style={{ paddingBottom: "56px" }}>
                             <div class="_1cyhik"><span class="_1mHr1S">Personal Information</span>
-                                <span class="oKZoMV">Edit</span></div>
+                                {!isEditing && <button className="oKZoMV" onClick={handleEditClick}>Edit</button>}
+                            </div>
 
                             <div class="_1TlPi6">
 
                                 <div class="_1YVqbV">
                                     <div class="_1Jqgld">
-                                        <input type="text" class="profileInputboxes" name="firstName" required="" autocomplete="name" tabindex="1" value="Abi" disabled="" />
+                                        <input type="text" class="profileInputboxes" name="firstName" required="" autocomplete="name" tabindex="1" value={showCustomer.customerName} disabled={!isEditing} />
                                     </div>
                                 </div>
 
-                                <div class="_1YVqbV">
+                                {/* <div class="_1YVqbV">
                                     <div class="_1Jqgld">
-                                        <input type="text" class="profileInputboxes" name="lastName" autocomplete="name" tabindex="2" value="Joy" disabled="" />
+                                        <input type="text" class="profileInputboxes" name="lastName" autocomplete="name" tabindex="2" value="Joy" disabled={!isEditing} />
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div>
 
@@ -115,13 +148,11 @@ const PersonalInfo = () => {
                                 Your Gender
                             </div>
                             <div className='profilegenderradiobtn'>
-
-                                <input type="radio" class="_3DAmyP" name="gender" readonly="" id="Male" disabled="" />
+                                <input type="radio" class="_3DAmyP" name="gender" readonly="" id="Male" disabled={!isEditing} />
                                 <div style={{ marginLeft: "16px", marginRight: "32px", fontSize: "16px", fontFamily: "sans-serif", color: "#878787" }}>Male</div>
-                                <input type="radio" class="_3DAmyP" name="gender" readonly="" id="Female" disabled=""></input>
+                                <input type="radio" class="_3DAmyP" name="gender" readonly="" id="Female" disabled={!isEditing}></input>
                                 <div style={{ marginLeft: "16px", fontSize: "16px", fontFamily: "sans-serif", color: "#878787" }}>Female</div>
                             </div>
-
                         </div>
 
                         <div style={{ paddingBottom: "46px" }}>
@@ -130,7 +161,7 @@ const PersonalInfo = () => {
 
                             <div class="_1YVqbV">
                                 <div class="_1Jqgld">
-                                    <input type="text" class="profileEmailInputboxes" name="email" autocomplete="email" required="" value="abijoy611@gmail.com" disabled="" />
+                                    <input  type="text" class="profileEmailInputboxes" name="email" autocomplete="email" required="" value={showCustomer.customerEmail} disabled="" />
                                 </div>
                             </div>
                         </div>
@@ -141,28 +172,32 @@ const PersonalInfo = () => {
 
                             <div class="_1YVqbV">
                                 <div class="_1Jqgld">
-                                    <input type="text" class="profileMobileInputboxes" name="mobileNumber" autocomplete="tel" required="" value="+919633867457" disabled="" />                            </div>
+                                    <input type="text" class="profileMobileInputboxes" name="mobileNumber" autocomplete="tel" required="" value={showCustomer.customerContact} disabled="" />                            </div>
                             </div>
                         </div>
 
                         <div class="_2PTLbk">FAQs</div>
 
-                        <div style={{paddingBottom:"24px"}}>
+                        <div style={{ paddingBottom: "24px" }}>
                             <h4 id="what-happens-when-i-update-my-email-address-or-mobile-number-">What happens when I update my email address (or mobile number)?</h4>
-                            <p style={{fontFamily:"sans-serif",fontSize:"14px"}}>Your login email id (or mobile number) changes, likewise. You'll receive all your account related communication on your updated email address (or mobile number).</p>
+                            <p style={{ fontFamily: "sans-serif", fontSize: "14px" }}>Your login email id (or mobile number) changes, likewise. You'll receive all your account related communication on your updated email address (or mobile number).</p>
                             <h4 id="when-will-my-flipkart-account-be-updated-with-the-new-email-address-or-mobile-number-">When will my Flipkart account be updated with the new email address (or mobile number)?</h4>
-                            <p style={{fontFamily:"sans-serif",fontSize:"14px"}}>It happens as soon as you confirm the verification code sent to your email (or mobile) and save the changes.</p>
+                            <p style={{ fontFamily: "sans-serif", fontSize: "14px" }}>It happens as soon as you confirm the verification code sent to your email (or mobile) and save the changes.</p>
                             <h4 id="what-happens-to-my-existing-flipkart-account-when-i-update-my-email-address-or-mobile-number-">What happens to my existing Flipkart account when I update my email address (or mobile number)?</h4>
-                            <p style={{fontFamily:"sans-serif",fontSize:"14px"}}>Updating your email address (or mobile number) doesn't invalidate your account. Your account remains fully functional. You'll continue seeing your Order history, saved information and personal details.</p>
+                            <p style={{ fontFamily: "sans-serif", fontSize: "14px" }}>Updating your email address (or mobile number) doesn't invalidate your account. Your account remains fully functional. You'll continue seeing your Order history, saved information and personal details.</p>
                             <h4 id="does-my-seller-account-get-affected-when-i-update-my-email-address-">Does my Seller account get affected when I update my email address?</h4>
-                            <p style={{fontFamily:"sans-serif",fontSize:"14px"}}>Flipkart has a 'single sign-on' policy. Any changes will reflect in your Seller account also.</p>
+                            <p style={{ fontFamily: "sans-serif", fontSize: "14px" }}>Flipkart has a 'single sign-on' policy. Any changes will reflect in your Seller account also.</p>
                         </div>
 
-                        <div style={{color:"#2874F0",fontFamily:"sans-serif",fontSize:"14px",fontWeight:"bold",
-                        padding:"24px 0px 0px"                  
-                    }}>Deactivate Account</div>
+                        <div style={{
+                            color: "#2874F0", fontFamily: "sans-serif", fontSize: "14px", fontWeight: "bold",
+                            padding: "24px 0px 0px"
+                        }}>Deactivate Account</div>
 
                     </div>
+
+
+
                     <img src={profilebottomimg} alt="img" style={{ width: "895.250px", height: "162.578px", backgroundColor: "#FFFFFF", marginLeft: "16px" }} />
                 </div>
 

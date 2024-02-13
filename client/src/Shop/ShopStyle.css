@@ -419,7 +419,7 @@ input:not(:focus):valid~.floating-label {
 .table-wrapper{
   width: 850px;
   box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
-  overflow: scroll;
+  overflow-x: auto;
 }
 .table-wrapper {
   &::-webkit-scrollbar {
@@ -457,7 +457,10 @@ input:not(:focus):valid~.floating-label {
 .fl-table td, .fl-table th {
   text-align: center;
   padding: 8px;
-  max-width: 500px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .fl-table td {

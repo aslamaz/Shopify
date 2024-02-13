@@ -475,7 +475,7 @@ app.get("/getSubCategory", async (req, res) => {
     }
 });
 
-//Get subCategory...............
+//Get subCategory by id...............
 app.get("/getSubCategoryById/:id", async (req, res) => {
     try {
         const Id = req.params.id
@@ -759,7 +759,19 @@ app.post("/Customer",
 //Get Customer..............
 app.get("/getCustomer", async (req, res) => {
     try {
-        const getCustomer = await modelCustomer.find();
+        const getCustomer = await modelCustomer.find({ Email: customerEmail, Password: customerPassword });
+        res.json(getCustomer);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
+//Get Customer with id..............
+app.get("/getCustomer/:id", async (req, res) => {
+    const Id = req.params.id
+    try {
+        const getCustomer = await modelCustomer.findOne({ _id: Id });
         res.json(getCustomer);
     } catch (err) {
         console.error(err.message);
@@ -878,9 +890,9 @@ app.post("/Product",
             var prdctimgsrc = `http://127.0.0.1:${port}/images/${fileValue.productPhoto[0].filename}`;
             console.log(prdctimgsrc);
 
-            const { productName, ProductDescription, productRate, subCategoryId, shopId, categoryId } = req.body;
+            const { productName, ProductDescription, productRate, subCategoryId, shopId,  } = req.body;
             const newProduct = new modelProduct({
-                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId, categoryId
+                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId, 
             });
             await newProduct.save();
             res.json(newProduct);
@@ -974,7 +986,7 @@ app.get("/subCategoryWithProduct/:id", async (req, res) => {
 // Category with Product...........
 app.get("/CategoryWithProduct", async (req, res) => {
     try {
-        const categoryWithProduct = await modelProduct.find().populate("categoryId").populate("subCategoryId").populate("shopId");
+        const categoryWithProduct = await modelProduct.find().populate("categoryId").populate("shopId");
         const filteredCategoryWithProduct = categoryWithProduct.filter(
             (categoryWithProduct) => categoryWithProduct.categoryId
         );
@@ -1004,10 +1016,10 @@ app.get("/productWithSubCategory/:id", async (req, res) => {
 app.put("/updateProduct/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, categoryId } = req.body;
+        const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, } = req.body;
         const updateProduct = await modelProduct.findByIdAndUpdate(
             id,
-            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, categoryId }, { new: true }
+            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId,}, { new: true }
         );
         res.json(updateProduct);
     } catch (err) {
@@ -1645,8 +1657,8 @@ const modelFeedback = model("tblFeedback", collectionFeedbackShema);
 //Create Feedback...............
 app.post("/Feedback", async (req, res) => {
     try {
-        const { feedbackContent, feedbackDate, customerId } = req.body;
-        const newFeedback = new modelFeedback({
+        const { feedbackContent, feedbackDte, customerId } = req.body;
+        const newFeedback = new modelFeedbck({
             feedbackContent, feedbackDate, customerId
         });
         await newFeedback.save();
@@ -1730,3 +1742,52 @@ app.delete("/deleteFeedback/:id", async (req, res) => {
 
 //..............................................................................................................//
 //..............................................................................................................//
+
+
+
+
+//Create Login...............
+app.post("/loginCheck", async (req, res) => {
+
+    const { userEmail, userPassword } = req.body;
+
+    const customer = await modelCustomer.findOne({ customerEmail: userEmail })
+    const Shop = await modelShop.findOne({ shopEmail: userEmail })
+    const Admin = await modelAdmin.findOne({ adminEmail: userEmail })
+
+    if (customer) {
+        if (customer.customerPassword === userPassword) {
+            res.send({
+                message: "Login Successful",
+                id:customer._id,
+                login: "customer"
+            })
+        }
+    }
+
+
+    if (Shop) {
+        if (Shop.shopPassword === userPassword) {
+            res.send({
+                message: "Login Successful",
+                id:Shop._id,
+                login: "Shop"
+            })
+        }
+    }
+
+
+    if (Admin) {
+        if (Admin.adminPassword === userPassword) {
+            if (Admin.adminPassword === userPassword) {
+                res.send({
+                    message: "Login Successful",
+                    id:Admin._id,
+                    login: "admin"
+                })
+            }
+        }
+        // res.json(newLogin);
+        // console.log(newLogin);
+    }
+});

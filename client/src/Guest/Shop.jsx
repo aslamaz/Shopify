@@ -77,12 +77,12 @@ const Shop = () => {
 
           <div class="floating-label-group" >
             <input type="text" id="nameGuest" value={ShopName} class="form-control" autocomplete="off" required onChange={(event) => setShopName(event.target.value)} />
-            <label class="shop-floating-label">Your Name...</label>
+            <label class="shop-floating-label">Shop Name...</label>
           </div>
 
           <div class="floating-label-group" >
             <input type="text" id="emailShop" value={Email} class="form-control" autocomplete="off" required onChange={(event) => setEmail(event.target.value)} />
-            <label class="shop-floating-label">Email...</label>
+            <label class="shop-floating-label">Shop Email...</label>
           </div>
 
 
@@ -94,7 +94,7 @@ const Shop = () => {
 
           <div className='cstmrAdrsDiv'>
 
-            <textarea name="adrs" cols="16" rows="6" value={Address} className='addrsShop' placeholder='Your Address' onChange={(event) => setaddress(event.target.value)} ></textarea>
+            <textarea name="adrs" cols="16" rows="6" value={Address} className='addrsShop' placeholder='Shop Address' onChange={(event) => setaddress(event.target.value)} ></textarea>
           </div>
 
           <div class="floating-label-group" >
