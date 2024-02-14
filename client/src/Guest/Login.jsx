@@ -56,6 +56,7 @@ const Login = () => {
                         <input type="text" placeholder="password" onChange={(event) => setCheckPassword(event.target.value)} />
                         <button onClick={handleLogin}>login</button>
                         <p class="message">Not registered? <Link to={'/Guest/User'} className='linkuser' style={{ fontSize: "12px", marginLeft: "0px" }}>Create an account</Link></p>
+                        <Link to={'/User/ChangePassword'} className='linkuser' style={{ fontSize: "12px", marginLeft: "0px",marginTop:"8px" }} class="loginforgotPswrd">Forgot Password ?</Link>
                     </div>
                 </div>
             </div>

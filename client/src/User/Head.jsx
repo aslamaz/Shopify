@@ -2,10 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import homelogo from './UserImages/images.png'
 import searchicon from './UserImages/searchicon.svg'
-import loginicon from './UserImages/loginicon.png'
-import cart from './UserImages/cart.png'
-import seller from './UserImages/seller.png'
-import menu from './UserImages/menu.png'
+import loginicon from './UserImages/loginicon.svg'
+import cart from './UserImages/cart.svg'
+import seller from './UserImages/seller.svg'
+import menu from './UserImages/menu.svg'
 
 const Head = () => {
   return (
@@ -25,7 +25,6 @@ const Head = () => {
           <div className="dropdown-content">
             <Link to={'/User/PersonalInfo'} className='Userlinks'>MyProfile</Link>
             <Link to={'/User/Editprofile'} className='Userlinks'>EditProfile</Link>
-            <Link to={'/User/Changepassword'} className='Userlinks'>Changepassword</Link>
             <Link to={'/User/WishList'} className='Userlinks'>WishList</Link>
             <Link to={'/User/Orders'} className='Userlinks'>My Orders</Link>
             <Link to={'/User/Coupons'} className='Userlinks'>Coupons</Link>

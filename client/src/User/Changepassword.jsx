@@ -1,30 +1,166 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import wishlistimage from './UserImages/wishlistprofile.jpg'
+import { Link } from 'react-router-dom'
+import myordericon from './UserImages/iconsMyorder.png'
+import arrowpath from './UserImages/arrowpathwishlist.png'
+import accountinfoicon from './UserImages/acountinfoicon.png'
+import paymenticon from './UserImages/paymenticonwishlist.png'
+import mystufficon from './UserImages/mystuff.png'
+import logouticon from './UserImages/logout.jpg'
+import profilebottomimg from './UserImages/profilepagebotttomimg.png'
+import axios from 'axios'
 
 const Changepassword = () => {
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [logPassword, setLogPassword] = useState('');
+
+  const Id = sessionStorage.getItem("customerId");
+
+  useEffect(()=>{
+    
+    axios.get(`http://localhost:5000/getCustomer/${Id}`).then((response) => {
+      // console.log(response.data);
+      const data = response.data;
+      setLogPassword(data);
+    })
+  },[])
+
+ 
+
+  const changePassword = () =>{
+    if(logPassword.customerPassword=== oldPassword){
+      if(newPassword===confirmNewPassword){
+        logPassword.customerPassword = 
+        newPassword
+        axios.put(`http://localhost:5000/updateCustomer/${Id}`,logPassword).then((response) => {
+            console.log(response.data);
+        })
+      }
+     }
+  }
+ 
+
+  
+ 
+
+
+
+
   return (
-    <div className='userchangepsswrd'>
-      <div className='changepsswrdcontainer'>
-                <h2 style={{ color: "white" }}>CHANGE PASSWORD</h2>
-                <div className='changepsswrdArea'>
-                    CurrentPassword:
-                    <input type="text" style={{ background: "transparent", border: "1px solid white", borderRadius: "5px", width: "400px", height: "30px",color:"white" }} />
-                </div>
+    <div>
+      <div className='productDetailsPagehoverPrdctNames'>
+        <span className='spanRelatedPrdctNames'>Electronics</span>
+        <span className='spanRelatedPrdctNames'>TVs & Appliences</span>
+        <span className='spanRelatedPrdctNames'>Men</span>
+        <span className='spanRelatedPrdctNames'>Women</span>
+        <span className='spanRelatedPrdctNames'>Baby & Kids</span>
+        <span className='spanRelatedPrdctNames'>Home & Furniture</span>
+        <span className='spanRelatedPrdctNames'>Sports,Books&More</span>
+        <span className='spanRelatedPrdctNames'>Flights</span>
+        <span className='spanRelatedPrdctNames'>Offer Zone</span>
+      </div>
 
-                <div className='changepsswrdArea' >
-                    NewPassword:
-                    <input type="text" style={{ background: "transparent", border: "1px solid white", borderRadius: "5px", width: "400px", height: "30px",color:"white" }} />
-                </div>
+      <div className='wishlistMainDiv'>
+        <div >
 
-                <div className='changepsswrdArea'>
-                    RE-Password:
-                    <input type="text" style={{ background: "transparent", border: "1px solid white", borderRadius: "5px", width: "400px", height: "30px",color:"white" }} />
-                </div>
-
-                <div className='editbtn'>
-                    <button>Submit</button>
-                    <button>Cancel</button>
-                </div>
+          <div className='MyordersFullDiv'>
+            <div className='MyordersDiv'>
+              <div><img src={myordericon} alt="img" className='myordericon' /></div>
+              <Link to={'/User/Orders'} className='myOrderlink'>
+                <div style={{ display: "flex", justifyContent: "space-between", width: "450px" }}>
+                  <div>  MY ORDERS</div>
+                  <div><img src={arrowpath} alt="img" className='arrowpath' /></div>
+                </div></Link>
             </div>
+          </div>
+
+          <div className='accountinfowishlist'>
+            <div><img src={accountinfoicon} alt="img" className='accountinfoicon' /></div>
+            <div className='textaccountinfo'>ACCOUNT INFORMATION</div>
+          </div>
+
+
+          <div className='profileinfowishlist'>Profile Information</div>
+          <div className='profileinfowishlist'>Manage Addresses</div>
+          <Link to={'/User/Changepassword'} className='Userlinks'> <div className='paninfowishlist'>Change Password</div></Link>
+
+          <div className='Paymentswishlist'>
+            <div><img src={paymenticon} alt="img" className='accountinfoicon' /></div>
+            <div className='textaccountinfo'>PAYMENTS</div>
+          </div>
+
+          <div style={{ display: "flex", }}>
+            <div className='profileinfowishlist'>Gift Cards <span class="PKhkts">₹0</span></div>
+          </div>
+          <div className='profileinfowishlist'>Saved UPI</div>
+          <div className='paninfowishlist'>Saved Cards</div>
+
+          <div className='Mystuffwishlist'>
+            <div><img src={mystufficon} alt="img" className='accountinfoicon' /></div>
+            <div className='textaccountinfo'>MY STUFF</div>
+          </div>
+          <Link to={'/User/Coupons'} style={{ textDecoration: "none", color: "black" }}> <div className='profileinfowishlist'>My Coupons</div></Link>
+          <div className='profileinfowishlist'>My Reviews & Ratings </div>
+          <div className='Notificationsinfowishlist'>All Notifications  </div>
+          <Link to={'/User/WishList'} className='infowishlistlink'> <div className='infowishlist'>My WishList</div></Link>
+
+          <div className='logountdivwishlistMain'>
+            <div className='logountdivwishlist'>
+              <div><img src={logouticon} alt="img" className='logouticon' /></div>
+              <div style={{ color: "#878787", fontFamily: "sans-serif", fontSize: "16px", paddingLeft: "20px", fontWeight: "bold", }}>LOGOUT</div>
+            </div>
+          </div>
+
+
+
+
+          <div className='frequentvisitFullDiv'>
+            <div class="_3dhhtB">Frequently Visited:</div>
+            <div class="OrderandHelpDiv">
+              <a class="_2YCxI1" href="/account/orders">Track Order</a>
+              <a class="_2YCxI1" href="/helpcentre">Help Center</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div className='myprofileFullDiv'>
+          <div className='chngPswrdtxtDiv'>Change Password</div>
+          <div style={{ fontFamily: "sans-serif" }}>Old Password:</div>
+          <div class="_1YVqbV">
+            <div class="_1Jqgld">
+
+              <input type="Password" class="oldpswrdInputboxes" onChange={(event) => setOldPassword(event.target.value)} />
+            </div>
+          </div>
+          <div style={{ marginTop: "8px", marginBottom: "16px", fontFamily: "sans-serif" }}>Your password must be atleast six characters and cannot contain spaces.</div>
+          <div style={{ fontFamily: "sans-serif" }}>New Password:</div>
+          <div class="_1YVqbV">
+            <div class="_1Jqgld">
+
+              <input type="Password" class="oldpswrdInputboxes" onChange={(event) => setNewPassword(event.target.value)} />
+            </div>
+          </div>
+
+          <div style={{ fontFamily: "sans-serif" }}> Confirm New Password:</div>
+          <div class="_1YVqbV">
+            <div class="_1Jqgld">
+
+              <input type="Password" class="oldpswrdInputboxes" onChange={(event) => setConfirmNewPassword(event.target.value)} />
+            </div>
+          </div>
+          <button className='btnsetPswrd' onClick={changePassword}>Set Password</button>
+        </div>
+
+
+
+
+
+
+
+      </div>
     </div>
   )
 }
