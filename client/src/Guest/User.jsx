@@ -73,7 +73,7 @@ const User = () => {
       <div className='guestContainerdiv'>
         <div style={{
           marginBottom: "30px"
-        }}><h2>USER PAGE</h2></div>
+        }}><h2>Create An Account</h2></div>
 
         <div class="floating-label-group" style={{ display: "flex" }}>
           <img src={customericon} alt="img" className='forminputboxicons' />

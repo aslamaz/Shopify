@@ -1,12 +1,15 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import loginPageImg from './GuestImages/FlipkartLoginpage.jpg'
+
 
 const Login = () => {
 
     const navigate = useNavigate()
     const [checkEmail, setCheckEmail] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
 
 
@@ -44,20 +47,40 @@ const Login = () => {
     }
 
     return (
-        <div>
+        <div >
+            <div className='LoginFullDiv'>
+                <div className='loginPageSide1div'>
+                    <div className='LoginText'>Login</div>
+                    <div className='LoginDescription'>Get access to your Orders, Wishlist and Recommendations</div>
+                    <div style={{ display: "flex", justifyContent: "center", marginTop: "135px" }}>
 
-            <div class="login-page">
-                <div style={{ fontSize: "38px", fontWeight: "bold" }}>LOGIN...
-                    <hr></hr>
-                </div>
-                <div class="logform">
-                    <div class="login-form">
-                        <input type="email" placeholder="EnterEmail" onChange={(event) => setCheckEmail(event.target.value)} />
-                        <input type="text" placeholder="password" onChange={(event) => setCheckPassword(event.target.value)} />
-                        <button onClick={handleLogin}>login</button>
-                        <p class="message">Not registered? <Link to={'/Guest/User'} className='linkuser' style={{ fontSize: "12px", marginLeft: "0px" }}>Create an account</Link></p>
-                        <Link to={'/User/ChangePassword'} className='linkuser' style={{ fontSize: "12px", marginLeft: "0px",marginTop:"8px" }} class="loginforgotPswrd">Forgot Password ?</Link>
+                        <img src={loginPageImg} alt="img" />
                     </div>
+                </div>
+
+                <div className='loginPageSide2div'>
+                    <div class="form-rowEmail">
+                        <label className='labelEmail'>Enter Email</label>
+                        <input type="email" id="typeahead" className='inputemail' onChange={(event) => setCheckEmail(event.target.value)} />
+
+                    </div>
+
+                    <div class="form-rowpswrd">
+                        <label className='labelpswrd'>Enter Pasword</label>
+                        <input type={showPassword ? "text" : "password"} id="typeahead" className='inputPswrd' onChange={(event) => setCheckPassword(event.target.value)} />
+                        <input type='checkbox' onChange={(event) => setShowPassword(event.target.checked)} />Show Password
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "34px" }}>
+
+                        <button className='GuestloginBtn' onClick={handleLogin}>LOGIN</button>
+                    </div>
+
+                    <div className='LogLinks'>
+                        <Link to={'/Guest/User'} className='RegisterAccount'>Create an Account?</Link>
+                        <Link to={'/User/Changepassword'} className='RegisterAccount'>ForgotPassword</Link>
+                    </div>
+
                 </div>
             </div>
 

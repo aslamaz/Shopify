@@ -7,7 +7,6 @@ import accountinfoicon from './UserImages/acountinfoicon.png'
 import paymenticon from './UserImages/paymenticonwishlist.png'
 import mystufficon from './UserImages/mystuff.png'
 import logouticon from './UserImages/logout.jpg'
-import profilebottomimg from './UserImages/profilepagebotttomimg.png'
 import axios from 'axios'
 
 const Changepassword = () => {
@@ -15,6 +14,8 @@ const Changepassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [logPassword, setLogPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   const Id = sessionStorage.getItem("customerId");
 
@@ -42,7 +43,6 @@ const Changepassword = () => {
   }
  
 
-  
  
 
 
@@ -65,6 +65,14 @@ const Changepassword = () => {
       <div className='wishlistMainDiv'>
         <div >
 
+        <div className='welcomeDiv'>
+                        <div><img src={wishlistimage} alt="img" className='wishlistimage' /></div>
+                        <div className='textDivwishlist'>
+                            <div style={{ fontFamily: "sans-serif", fontSize: "12px" }}>Hello,</div>
+                            <div style={{ fontFamily: "sans-serif", fontSize: "16px", paddingTop: "5px", fontWeight: "bold" }}>{logPassword.customerName}</div>
+                        </div>
+                    </div>
+
           <div className='MyordersFullDiv'>
             <div className='MyordersDiv'>
               <div><img src={myordericon} alt="img" className='myordericon' /></div>
@@ -75,6 +83,8 @@ const Changepassword = () => {
                 </div></Link>
             </div>
           </div>
+
+        
 
           <div className='accountinfowishlist'>
             <div><img src={accountinfoicon} alt="img" className='accountinfoicon' /></div>
@@ -132,7 +142,8 @@ const Changepassword = () => {
           <div class="_1YVqbV">
             <div class="_1Jqgld">
 
-              <input type="Password" class="oldpswrdInputboxes" onChange={(event) => setOldPassword(event.target.value)} />
+              <input type={showPassword ? "text" : "password"} class="oldpswrdInputboxes" onChange={(event) => setOldPassword(event.target.value)}/>
+              <input type='checkbox' onChange={(event)=>setShowPassword(event.target.checked)}/>Show Password
             </div>
           </div>
           <div style={{ marginTop: "8px", marginBottom: "16px", fontFamily: "sans-serif" }}>Your password must be atleast six characters and cannot contain spaces.</div>
@@ -140,18 +151,22 @@ const Changepassword = () => {
           <div class="_1YVqbV">
             <div class="_1Jqgld">
 
-              <input type="Password" class="oldpswrdInputboxes" onChange={(event) => setNewPassword(event.target.value)} />
+              <input  type={showNewPassword ? "text" : "password"} class="oldpswrdInputboxes" onChange={(event) => setNewPassword(event.target.value)} />
+              <input type='checkbox' onChange={(event)=>setShowNewPassword(event.target.checked)}/>Show Password
             </div>
           </div>
-
+<div style={{marginTop:"16px"}}>
           <div style={{ fontFamily: "sans-serif" }}> Confirm New Password:</div>
           <div class="_1YVqbV">
             <div class="_1Jqgld">
 
-              <input type="Password" class="oldpswrdInputboxes" onChange={(event) => setConfirmNewPassword(event.target.value)} />
+              <input  type= "text" class="oldpswrdInputboxes" onChange={(event) => setConfirmNewPassword(event.target.value)} />
+              
             </div>
           </div>
+          </div>
           <button className='btnsetPswrd' onClick={changePassword}>Set Password</button>
+
         </div>
 
 
