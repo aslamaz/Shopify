@@ -24,7 +24,7 @@ const Head = () => {
           </div>
           <div className="dropdown-content">
             <Link to={'/User/PersonalInfo'} className='Userlinks'>MyProfile</Link>
-            <Link to={'/User/Editprofile'} className='Userlinks'>EditProfile</Link>
+            {/* <Link to={'/User/Editprofile'} className='Userlinks'>EditProfile</Link> */}
             <Link to={'/User/WishList'} className='Userlinks'>WishList</Link>
             <Link to={'/User/Orders'} className='Userlinks'>My Orders</Link>
             <Link to={'/User/Coupons'} className='Userlinks'>Coupons</Link>

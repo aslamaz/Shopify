@@ -890,9 +890,9 @@ app.post("/Product",
             var prdctimgsrc = `http://127.0.0.1:${port}/images/${fileValue.productPhoto[0].filename}`;
             console.log(prdctimgsrc);
 
-            const { productName, ProductDescription, productRate, subCategoryId, shopId,  } = req.body;
+            const { productName, ProductDescription, productRate, subCategoryId, shopId, } = req.body;
             const newProduct = new modelProduct({
-                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId, 
+                productName, ProductDescription, productRate, prdctimgsrc, subCategoryId, shopId,
             });
             await newProduct.save();
             res.json(newProduct);
@@ -1019,7 +1019,7 @@ app.put("/updateProduct/:id", async (req, res) => {
         const { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, } = req.body;
         const updateProduct = await modelProduct.findByIdAndUpdate(
             id,
-            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId,}, { new: true }
+            { productName, ProductDescription, productRate, productPhoto, subCategoryId, shopId, }, { new: true }
         );
         res.json(updateProduct);
     } catch (err) {
@@ -1175,10 +1175,6 @@ const collectionBookingShema = new Schema({
         type: String,
         require: true,
     },
-    bookingStatus: {
-        type: String,
-        require: true,
-    },
     paymentStatus: {
         type: String,
         require: true,
@@ -1194,12 +1190,21 @@ const modelBooking = model("tblBooking", collectionBookingShema);
 //Create Booking...............
 app.post("/Booking", async (req, res) => {
     try {
-        const { bookingDate, bookingTotalAmount, bookingStatus, paymentStatus, customerId } = req.body;
-        const newBooking = new modelBooking({
-            bookingDate, bookingTotalAmount, bookingStatus, paymentStatus, customerId
-        });
-        await newBooking.save();
-        res.json(newBooking);
+        const { bookingDate, customerId } = req.body;
+        const latestBooking = await modelBooking.findOne({ __v: 0, customerId }).sort({ _id: -1 });
+        if (latestBooking) {
+            res.json(latestBooking);
+
+        }
+        else {
+            const newBooking = new modelBooking({
+                bookingDate, customerId
+            });
+            await newBooking.save();
+            res.json(newBooking);
+
+        }
+
 
 
     } catch (err) {
@@ -1284,8 +1289,9 @@ app.delete("/deleteBooking/:id", async (req, res) => {
 //Cart Shema....
 const collectionCartShema = new Schema({
     cartQuantity: {
-        type: String,
+        type: Number,
         require: true,
+        default: 1,
     },
     bookingId: {
         type: Schema.Types.ObjectId,
@@ -1308,11 +1314,21 @@ const modelCart = model("tblCart", collectionCartShema);
 app.post("/Cart", async (req, res) => {
     try {
         const { cartQuantity, bookingId, productId, cartStatus } = req.body;
-        const newCart = new modelCart({
-            cartQuantity, bookingId, productId, cartStatus
-        });
-        await newCart.save();
-        res.json(newCart);
+        const existingCart = await modelCart.findOne({ bookingId, productId })
+
+        if (existingCart) {
+            res.send({ message: "Already Inserted" })
+        } else {
+
+            console.log(existingCart);
+            const newCart = new modelCart({
+                cartQuantity, bookingId, productId, cartStatus
+            });
+            await newCart.save();
+            res.json({ message: "Added to Cart" });
+        }
+
+
 
 
     } catch (err) {
@@ -1333,13 +1349,72 @@ app.get("/getCart", async (req, res) => {
 });
 
 // Booking with cart.............
-app.get("/cartWithBooking", async (req, res) => {
+app.get("/cartWithBooking/:id", async (req, res) => {
+    const Id = req.params.id;
     try {
-        const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+
+        const cartWithBooking = await modelCart.find({ __v: 0 }).populate({
+            path: 'bookingId',
+            match: {
+                __v: 0,
+                customerId: Id,
+            }
+        }).populate("productId");
+
+
+
         const filteredcartWithBooking = cartWithBooking.filter(
-            (cartWithBooking) => cartWithBooking.productId
+            (cartWithBooking) => cartWithBooking.bookingId
         );
         res.json(filteredcartWithBooking);
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+//  cart total.............
+app.get("/CartTotal/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+
+        const cartWithBooking = await modelCart.find({ __v: 0 }).populate({
+            path: 'bookingId',
+            match: {
+                __v: 0,
+                customerId: Id,
+            }
+        }).populate("productId");
+
+
+
+        const filteredcartWithBooking = cartWithBooking.filter(
+            (cartWithBooking) => cartWithBooking.bookingId
+        );
+
+        console.log(filteredcartWithBooking);
+        let totalPrice = 0
+        const Amount = filteredcartWithBooking.map((data) => {
+            totalPrice += parseInt(data.cartQuantity) * parseInt(data.productId.productRate)
+            console.log(totalPrice);
+
+        })
+        console.log(totalPrice);
+
+
+        res.json(totalPrice);
+
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
@@ -1362,13 +1437,40 @@ app.get("/bookingWithCart/:id", async (req, res) => {
 });
 
 //Update Cart...................
-app.put("/updateCart/:id", async (req, res) => {
+app.put("/updateIncrementCart/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const { cartQuantity, bookingId, productId, cartStatus } = req.body;
+        let cart = await modelCart.findById({ _id: id })
+        cart.cartQuantity = cart.cartQuantity + 1
+
         const updateCart = await modelCart.findByIdAndUpdate(
             id,
-            { cartQuantity, bookingId, productId, cartStatus }, { new: true }
+            cart, { new: true }
+        ).populate("productId");
+
+        res.json(updateCart);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+app.put("/updateDecrementCart/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+
+
+        let cart = await modelCart.findById({ _id: id })
+        if (cart.cartQuantity > 1) {
+
+            cart.cartQuantity = cart.cartQuantity - 1
+        }
+
+
+
+        const updateCart = await modelCart.findByIdAndUpdate(
+            id,
+            cart, { new: true }
         );
         res.json(updateCart);
     } catch (err) {
@@ -1657,8 +1759,8 @@ const modelFeedback = model("tblFeedback", collectionFeedbackShema);
 //Create Feedback...............
 app.post("/Feedback", async (req, res) => {
     try {
-        const { feedbackContent, feedbackDte, customerId } = req.body;
-        const newFeedback = new modelFeedbck({
+        const { feedbackContent, feedbackDate, customerId } = req.body;
+        const newFeedback = new modelFeedback({
             feedbackContent, feedbackDate, customerId
         });
         await newFeedback.save();
@@ -1743,7 +1845,86 @@ app.delete("/deleteFeedback/:id", async (req, res) => {
 //..............................................................................................................//
 //..............................................................................................................//
 
+//wishlist Shema....
+const collectionWishlistShema = new Schema({
+    customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblCustomer",
+        require: true,
+    },
+    productId: {
+        type: Schema.Types.ObjectId,
+        ref: "tblProduct",
+        require: true,
+    }
+})
+const modelWishlist = model("tblWishlist", collectionWishlistShema);
 
+//Create wishlist...............
+app.post("/Wishlist", async (req, res) => {
+    try {
+        const { productId, customerId } = req.body;
+        const newWishlist = await modelWishlist.findOne({ productId, customerId });
+        const existingWishlist = await modelWishlist.findOne({ productId, customerId });
+
+        if (existingWishlist) {
+
+            res.send({ message: "Already Inserted" })
+
+        } else {
+            
+            console.log(newWishlist);
+            let msg = ""
+            if (newWishlist) {
+                await modelWishlist.findByIdAndDelete(newWishlist._id);
+                msg = "Remove from Wishlist"
+            }
+
+            else {
+                const newWishlist = new modelWishlist({
+                    productId, customerId
+                });
+                await newWishlist.save();
+                msg = "Added to Wishlist"
+            }
+
+            res.json({ message: msg });
+        }
+
+
+
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server error");
+    }
+});
+
+//Get wishlist..............
+app.get("/getWishlist/:id", async (req, res) => {
+    const id = req.params.id
+    try {
+
+        const getWishlist = await modelWishlist.find({ customerId: id }).populate("productId");
+        res.json(getWishlist);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server error");
+    }
+});
+
+//Delete Feedback.................
+app.delete("/deleteWishlist/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        await modelWishlist.findByIdAndDelete(id);
+        res.json("wishllist product Removed");
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server error");
+    }
+});
 
 
 //Create Login...............
@@ -1759,7 +1940,7 @@ app.post("/loginCheck", async (req, res) => {
         if (customer.customerPassword === userPassword) {
             res.send({
                 message: "Login Successful",
-                id:customer._id,
+                id: customer._id,
                 login: "customer"
             })
         }
@@ -1770,7 +1951,7 @@ app.post("/loginCheck", async (req, res) => {
         if (Shop.shopPassword === userPassword) {
             res.send({
                 message: "Login Successful",
-                id:Shop._id,
+                id: Shop._id,
                 login: "Shop"
             })
         }
@@ -1782,7 +1963,7 @@ app.post("/loginCheck", async (req, res) => {
             if (Admin.adminPassword === userPassword) {
                 res.send({
                     message: "Login Successful",
-                    id:Admin._id,
+                    id: Admin._id,
                     login: "admin"
                 })
             }

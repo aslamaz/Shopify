@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import sdcardimage from './UserImages/sdcardAdd.png'
 import memorycard from './UserImages/memmorycard.jpg'
+import wishlistIcon from './UserImages/wishlistIcon.svg'
+import wishlistColorIcon from './UserImages/wishlistColorIcon.svg'
 import assuredlogo from './UserImages/flipkartAssuredlogo.png'
 import ratingstar from './UserImages/ratingstar.png'
 import { Link, useParams } from 'react-router-dom'
@@ -9,10 +11,21 @@ import axios from 'axios'
 const Relatedproducts = () => {
 
   const { id } = useParams();
+  const Id = sessionStorage.getItem("customerId");
 
-  
+
   const [showPrdcts, setShowPrdct] = useState([]);
- 
+
+  const Wishlist = (prdctId) =>{
+    const data = {
+      productId : prdctId,
+       customerId : Id
+    }
+    axios.post(`http://localhost:5000/Wishlist`,data).then((response)=>{
+      console.log(response.data);
+    })
+}
+
 
   useEffect(() => {
     axios.get(`http://localhost:5000/productWithSubCategory/${id}`).then((response) => {
@@ -23,7 +36,7 @@ const Relatedproducts = () => {
   }, [])
 
 
-  const  truncateText = (text, maxWords) => {
+  const truncateText = (text, maxWords) => {
     const words = text.split(' ');
     if (words.length <= maxWords) {
       return text;
@@ -243,22 +256,22 @@ const Relatedproducts = () => {
             }}>
               Computers,Lexar storage,Crucial Storage,Toshiba Storage,SSD,Sandisk Storage,HHD,Pendrives,SSD Storage,Memmory cards
             </div>
-            
-              <div style={{ display: "flex", alignItems: "center", marginTop: "10px", }}>
-                <div style={{
-                  fontSize: "18px",
-                  color: "#black",
-                  fontFamily: "Roboto,Arial,sans-serif",
-                  marginRight: "10px"
-                }}>printers</div>
 
-                <div style={{
-                  fontSize: "12px",
-                  color: "#878787",
-                  fontFamily: "Roboto,Arial,sans-serif"
-                }}>(Showing 1 - 37 products of 37 products)</div>
-              </div>
-           
+            <div style={{ display: "flex", alignItems: "center", marginTop: "10px", }}>
+              <div style={{
+                fontSize: "18px",
+                color: "#black",
+                fontFamily: "Roboto,Arial,sans-serif",
+                marginRight: "10px"
+              }}>printers</div>
+
+              <div style={{
+                fontSize: "12px",
+                color: "#878787",
+                fontFamily: "Roboto,Arial,sans-serif"
+              }}>(Showing 1 - 37 products of 37 products)</div>
+            </div>
+
             <div style={{ display: "flex", marginTop: "10px" }}>
               <div className='sortingProducts'>
                 Sort by
@@ -280,21 +293,30 @@ const Relatedproducts = () => {
 
           <div className='Allprdctcards'>
             {showPrdcts.map((productsdtls, key) => (
-
+                  
 
 
               <div className='prdctcards'>
                 {
                   console.log(productsdtls)
                 }
+
+                <div className='wishlistIconDiv'>
+                  <div className='wishlistIconDiv2'>
+                   <button onClick={()=> Wishlist(productsdtls._id)}>
+                     <img src={wishlistIcon} alt="img"  />
+                    </button>
+                  </div>
+                </div>
+
                 <div className='imgdiv'>
                   <Link to={`/User/ProductDetails/${productsdtls._id
-                  }`} className='Userlinks'><img src={productsdtls.prdctimgsrc} alt="img" className='imagestyling' /></Link>
+                    }`} className='Userlinks'><img src={productsdtls.prdctimgsrc} alt="img" className='imagestyling' /></Link>
                 </div>
 
                 <div style={{ padding: "10px" }}>
 
-                  <div style={{ fontSize: "14px" }}>{truncateText(productsdtls.ProductDescription, 7 )+ '...'}</div>
+                  <div style={{ fontSize: "14px" }}>{truncateText(productsdtls.ProductDescription, 7) + '...'}</div>
 
                   <div style={{
                     fontSize: "12px",

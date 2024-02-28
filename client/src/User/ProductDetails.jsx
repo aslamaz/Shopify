@@ -3,18 +3,26 @@ import memmoryCard from './UserImages/memmcard1.jpg'
 import assuredlogo from './UserImages/flipkartAssuredlogo.png'
 import ratingstar from './UserImages/ratingstar.png'
 import tag from './UserImages/tag.png'
+import wishlistIcon from './UserImages/wishlistIcon.svg'
 import sandisklogo from './UserImages/sandisklogo.png'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
 const ProductDetails = () => {
 
+    const navigate = useNavigate()
+
     const { id } = useParams();
 
     const [showProduct, setShowProduct] = useState([]);
     const [showGallery, setShowGallery] = useState([]);
+    // const [customerBookingId,SetcustomerBookingId] = useState('');
+    // const [bookingDate,setBookingDate] = useState('');
+
+    const Id = sessionStorage.getItem("customerId");
+
 
     const fetchProduct = () => {
         axios.get(`http://localhost:5000/getProductwithId/${id}`).then((response) => {
@@ -30,6 +38,30 @@ const ProductDetails = () => {
             const data = response.data;
             setShowGallery(data);
         })
+    }
+
+    const AddToCart = () =>{
+        const data = {
+            customerId : Id
+        }
+        axios.post('http://localhost:5000/Booking',data).then((response)=>{
+            console.log(response.data);
+            const bookingData = {
+                bookingId : response.data._id,
+                productId: id,
+            }
+            axios.post('http://localhost:5000/Cart',bookingData).then((response)=>{
+                console.log(response.data.message);
+                alert(response.data.message)
+                navigate("/User/PageCart")
+            })
+        })
+    }
+
+    const Wishlist = () =>{
+        const data = {
+            
+        }
     }
 
     useEffect(() => {
@@ -57,14 +89,23 @@ const ProductDetails = () => {
 
             <div style={{ display: "flex", backgroundColor: "white" }}>
                 <div className='carousel-container'>
+
+                     <div className='wishlistIconDivPrdctdtls'>
+                            <div  className='wishlistIconDiv2Prdctdtls'>
+                            <button>
+                                <img src={wishlistIcon} alt="img"  />
+                                </button>
+                            </div>
+                        </div>
                     <Carousel showArrows={false} showStatus={false} showIndicators={false} axis={'horizontal'}  style={{display:'flex'}}>
+                       
                         <div className='prdctDetailImagediv'>
-                            <img src={showProduct.prdctimgsrc} alt='img' />
+                            <img src={showProduct.prdctimgsrc} alt='img' style={{objectFit:"contain",}}/>
                         </div>
                         {
                             showGallery.map((galleryImg, key) => (
                                 <div className='prdctDetailImagediv'>
-                                    <img src={galleryImg.Galleryimgsrc} alt='img' />
+                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{objectFit:"contain"}}/>
                                 </div>
 
                             ))
@@ -79,7 +120,7 @@ const ProductDetails = () => {
 
 
                     <div className='buyButtons'>
-                        <button className='btnAddcart'>ADD TO CART</button>
+                        <button className='btnAddcart' onClick={AddToCart}>ADD TO CART</button>
                         <button className='btnBuynow'>BUY NOW</button>
                     </div>
                 </div>
@@ -136,7 +177,7 @@ const ProductDetails = () => {
 
                     <div style={{ display: "flex", alignItems: "center" }}>
 
-                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "28px" }}>₹876</div>
+                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "28px" }}>{showProduct.productRate}</div>
 
                         <div style={{ fontSize: "16px", marginLeft: "12px", color: "#878787", fontFamily: "Roboto,Arial,sans-serif" }}><del>₹1800</del></div>
                         <div style={{ fontSize: "16px", marginLeft: "12px", color: "#388e3c", letterSpacing: "1px", fontFamily: "Roboto,Arial,sans-serif" }}>51%off</div>

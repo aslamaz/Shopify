@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import wishlistimage from './UserImages/wishlistprofile.jpg'
 import { Link } from 'react-router-dom'
 import myordericon from './UserImages/iconsMyorder.png'
@@ -11,9 +11,50 @@ import memmoryCard from './UserImages/memmorycard.jpg'
 import ratingstar from './UserImages/ratingstar.png'
 import assuredlogo from './UserImages/flipkartAssuredlogo.png'
 import headphoneimg from './UserImages/headphoneimg.jpg'
+import wishlistDlt from './UserImages/wishlistDelete.jpg'
+import axios from 'axios'
 
 
 const WishList = () => {
+
+    const [showCustomer, setShowCustomer] = useState([]);
+    const [showWishlistPrdct, setShowWishlistPrdct] = useState([]);
+    // const [dltWishlist,setDltWishlist] = useState('');
+
+    const Id = sessionStorage.getItem("customerId");
+
+    const deleteWishlist = (id) => {
+        axios.delete(`http://localhost:5000/deleteWishlist/${id}`).then((response) => {
+            console.log(response.data);
+            getWishlist();
+        })
+    }
+
+    const getUser = () =>{
+        axios.get(`http://localhost:5000/getCustomer/${Id}`).then((response) => {
+            // console.log(response.data);
+            const data = response.data;
+            setShowCustomer(data);
+        })
+    }
+
+    const getWishlist = () =>{
+        axios.get(`http://localhost:5000/getWishlist/${Id}`).then((response) => {
+            console.log(response.data);
+            const data = response.data;
+            setShowWishlistPrdct(data);
+    
+        })
+    }
+    useEffect(() => {
+
+       getUser();
+       getWishlist();
+
+           
+       
+    }, [])
+
     return (
         <div>
             <div className='productDetailsPagehoverPrdctNames'>
@@ -35,7 +76,7 @@ const WishList = () => {
                         <div><img src={wishlistimage} alt="img" className='wishlistimage' /></div>
                         <div className='textDivwishlist'>
                             <div style={{ fontFamily: "sans-serif", fontSize: "12px" }}>Hello,</div>
-                            <div style={{ fontFamily: "sans-serif", fontSize: "16px", paddingTop: "5px", fontWeight: "bold" }}>Abi Joy</div>
+                            <div style={{ fontFamily: "sans-serif", fontSize: "16px", paddingTop: "5px", fontWeight: "bold" }}>{showCustomer.customerName}</div>
                         </div>
                     </div>
 
@@ -97,100 +138,66 @@ const WishList = () => {
 
                 <div className='wishlistitemsDiv'>
                     <div className='wishlistitemshead'>My Wishlist (2)</div>
-                    <Link to={"/User/ProductDetails"} className='AddedItemsdivLinks'> 
-                        <div className='AddedItemsdiv'>
+                    {showWishlistPrdct.map((wishlistPrdct, key) => (
 
-                            <div className='headphoneimgdiv'><img src={memmoryCard} alt="img" className='headphoneimg' /></div>
-                            <div>
-                                <div style={{
-                                    fontSize: "15px",
-                                    color: "#black",
-                                    fontFamily: "Roboto,Arial,sans-serif",
-                                    width: "605.17px", height: "15px",
-                                    paddingBottom: "5px"
-                                }}> SanDisk Ultra 128 GB MicroSDXC Class 10 140 MB/s Memory Card</div>
 
-                                <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
+                        
+                            <div className='AddedItemsdiv'>
+
+                                <div className='headphoneimgdiv'><img src={wishlistPrdct.productId.prdctimgsrc} alt="img" className='headphoneimg' /></div>
+                                <Link to={`/User/ProductDetails/${wishlistPrdct.productId._id}`} className='AddedItemsdivLinks'>
+                                <div>
                                     <div style={{
-                                        width: "35.47px",
-                                        height: "15px",
-                                        backgroundColor: "green",
-                                        color: "white",
-                                        padding: "2px 4px 2px 6px",
-                                        borderRadius: "3px",
-                                        marginRight: "10px",
-                                        display: "flex",
-                                        justifyContent: 'center',
-                                        alignItems: "center",
-                                        fontFamily: "Roboto,Arial,sans-serif"
-                                    }}>4.4 <img src={ratingstar} alt="img" className='ratingstar' /></div>
-
-                                    <div style={{
-                                        color: "#878787",
-                                        marginRight: "10px",
+                                        fontSize: "15px",
+                                        color: "#black",
                                         fontFamily: "Roboto,Arial,sans-serif",
-                                        fontSize: "14px"
-                                    }}>40,193 Ratings & 3,077 Reviews</div>
-                                    <div><img src={assuredlogo} alt="img" className='flipkartAssuredlogo' /></div>
+                                        width: "605.17px", height: "15px",
+                                        paddingBottom: "5px"
+                                    }}> {wishlistPrdct.productId.productName}</div>
+
+                                    <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
+                                        <div style={{
+                                            width: "35.47px",
+                                            height: "15px",
+                                            backgroundColor: "green",
+                                            color: "white",
+                                            padding: "2px 4px 2px 6px",
+                                            borderRadius: "3px",
+                                            marginRight: "10px",
+                                            display: "flex",
+                                            justifyContent: 'center',
+                                            alignItems: "center",
+                                            fontFamily: "Roboto,Arial,sans-serif"
+                                        }}>4.4 <img src={ratingstar} alt="img" className='ratingstar' /></div>
+
+                                        <div style={{
+                                            color: "#878787",
+                                            marginRight: "10px",
+                                            fontFamily: "Roboto,Arial,sans-serif",
+                                            fontSize: "14px"
+                                        }}>40,193 Ratings & 3,077 Reviews</div>
+                                        <div><img src={assuredlogo} alt="img" className='flipkartAssuredlogo' /></div>
+                                    </div>
+
+                                    <div style={{ display: "flex", alignItems: "center", marginTop: "25px" }}>
+
+                                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "22px" }}>{wishlistPrdct.productId.productRate}</div>
+
+                                        <div style={{ fontSize: "14px", marginLeft: "12px", color: "#878787", fontFamily: "Roboto,Arial,sans-serif" }}><del>₹1800</del></div>
+                                        <div style={{ fontSize: "13px", marginLeft: "12px", color: "#388e3c", letterSpacing: "1px", fontFamily: "Roboto,Arial,sans-serif" }}>51%off</div>
+                                    </div>
+
+
+                                </div>
+                                </Link>
+                                <div>
+                                    <button onClick={() => deleteWishlist(wishlistPrdct._id)}><img src={wishlistDlt} alt='img' style={{ width: "16px", height: "16px" }} /></button>
                                 </div>
 
-                                <div style={{ display: "flex", alignItems: "center", marginTop: "25px" }}>
-
-                                    <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "22px" }}>₹876</div>
-
-                                    <div style={{ fontSize: "14px", marginLeft: "12px", color: "#878787", fontFamily: "Roboto,Arial,sans-serif" }}><del>₹1800</del></div>
-                                    <div style={{ fontSize: "13px", marginLeft: "12px", color: "#388e3c", letterSpacing: "1px", fontFamily: "Roboto,Arial,sans-serif" }}>51%off</div>
-                                </div>
-
                             </div>
-                        </div>
-                    </Link>
+                        
+                    ))}
 
-                    <div className='AddedItemsdiv'>
-
-                        <div className='headphoneimgdiv'><img src={headphoneimg} alt="img" className='headphoneimg' /></div>
-                        <div>
-                            <div style={{
-                                fontSize: "15px",
-                                color: "#black",
-                                fontFamily: "Roboto,Arial,sans-serif",
-                                width: "605.17px", height: "15px",
-                                paddingBottom: "5px"
-                            }}> boAt Rockerz 450 with Upto15 Hours Playback Bluetooth Headset</div>
-
-                            <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
-                                <div style={{
-                                    width: "35.47px",
-                                    height: "15px",
-                                    backgroundColor: "green",
-                                    color: "white",
-                                    padding: "2px 4px 2px 6px",
-                                    borderRadius: "3px",
-                                    marginRight: "10px",
-                                    display: "flex",
-                                    justifyContent: 'center',
-                                    alignItems: "center",
-                                    fontFamily: "Roboto,Arial,sans-serif"
-                                }}>4.4 <img src={ratingstar} alt="img" className='ratingstar' /></div>
-
-                                <div style={{
-                                    color: "#878787",
-                                    marginRight: "10px",
-                                    fontFamily: "Roboto,Arial,sans-serif",
-                                    fontSize: "14px"
-                                }}>(3,45,542)</div>
-                                <div><img src={assuredlogo} alt="img" className='flipkartAssuredlogo' /></div>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", marginTop: "25px" }}>
-
-                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "22px" }}>₹1499</div>
-
-                                <div style={{ fontSize: "14px", marginLeft: "12px", color: "#878787", fontFamily: "Roboto,Arial,sans-serif" }}><del>₹3,990</del></div>
-                                <div style={{ fontSize: "13px", marginLeft: "12px", color: "#388e3c", letterSpacing: "1px", fontFamily: "Roboto,Arial,sans-serif" }}>62%off</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div >
