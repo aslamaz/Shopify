@@ -58,10 +58,14 @@ const ProductDetails = () => {
         })
     }
 
-    const Wishlist = () =>{
+    const Wishlist = (prdctId) =>{
         const data = {
-            
-        }
+            productId : prdctId,
+             customerId : Id
+          }
+          axios.post(`http://localhost:5000/Wishlist`,data).then((response)=>{
+            console.log(response.data);
+          })
     }
 
     useEffect(() => {
@@ -92,7 +96,7 @@ const ProductDetails = () => {
 
                      <div className='wishlistIconDivPrdctdtls'>
                             <div  className='wishlistIconDiv2Prdctdtls'>
-                            <button>
+                            <button onClick={()=> Wishlist(showProduct._id)}> 
                                 <img src={wishlistIcon} alt="img"  />
                                 </button>
                             </div>

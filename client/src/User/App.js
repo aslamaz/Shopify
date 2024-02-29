@@ -13,6 +13,7 @@ import WishList from './WishList'
 import Orders from './Orders'
 import Coupons from './Coupons'
 import HoverPage from './HoverPage'
+import CheckoutPage from './CheckoutPage'
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
         <Route path='Orders' element={<Orders/>}/>
         <Route path='Coupons' element={<Coupons/>}/>
         <Route path='HoverPage' element={<HoverPage/>}/>
+        <Route path='CheckoutPage' element={<CheckoutPage/>}/>
     </Routes>
     </div>
     </div>

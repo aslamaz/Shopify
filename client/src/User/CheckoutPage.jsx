@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react'
 import infoicon from './UserImages/infoicon.png'
 import safetyimg from './UserImages/safetyimg.jpg'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 
-const PageCart = () => {
+const CheckoutPage = () => {
     const Id = sessionStorage.getItem("customerId");
     const [showBookedProduct, setShowBookedProduct] = useState([]);
     const [priceDetails, setPriceDetails] = useState([]);
     const [totalPrice, setTotalPrice] = useState('');
     const [showCustomerName, setShowCustomerName] = useState([]);
     const [showCustomerAddress, setShowCustomerAddress] = useState([]);
+    const [showCustomerContact, setShowCustomerContact] = useState([]);
+    const [showCustomerEmail, setShowCustomerEmail] = useState([]);
 
 
     const addCartProduct = () => {
@@ -31,6 +32,8 @@ const PageCart = () => {
             const data = response.data;
             setShowCustomerName(data.customerName);
             setShowCustomerAddress(data.customerAddress);
+            setShowCustomerContact(data.customerContact);
+            setShowCustomerEmail(data.customerEmail)
         })
     }
 
@@ -85,12 +88,6 @@ const PageCart = () => {
             setTotalPrice(data)
         })
     }
-
-    const placeOrder = () =>{
-       axios.post(`http://localhost:5000/placeOrder/${Id}`).then((response)=>{
-            console.log(response.data);
-       })
-    }
     useEffect(() => {
         addCartProduct();
         calculateTotal();
@@ -101,20 +98,68 @@ const PageCart = () => {
     return (
         <div className='cartMaindiv'>
             <div>
+                <div className='cartheadlinesdivCheckout'>
+                    <div className='headlines'>
+                        <div className='_3ENQxz'>1</div>
+                    </div>
 
-                <div className='deliveryPinEnter'>
                     <div>
 
-                        <div className='deliveryPinheadlinesTextName'> Deliver To: <div style={{ fontWeight: "600" }}>{showCustomerName}</div></div>
-                        <div className='deliveryPinheadlinesText'> {showCustomerAddress}</div>
+                        <div className='headlineLogin'>LOGIN
+                            <svg height="10" width="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="_1t8m48"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" stroke="#2974f0"></path></svg>
+                        </div>
+
+                        <div>
+                            <div style={{ display: "flex" }}>
+                                <div>{showCustomerName}</div>
+                                <div>{showCustomerContact}</div>
+                            </div>
+                        </div>
+
+
+
                     </div>
-                    <div className='deliveryPinheadlinesbtn'><button className='DeliveryPincodebtn'>HOME</button></div>
+
+
+
+                </div>
+
+                <div className='cartheadlinesdivCheckout' style={{ marginTop: "10px" }}>
+                    <div className='headlines'>
+                        <div className='_3ENQxz'>2</div>
+                    </div>
+
+                    <div>
+
+                        <div className='headlineLogin'>DELIVERY ADDRESS
+                            <svg height="10" width="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="_1t8m48"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" stroke="#2974f0"></path></svg>
+                        </div>
+
+                        <div>
+                            <div>
+                                <div>{showCustomerAddress}</div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+
                 </div>
 
 
 
 
+
+                <div className='orderSummaryDiv'>
+                <div className='_3ENQxzSummary'>3</div>
+                    <div style={{fontFamily: "Roboto,Arial,sans-serif",fontWeight:"600"}}>ORDER SUMMARY</div>
+                </div>
                 <div className='cartprdctSpecificationDiv'>
+
 
                     <div style={{
                         width: "242px",
@@ -165,13 +210,25 @@ const PageCart = () => {
                         </div>
                     ))}
                 </div>
-
-
-
-                <div className='placeorderDiv'>
-                    <Link to={'/User/CheckoutPage'} className='myOrderlink'><button className='placeOrderbtn' onClick={placeOrder}>PLACE ORDER</button> </Link>
+                
+                <div className='placeorderContinueDiv'>
+                    <div style={{display:"flex"}}>
+               <div style={{fontFamily:"sans-serif",marginRight:"4px"}}> Order confirmation email will be sent to</div> <div style={{fontWeight:"bolder",fontFamily:"sans-serif"}}>{showCustomerEmail}</div>
+               </div>
+                    <button className='placeOrderbtn'>CONTINUE</button>
                 </div>
+
+                <div className='paymentOptionDiv'>
+                <div className='_3ENQxzSummary'>4</div>
+                    <div style={{fontFamily: "Roboto,Arial,sans-serif",fontWeight:"600"}}>PAYMENT OPTIONS</div>
+                </div>
+                <div className='cardPayment'>
+
+                </div>
+
             </div>
+
+            
 
 
 
@@ -211,4 +268,5 @@ const PageCart = () => {
     )
 }
 
-export default PageCart
+
+export default CheckoutPage

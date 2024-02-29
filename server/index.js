@@ -1379,6 +1379,30 @@ app.get("/cartWithBooking/:id", async (req, res) => {
     }
 });
 
+// Place Order from Cart.............
+app.post("/placeOrder/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+        const updatedBooking = await modelBooking.findOneAndUpdate(
+            { __v: 0, customerId: Id },
+            { __v: 1 },
+            { new: true }
+        );
+
+        res.json(updatedBooking);
+
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 //  cart total.............
 app.get("/CartTotal/:id", async (req, res) => {
     const Id = req.params.id;
