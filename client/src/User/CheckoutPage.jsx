@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import infoicon from './UserImages/infoicon.png'
 import safetyimg from './UserImages/safetyimg.jpg'
+import Cards from 'react-credit-cards-2'
+import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import axios from 'axios'
 
 const CheckoutPage = () => {
@@ -12,7 +14,20 @@ const CheckoutPage = () => {
     const [showCustomerAddress, setShowCustomerAddress] = useState([]);
     const [showCustomerContact, setShowCustomerContact] = useState([]);
     const [showCustomerEmail, setShowCustomerEmail] = useState([]);
+    const [showDiv, setShowDiv] = useState(false)
+    const [continueDivDisabled, setContinueDivDisabled] = useState(false);
+    const [state, setState] = useState({
+        number: '',
+        expiry: '',
+        cvc: '',
+        name: '',
+        focus: '',
+    });
 
+    const handleButtonClick = () => {
+        setShowDiv(true);
+        setContinueDivDisabled(true);
+    };
 
     const addCartProduct = () => {
         axios.get(`http://localhost:5000/cartWithBooking/${Id}`).then((response) => {
@@ -95,6 +110,39 @@ const CheckoutPage = () => {
     }, [])
 
 
+
+    const handleInputChange = (evt) => {
+        const { name, value } = evt.target;
+
+        setState((prev) => ({ ...prev, [name]: value }));
+    }
+
+    const handleInputExpiryChange = (evt) => {
+        const { name, value } = evt.target;
+
+        setState((prev) => ({ ...prev, [name]: value }));
+    }
+
+    const handleInputCvvChange = (evt) => {
+        const { name, value } = evt.target;
+
+        setState((prev) => ({ ...prev, [name]: value }));
+    }
+
+
+    const handleInputFocus = (evt) => {
+        setState((prev) => ({ ...prev, focus: evt.target.name }));
+    }
+
+    const handleInputFocusExpiry = (evt) => {
+        setState((prev) => ({ ...prev, focus: evt.target.name }));
+    }
+
+    const handleInputFocusCvv = (evt) => {
+        setState((prev) => ({ ...prev, focus: evt.target.name }));
+    }
+
+
     return (
         <div className='cartMaindiv'>
             <div>
@@ -155,8 +203,8 @@ const CheckoutPage = () => {
 
 
                 <div className='orderSummaryDiv'>
-                <div className='_3ENQxzSummary'>3</div>
-                    <div style={{fontFamily: "Roboto,Arial,sans-serif",fontWeight:"600"}}>ORDER SUMMARY</div>
+                    <div className='_3ENQxzSummary'>3</div>
+                    <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontWeight: "600" }}>ORDER SUMMARY</div>
                 </div>
                 <div className='cartprdctSpecificationDiv'>
 
@@ -211,24 +259,97 @@ const CheckoutPage = () => {
                     ))}
                 </div>
                 
-                <div className='placeorderContinueDiv'>
-                    <div style={{display:"flex"}}>
-               <div style={{fontFamily:"sans-serif",marginRight:"4px"}}> Order confirmation email will be sent to</div> <div style={{fontWeight:"bolder",fontFamily:"sans-serif"}}>{showCustomerEmail}</div>
-               </div>
-                    <button className='placeOrderbtn'>CONTINUE</button>
-                </div>
+                {!showDiv ?
+                    <div className='placeorderContinueDiv'>
+                        <div style={{ display: "flex" }}>
+                            <div style={{ fontFamily: "sans-serif", marginRight: "4px" }}> Order confirmation email will be sent to</div> <div style={{ fontWeight: "bolder", fontFamily: "sans-serif" }}>{showCustomerEmail}</div>
+                        </div>
+                        <button className='placeOrderbtn' onClick={handleButtonClick}>CONTINUE</button>
+                    </div> : continueDivDisabled}
+
 
                 <div className='paymentOptionDiv'>
-                <div className='_3ENQxzSummary'>4</div>
-                    <div style={{fontFamily: "Roboto,Arial,sans-serif",fontWeight:"600"}}>PAYMENT OPTIONS</div>
+                    <div className='_3ENQxzSummary'>4</div>
+                    <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontWeight: "600" }}>PAYMENT OPTIONS</div>
                 </div>
-                <div className='cardPayment'>
 
-                </div>
+
+                {showDiv && (
+                    <div className='cardPayment'>
+                        <div>
+                            <input type="radio" id="" name="" value="" />
+                            <label for="html" style={{ marginLeft: "10px", fontFamily: "Roboto,Arial,sans-serif" }}>Credit/Debit/ATM Card</label>
+                        </div>
+
+                        <div style={{ display: "flex" }}>
+                            <div style={{ margin: "16px 25px 0px 18px" }}>
+                                <Cards
+                                    number={state.number}
+                                    expiry={state.expiry}
+                                    cvc={state.cvc}
+                                    name={state.name}
+                                    focused={state.focus}
+                                />
+                            </div>
+                            <form style={{ marginTop: "16px" }}>
+
+                                <input
+                                    style={{ width: "285px", height: "31px", padding: "20px 16px 0px 13px", border: "1px solid #ccc" }}
+                                    type="number"
+                                    name="number"
+                                    placeholder="Card Number"
+                                    value={state.number}
+                                    onChange={handleInputChange}
+                                    onFocus={handleInputFocus}
+                                />
+                                <div style={{ display: "flex" }}>
+                                    <div>
+                                        <input
+                                            style={{ width: "175px", height: "28px", padding: "9px 7px 9px 16px", margin: "0px 12px 0px 0px", border: "1px solid #ccc", marginTop: "16px" }}
+                                            type="number"
+                                            name="expiry"
+                                            placeholder="Valid Thru"
+                                            value={state.expiry}
+                                            onChange={handleInputExpiryChange}
+                                            onFocus={handleInputFocusExpiry}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <input
+                                            style={{ width: "97px", height: "28px", padding: "9px 7px 9px 16px", border: "1px solid #ccc", marginTop: "16px" }}
+                                            type="number"
+                                            name="cvc"
+                                            placeholder="CVV"
+                                            value={state.cvc}
+                                            onChange={handleInputCvvChange}
+                                            onFocus={handleInputFocusCvv}
+                                        />
+
+                                    </div>
+                                </div>
+                                <button className='btnPayCheckOut'>PAY ₹{totalPrice}</button>
+                            </form>
+
+                        </div>
+
+
+                    </div>
+                )}
+
+                {showDiv && (
+                    <div className='cashOnDelivery'>
+                        <div>
+                            <input type="radio" id="" name="" value="" />
+                            <label for="html" style={{ marginLeft: "10px", fontFamily: "Roboto,Arial,sans-serif" }}>Cash on Delivery</label>
+                        </div>
+
+                    </div>
+                )}
 
             </div>
 
-            
+
 
 
 

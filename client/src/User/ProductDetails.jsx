@@ -40,17 +40,17 @@ const ProductDetails = () => {
         })
     }
 
-    const AddToCart = () =>{
+    const AddToCart = () => {
         const data = {
-            customerId : Id
+            customerId: Id
         }
-        axios.post('http://localhost:5000/Booking',data).then((response)=>{
+        axios.post('http://localhost:5000/Booking', data).then((response) => {
             console.log(response.data);
             const bookingData = {
-                bookingId : response.data._id,
+                bookingId: response.data._id,
                 productId: id,
             }
-            axios.post('http://localhost:5000/Cart',bookingData).then((response)=>{
+            axios.post('http://localhost:5000/Cart', bookingData).then((response) => {
                 console.log(response.data.message);
                 alert(response.data.message)
                 navigate("/User/PageCart")
@@ -58,14 +58,14 @@ const ProductDetails = () => {
         })
     }
 
-    const Wishlist = (prdctId) =>{
+    const Wishlist = (prdctId) => {
         const data = {
-            productId : prdctId,
-             customerId : Id
-          }
-          axios.post(`http://localhost:5000/Wishlist`,data).then((response)=>{
+            productId: prdctId,
+            customerId: Id
+        }
+        axios.post(`http://localhost:5000/Wishlist`, data).then((response) => {
             console.log(response.data);
-          })
+        })
     }
 
     useEffect(() => {
@@ -94,22 +94,23 @@ const ProductDetails = () => {
             <div style={{ display: "flex", backgroundColor: "white" }}>
                 <div className='carousel-container'>
 
-                     <div className='wishlistIconDivPrdctdtls'>
-                            <div  className='wishlistIconDiv2Prdctdtls'>
-                            <button onClick={()=> Wishlist(showProduct._id)}> 
-                                <img src={wishlistIcon} alt="img"  />
-                                </button>
-                            </div>
+                    <div className='wishlistIconDivPrdctdtls'>
+                        <div className='wishlistIconDiv2Prdctdtls'>
+                            <button onClick={() => Wishlist(showProduct._id)}>
+                                <img src={wishlistIcon} alt="img" />
+                            </button>
                         </div>
-                    <Carousel showArrows={false} showStatus={false} showIndicators={false} axis={'horizontal'}  style={{display:'flex'}}>
-                       
+                    </div>
+                    
+                    <Carousel showArrows={false} showStatus={false} showIndicators={false} axis={'horizontal'} style={{ display: 'flex' }}>
+
                         <div className='prdctDetailImagediv'>
-                            <img src={showProduct.prdctimgsrc} alt='img' style={{objectFit:"contain",}}/>
+                            <img src={showProduct.prdctimgsrc} alt='img' style={{ objectFit: "contain", }} />
                         </div>
                         {
                             showGallery.map((galleryImg, key) => (
                                 <div className='prdctDetailImagediv'>
-                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{objectFit:"contain"}}/>
+                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{ objectFit: "contain" }} />
                                 </div>
 
                             ))
