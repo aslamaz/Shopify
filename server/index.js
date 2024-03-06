@@ -1348,6 +1348,7 @@ app.get("/getCart", async (req, res) => {
     }
 });
 
+
 // Booking with cart.............
 app.get("/cartWithBooking/:id", async (req, res) => {
     const Id = req.params.id;

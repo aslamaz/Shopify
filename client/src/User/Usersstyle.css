@@ -5,7 +5,7 @@ body {
 .User-main {
   display: grid;
   width: 100%;
-  min-height: 220vh;
+  /* min-height: 220vh; */
   grid-template-areas: " nav nav nav nav nav nav"
     " home home home home  home  home"
     " home home home home  home  home"
@@ -749,8 +749,8 @@ align-items: center;
 
 .cartMaindiv {
   display: flex;
-  width: 1260px;
-  height: 913.94px;
+  width: 100%;
+  /* height: 913.94px; */
 
   padding: 8px;
   margin: 10px;
@@ -1954,3 +1954,68 @@ color: #000000;
   padding: 16px 25px;
   height: 145.594px;
 }
+.blueBackgroundPaymentOptionDiv{
+  background-color: #2874F0;
+  color: white;
+}
+.cardPaymentOpening{
+  height: 49.188px;
+  padding: 16px 25px;
+  background-color: #ffffff;
+}
+._2cAhoH{
+  margin-top: 8px;
+    color: #878787;
+    font-size: 14px;
+    margin-left: 30px;
+}
+
+#light{
+  display: block;
+}
+#fade{
+  display: block;
+}
+.white_content{
+  display: none;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  padding: 16px;
+  background-color: white;
+  z-index: 1002;
+  overflow: auto;
+}
+.black_overlay{
+  display: none;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: .80;
+  filter: alpha(opacity=80);
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #25b09b;
+  --_m: 
+    conic-gradient(#0000 10%,#000),
+    linear-gradient(#000 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {to{transform: rotate(1turn)}}

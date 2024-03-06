@@ -16,6 +16,12 @@ const CheckoutPage = () => {
     const [showCustomerEmail, setShowCustomerEmail] = useState([]);
     const [showDiv, setShowDiv] = useState(false)
     const [continueDivDisabled, setContinueDivDisabled] = useState(false);
+    const [cartprdctSpecificationDiv, setCartprdctSpecificationDiv] = useState(false)
+    const [showcardPayment, setShowCardPayment] = useState(false)
+    const [getBookingId, setbookingId] = useState()
+    const [isLightVisible, setLightVisible] = useState(false);
+    const [isFadeVisible, setFadeVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [state, setState] = useState({
         number: '',
         expiry: '',
@@ -27,19 +33,36 @@ const CheckoutPage = () => {
     const handleButtonClick = () => {
         setShowDiv(true);
         setContinueDivDisabled(true);
+        setCartprdctSpecificationDiv(true);
     };
+
+    const handleOpenCardPayment = () => {
+        setShowCardPayment(true)
+    }
+
+    const handleclose = () => {
+        setLightVisible(false);
+        setFadeVisible(false);
+    }
+
+
+
 
     const addCartProduct = () => {
         axios.get(`http://localhost:5000/cartWithBooking/${Id}`).then((response) => {
             console.log(response.data);
+            const cartLength = response.data.length;
+            setbookingId(cartLength)
             const data = response.data;
             setShowBookedProduct(data);
 
 
 
 
+
         })
     }
+
 
     const getUser = () => {
         axios.get(`http://localhost:5000/getCustomer/${Id}`).then((response) => {
@@ -103,6 +126,29 @@ const CheckoutPage = () => {
             setTotalPrice(data)
         })
     }
+
+    const placeOrder = () => {
+        axios.post(`http://localhost:5000/placeOrder/${Id}`).then((response) => {
+            console.log(response.data);
+        })
+
+
+        // 
+        setIsLoading(true); 
+
+        setTimeout(() => {
+            // Simulated payment success
+            setIsLoading(false); // Hide loading animation
+            setLightVisible(true);
+            setFadeVisible(true);
+
+        }, 2000);
+
+
+    }
+
+
+
     useEffect(() => {
         addCartProduct();
         calculateTotal();
@@ -146,30 +192,22 @@ const CheckoutPage = () => {
     return (
         <div className='cartMaindiv'>
             <div>
+
                 <div className='cartheadlinesdivCheckout'>
                     <div className='headlines'>
                         <div className='_3ENQxz'>1</div>
                     </div>
-
                     <div>
-
                         <div className='headlineLogin'>LOGIN
                             <svg height="10" width="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="_1t8m48"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" stroke="#2974f0"></path></svg>
                         </div>
-
                         <div>
                             <div style={{ display: "flex" }}>
                                 <div>{showCustomerName}</div>
                                 <div>{showCustomerContact}</div>
                             </div>
                         </div>
-
-
-
                     </div>
-
-
-
                 </div>
 
                 <div className='cartheadlinesdivCheckout' style={{ marginTop: "10px" }}>
@@ -201,64 +239,83 @@ const CheckoutPage = () => {
 
 
 
+                {!showDiv ?
+                    <div className='orderSummaryDiv'>
+                        <div className='_3ENQxzSummary'>3</div>
+                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontWeight: "600" }}>ORDER SUMMARY</div>
+                    </div> :
 
-                <div className='orderSummaryDiv'>
-                    <div className='_3ENQxzSummary'>3</div>
-                    <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontWeight: "600" }}>ORDER SUMMARY</div>
-                </div>
-                <div className='cartprdctSpecificationDiv'>
-
-
-                    <div style={{
-                        width: "242px",
-                        height: "19.594px", display: "flex",
-                        position: "absolute",
-                        left: "640px"
-                    }}> Delivery by Sat Dec 16 | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
-
-                    {showBookedProduct.map((cartProducts, key) => (
+                    <div className='cartheadlinesdivCheckout' style={{ marginTop: "10px" }}>
+                        <div className='headlines'>
+                            <div className='_3ENQxz'>3</div>
+                        </div>
                         <div>
-                            <div className='prdctSpecificationandImage'>
-                                <div className='pixelImage'><img src={cartProducts.productId.prdctimgsrc} alt="img" style={{ width: "112px", height: "92px", objectFit: "contain" }} /></div>
-                                <div className='pixel7aSpecifications'>
-                                    <div style={{
-                                        fontFamily: "Arial, Helvetica, sans-serif",
-                                        fontSize: "16px"
-                                    }} >{cartProducts.productId.productName}</div>
+                            <div className='headlineLogin'>ORDER SUMMARY
+                                <svg height="10" width="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="_1t8m48"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" stroke="#2974f0"></path></svg>
+                            </div>
+                            <div>
+                                <div style={{ display: "flex" }}>
+                                    {getBookingId} items
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
 
 
-                                    <div style={{
-                                        fontFamily: "Arial, Helvetica, sans-serif",
-                                        fontSize: "12px", color: "#878787", marginTop: "8px"
-                                    }} >Seller:IndiFlashMart</div>
+                {!showDiv ?
+                    <div className='cartprdctSpecificationDiv'>
 
-                                    <div style={{ display: "flex", }}>
 
-                                        <del style={{ color: "#878787", fontSize: "14px", margin: "22px 10px 0px 0px", fontFamily: "Arial, Helvetica, sans-serif" }}>₹43,999</del>
-                                        <div style={{ fontSize: "18px bold", margin: "18px 8px 0px 0px", }}>{cartProducts.productId.productRate}</div>
-                                        <div style={{ color: "#388E3C", fontSize: "14px", margin: "22px 12px 0px 0px" }}>13% Off</div>
-                                        <div style={{ color: "#388E3C", fontSize: "14px", margin: "22px 0px 0px 0px" }}>2 offers applied</div> <img src={infoicon} alt="img" style={{ width: "14px", height: "14px", objectFit: "contain", margin: "18px 0px 50px 0px" }} />
+                        <div style={{
+                            width: "242px",
+                            height: "19.594px", display: "flex",
+                            position: "absolute",
+                            left: "640px"
+                        }}> Delivery by Sat Dec 16 | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
+
+                        {showBookedProduct.map((cartProducts, key) => (
+                            <div>
+                                <div className='prdctSpecificationandImage'>
+                                    <div className='pixelImage'><img src={cartProducts.productId.prdctimgsrc} alt="img" style={{ width: "112px", height: "92px", objectFit: "contain" }} /></div>
+                                    <div className='pixel7aSpecifications'>
+                                        <div style={{
+                                            fontFamily: "Arial, Helvetica, sans-serif",
+                                            fontSize: "16px"
+                                        }} >{cartProducts.productId.productName}</div>
+
+
+                                        <div style={{
+                                            fontFamily: "Arial, Helvetica, sans-serif",
+                                            fontSize: "12px", color: "#878787", marginTop: "8px"
+                                        }} >Seller:IndiFlashMart</div>
+
+                                        <div style={{ display: "flex", }}>
+
+                                            <del style={{ color: "#878787", fontSize: "14px", margin: "22px 10px 0px 0px", fontFamily: "Arial, Helvetica, sans-serif" }}>₹43,999</del>
+                                            <div style={{ fontSize: "18px bold", margin: "18px 8px 0px 0px", }}>{cartProducts.productId.productRate}</div>
+                                            <div style={{ color: "#388E3C", fontSize: "14px", margin: "22px 12px 0px 0px" }}>13% Off</div>
+                                            <div style={{ color: "#388E3C", fontSize: "14px", margin: "22px 0px 0px 0px" }}>2 offers applied</div> <img src={infoicon} alt="img" style={{ width: "14px", height: "14px", objectFit: "contain", margin: "18px 0px 50px 0px" }} />
+                                        </div>
+
                                     </div>
+
 
                                 </div>
 
-
-                            </div>
-
-                            {/* { console.log(cartProducts._id)
+                                {/* { console.log(cartProducts._id)
                            } */}
-                            <div className='quatityAndRemove'>
-                                <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => decrementCount(cartProducts._id)}>-</button>
+                                <div className='quatityAndRemove'>
+                                    <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => decrementCount(cartProducts._id)}>-</button>
 
-                                <div style={{ width: "46px", height: "28px", border: "1px solid #e4e7ed", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "5px", marginRight: "5px" }}>{cartProducts.cartQuantity}</div>
-                                <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => incrementCount(cartProducts._id)}>+</button>
-                                <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "20px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => Wishlist(cartProducts.productId._id)}>WISHLIST</button>
-                                <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "10px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => removeCart(cartProducts._id)}>REMOVE</button>
+                                    <div style={{ width: "46px", height: "28px", border: "1px solid #e4e7ed", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "5px", marginRight: "5px" }}>{cartProducts.cartQuantity}</div>
+                                    <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => incrementCount(cartProducts._id)}>+</button>
+                                    <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "20px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => Wishlist(cartProducts.productId._id)}>WISHLIST</button>
+                                    <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "10px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => removeCart(cartProducts._id)}>REMOVE</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-                
+                        ))}
+                    </div> : cartprdctSpecificationDiv}
+
                 {!showDiv ?
                     <div className='placeorderContinueDiv'>
                         <div style={{ display: "flex" }}>
@@ -268,18 +325,26 @@ const CheckoutPage = () => {
                     </div> : continueDivDisabled}
 
 
-                <div className='paymentOptionDiv'>
+                <div className={showDiv ? 'paymentOptionDiv blueBackgroundPaymentOptionDiv' : 'paymentOptionDiv'}>
                     <div className='_3ENQxzSummary'>4</div>
                     <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontWeight: "600" }}>PAYMENT OPTIONS</div>
                 </div>
 
-
                 {showDiv && (
-                    <div className='cardPayment'>
+
+                    <div className='cardPaymentOpening' onClick={handleOpenCardPayment}>
                         <div>
-                            <input type="radio" id="" name="" value="" />
+                            <input type="radio" id="" name="" value="" checked />
                             <label for="html" style={{ marginLeft: "10px", fontFamily: "Roboto,Arial,sans-serif" }}>Credit/Debit/ATM Card</label>
+                            <div class="_2cAhoH">Add and secure cards as per RBI guidelines</div>
                         </div>
+                    </div>
+
+                )}
+
+
+                {showcardPayment && (
+                    <div className='cardPayment'>
 
                         <div style={{ display: "flex" }}>
                             <div style={{ margin: "16px 25px 0px 18px" }}>
@@ -291,7 +356,7 @@ const CheckoutPage = () => {
                                     focused={state.focus}
                                 />
                             </div>
-                            <form style={{ marginTop: "16px" }}>
+                            <div style={{ marginTop: "16px" }}>
 
                                 <input
                                     style={{ width: "285px", height: "31px", padding: "20px 16px 0px 13px", border: "1px solid #ccc" }}
@@ -328,21 +393,28 @@ const CheckoutPage = () => {
 
                                     </div>
                                 </div>
-                                <button className='btnPayCheckOut'>PAY ₹{totalPrice}</button>
-                            </form>
+                                <div>
+                                    <button className='btnPayCheckOut' onClick={placeOrder}>PAY ₹{totalPrice}</button>
+
+                                    {isLoading &&
+                                    <div id="light" class="white_content">
+                                   <div class="loader"></div>
+                                   </div>
+                                   }
+
+{isLightVisible &&
+                                          
+                                          <div id="light" class="white_content">
+                                   <div style={{fontSize:"28"}}>Payment Sucess</div>
+                                   </div>   } 
+                                        
+                                   {isFadeVisible && <div id="fade" class="black_overlay"></div>}
+      
+                                </div>
+                            </div>
 
                         </div>
 
-
-                    </div>
-                )}
-
-                {showDiv && (
-                    <div className='cashOnDelivery'>
-                        <div>
-                            <input type="radio" id="" name="" value="" />
-                            <label for="html" style={{ marginLeft: "10px", fontFamily: "Roboto,Arial,sans-serif" }}>Cash on Delivery</label>
-                        </div>
 
                     </div>
                 )}
@@ -385,7 +457,7 @@ const CheckoutPage = () => {
                     <div ><img src={safetyimg} alt="img" className='safetyshieldimg' /></div>
                     <div style={{ marginLeft: "10px" }}> Safe and Secure Payments.Easy returns.100% Authentic products.</div></div>
             </div>
-        </div>
+        </div >
     )
 }
 

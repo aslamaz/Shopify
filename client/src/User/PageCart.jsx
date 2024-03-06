@@ -86,11 +86,7 @@ const PageCart = () => {
         })
     }
 
-    const placeOrder = () =>{
-       axios.post(`http://localhost:5000/placeOrder/${Id}`).then((response)=>{
-            console.log(response.data);
-       })
-    }
+    
     useEffect(() => {
         addCartProduct();
         calculateTotal();
@@ -169,7 +165,7 @@ const PageCart = () => {
 
 
                 <div className='placeorderDiv'>
-                    <Link to={'/User/CheckoutPage'} className='myOrderlink'><button className='placeOrderbtn' onClick={placeOrder}>PLACE ORDER</button> </Link>
+                    <Link to={'/User/CheckoutPage'} className='myOrderlink'><button className='placeOrderbtn' >PLACE ORDER</button> </Link>
                 </div>
             </div>
 
