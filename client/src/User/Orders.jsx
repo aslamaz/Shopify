@@ -1,12 +1,32 @@
-import React from 'react'
-import searchicon from './UserImages/searchiconMyorder.jpg'
+import React, { useEffect, useState } from 'react'
+import searchicon from './UserImages/searchiconMyorder.svg'
 import boatheadset from './UserImages/headphoneimg.jpg'
 import greencircle from './UserImages/greencircle.png'
 import bluestar from './UserImages/Blue_star.svg'
 import { Link } from 'react-router-dom'
 import bag from './UserImages/bag.jpeg'
+import axios from 'axios'
 
 const Orders = () => {
+    const Id = sessionStorage.getItem("customerId");
+    const [showOrderedProduct, setShowOrderedProduct] = useState([]);
+
+    const addProductToMyorder = () => {
+        axios.get(`http://localhost:5000/cartWithMyorder/${Id}`).then((response) => {
+            console.log(response.data);
+            const data = response.data;
+            setShowOrderedProduct(data);
+
+
+
+
+        })
+    }
+
+    useEffect(() => {
+        addProductToMyorder();
+    }, [])
+
     return (
         <div>
             <div className='productDetailsPagehoverPrdctNames'>
@@ -22,118 +42,54 @@ const Orders = () => {
             </div>
 
 
-            <div className='pagePathsDiv'>
-                <div style={{ fontSize: "12px", fontFamily: "sans-serif", color: "#878787", paddingLeft: "8px" }}>Home - </div>
-                <div style={{ fontSize: "12px", fontFamily: "sans-serif", color: "#878787", paddingLeft: "8px" }}>My Account - </div>
-                <div style={{ fontSize: "12px", fontFamily: "sans-serif", color: "#878787", paddingLeft: "8px" }}>My Orders</div>
-            </div>
+
             <div className='myorderMaindiv'>
-                <div>
 
 
-                    <div className='myOrderFilterDiv'>
-                        <div style={{ fontSize: "20px", fontFamily: "Arial, Helvetica, sans-serif", color: "#272727", fontWeight: "550" }}>Filters</div>
-                    </div>
 
-                    <div className='orderStatusDiv'>
-                        <div style={{
-                            fontweight: "900",
-                            fontsize: "14px",
-                            textTransform: "capitalize",
-                            padding: "8px 0",
-                            fontFamily: "Arial, Helvetica, sans-serif"
-                        }}>
-                            ORDER STATUS
-                        </div>
-                        <div className='statusCheckBoxDiv'>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >On the way</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "12px", marginLeft: "10px" }} >Delivered</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "12px", marginLeft: "10px" }} >Cancelled</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >Returned</div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className='orderTimeDiv'>
-                        <div style={{
-                            fontweight: "900",
-                            fontsize: "14px",
-                            textTransform: "capitalize",
-                            padding: "8px 0",
-                            fontFamily: "Arial, Helvetica, sans-serif"
-                        }}>
-                            ORDER TIME
-                        </div>
-                        <div className='statusCheckBoxDiv'>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >Last 30 days</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >2023</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >2022</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >2021</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >2020</div>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", margin: " 0px 0px 12px" }}>
-                                <input type="checkbox" style={{ border: "1.4px solid", color: " #c2c2c2" }}></input>
-                                <div style={{ fontFamily: "Arial, Helvetica, sans-serif", fontsize: "10px", marginLeft: "10px" }} >Older</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div className='MyordereditemListDiv'>
-                    <input type="text" class="_1uMrhc" placeholder="Search your orders here" value=""></input>
-                    <button class="_2KpZ6l"><img src={searchicon} alt="img" style={{ width: "16px", height: "16px", margin: "0px 6px 0px 0px", }} /> <span>Search Orders</span></button>
+                    <div style={{ display: "flex" }}>
 
-                    <div className='orderedItemsDetailsDiv'>
-                        <div style={{ display: "flex" }}>
-                            <div className='MyorderImage'>
-                                <img src={boatheadset} alt="img" style={{ width: "75px", height: "75px", objectFit: "contain", margin: "0px 8.781", marginLeft: "26px" }} />
-                            </div>
-                            <div style={{ width: "336.953", height: "75px" }}>
-                                <span class="rowtextDetails">boAt Rockerz 450 with Upto 15 Hours Play...</span>
-                                <div style={{ color: "#878787", fontsize: "12px", marginTop: "10px" }}>color:Biege</div>
-                            </div>
-                            <div class="col-2-12">₹1,199</div>
-
-                            <div style={{ width: "336.953", height: "85.766px" }}>
-                                <img src={greencircle} alt="img" style={{ width: "10px", height: "10px", margin: "0px 8px 0px 0px" }} />
-                                <span class="AO0UbU">Delivered on Mar 30, 2022</span>
-                                <div class="_30gI7w">Your item has been delivered</div>
-                                <div style={{ display: "flex", marginTop: "10px", alignItems: "center" }}>
-                                    <img src={bluestar} alt="img" style={{ width: "18px", height: "21.375", margin: "0px 8px 0px 2px" }} />
-                                    <div style={{ fontFamily: "sans-serif" }}><Link style={{ textDecoration: "none", color: "blue" }}> Rate & Review Product</Link></div>
-                                </div>
-                            </div>
-                        </div>
-
-
+                        <input type="text" class="_1uMrhc" placeholder="Search your orders here" value=""></input>
+                        <button class="_2KpZ6l"><img src={searchicon} alt="img" style={{ width: "16px", height: "16px", margin: "0px 6px 0px 0px", }} /> <span>Search Orders</span></button>
                     </div>
+                        {showOrderedProduct.map((orderedProducts, key) => (
+                            
+                            
+                            <Link to={`/User/Deliverydetails/${orderedProducts.productId._id}`} className='Userlinks'>
+                            <div className='orderedItemsDetailsDiv'>
+                                <div style={{ display: "flex" }}>
+                                    <div style={{ width: "508.500px", height: "75px", display: "flex" }}>
+                                        <div className='MyorderImage'>
+                                            <img src={orderedProducts.productId.prdctimgsrc} alt="img" style={{ width: "75px", height: "75px", objectFit: "contain", margin: "0px 8.781", marginLeft: "26px", marginRight: "26px" }} />
+                                        </div>
+                                        <div style={{ width: "338.953", height: "75px" }}>
+                                            <span class="rowtextDetails">{orderedProducts.productId.ProductDescription}...</span>
 
-                    <div className='orderedItemsDetailsDiv'>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2-12">{orderedProducts.productId.productRate}</div>
+
+                                    <div style={{ width: "336.953", height: "85.766px" }}>
+                                        <img src={greencircle} alt="img" style={{ width: "10px", height: "10px", margin: "0px 8px 0px 0px" }} />
+                                        <span class="AO0UbU">Delivered on Mar 30, 2022</span>
+                                        <div class="_30gI7w">Your item has been delivered</div>
+                                        <div style={{ display: "flex", marginTop: "10px", alignItems: "center" }}>
+                                            <img src={bluestar} alt="img" style={{ width: "18px", height: "21.375", margin: "0px 8px 0px 4px" }} />
+                                            <div style={{ fontFamily: "sans-serif" }}><Link style={{ textDecoration: "none", color: "blue" }}> Rate & Review Product</Link></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                    </Link>
+                        ))}
+
+                    {/* <div className='orderedItemsDetailsDiv'>
                         <div style={{ display: "flex" }}>
                             <div style={{ display: "flex", width: "505.5px", height: "75px" }}>
                                 <div className='MyorderImage'>
@@ -158,7 +114,7 @@ const Orders = () => {
                         </div>
 
 
-                    </div>
+                    </div> */}
                 </div>
 
 

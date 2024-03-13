@@ -14,6 +14,8 @@ import Orders from './Orders'
 import Coupons from './Coupons'
 import HoverPage from './HoverPage'
 import CheckoutPage from './CheckoutPage'
+import DeliveryDetails from './DeliveryDetails'
+import WriteReview from './WriteReview'
 
 const App = () => {
   return (
@@ -35,6 +37,8 @@ const App = () => {
         <Route path='Coupons' element={<Coupons/>}/>
         <Route path='HoverPage' element={<HoverPage/>}/>
         <Route path='CheckoutPage' element={<CheckoutPage/>}/>
+        <Route path='Deliverydetails/:id' element={<DeliveryDetails/>}/>
+        <Route path='WriteReview/:id' element={<WriteReview/>}/>
     </Routes>
     </div>
     </div>

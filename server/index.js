@@ -1380,6 +1380,36 @@ app.get("/cartWithBooking/:id", async (req, res) => {
     }
 });
 
+
+
+// cart to myorder.............
+app.get("/cartWithMyorder/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+       
+
+        const cartWithMyorder = await modelCart.find({ __v: 0 }).populate({
+            path: 'bookingId',
+            match: {
+                __v: 1,
+                customerId: Id,
+            }
+        }).populate("productId");
+
+
+
+        const filteredcartWithMyorder = cartWithMyorder.filter(
+            (cartWithMyorder) => cartWithMyorder.bookingId
+        );
+        res.json(filteredcartWithMyorder);
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 // Place Order from Cart.............
 app.post("/placeOrder/:id", async (req, res) => {
     const Id = req.params.id;
@@ -1536,9 +1566,9 @@ const collectionReviewShema = new Schema({
         ref: "tblCustomer",
         require: true,
     },
-    shopId: {
+    productId: {
         type: Schema.Types.ObjectId,
-        ref: "tblShop",
+        ref: "tblProduct",
         require: true,
     },
     reviewDateTime: {
@@ -1548,16 +1578,20 @@ const collectionReviewShema = new Schema({
     customerName: {
         type: String,
         require: true,
-    }
+    },
+    reviewTitle: {
+        type: String,
+        require: true,
+    },
 })
 const modelReview = model("tblReview", collectionReviewShema);
 
 //Create Review...............
 app.post("/Review", async (req, res) => {
     try {
-        const { reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName } = req.body;
+        const { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle } = req.body;
         const newReview = new modelReview({
-            reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName
+            reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle
         });
         await newReview.save();
         res.json(newReview);
@@ -1613,10 +1647,10 @@ app.get("/customerWithReview/:id", async (req, res) => {
 app.put("/updateReview/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const { reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName } = req.body;
+        const { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle } = req.body;
         const updateReview = await modelReview.findByIdAndUpdate(
             id,
-            { reviewRating, reviewContent, customerId, shopId, reviewDateTime, customerName }, { new: true }
+            { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle }, { new: true }
         );
         res.json(updateReview);
     } catch (err) {

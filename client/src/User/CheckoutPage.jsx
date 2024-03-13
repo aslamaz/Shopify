@@ -4,9 +4,12 @@ import safetyimg from './UserImages/safetyimg.jpg'
 import Cards from 'react-credit-cards-2'
 import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import axios from 'axios'
+import paymentsucessImage from './UserImages/paymentSucessPage.jpg'
+import { Link } from 'react-router-dom'
 
 const CheckoutPage = () => {
     const Id = sessionStorage.getItem("customerId");
+   
     const [showBookedProduct, setShowBookedProduct] = useState([]);
     const [priceDetails, setPriceDetails] = useState([]);
     const [totalPrice, setTotalPrice] = useState('');
@@ -51,7 +54,10 @@ const CheckoutPage = () => {
     const addCartProduct = () => {
         axios.get(`http://localhost:5000/cartWithBooking/${Id}`).then((response) => {
             console.log(response.data);
+            const getBookingId = response.data[0]._id
             const cartLength = response.data.length;
+           
+            console.log(getBookingId);
             setbookingId(cartLength)
             const data = response.data;
             setShowBookedProduct(data);
@@ -134,7 +140,9 @@ const CheckoutPage = () => {
 
 
         // 
-        setIsLoading(true); 
+        setIsLoading(true);
+        setFadeVisible(true);
+
 
         setTimeout(() => {
             // Simulated payment success
@@ -397,19 +405,27 @@ const CheckoutPage = () => {
                                     <button className='btnPayCheckOut' onClick={placeOrder}>PAY ₹{totalPrice}</button>
 
                                     {isLoading &&
-                                    <div id="light" class="white_content">
-                                   <div class="loader"></div>
-                                   </div>
-                                   }
+                                        <div id="light" class="loader-white_content">
+                                            <div class="loader"></div>
+                                        </div>
+                                    }
+                                  
+                                    {isLightVisible &&
 
-{isLightVisible &&
-                                          
-                                          <div id="light" class="white_content">
-                                   <div style={{fontSize:"28"}}>Payment Sucess</div>
-                                   </div>   } 
-                                        
-                                   {isFadeVisible && <div id="fade" class="black_overlay"></div>}
-      
+                                        <div id="light" class="white_content">
+                                            <div style={{ fontSize: "28",display:"flex",justifyContent:"center" }}>
+                                                <img src={paymentsucessImage} alt='img' className='paymentsucessImage'></img>
+                                            </div>
+                                            <div className='msg1Scss'> Your Payment is Successfull</div>
+                                            <div  className='msg2Scss'>Thank you for your Payment. an automated payment receipt will be sent to your registered email.</div>
+                                           <div className='lnkHome'>
+
+                                            <Link to={'/User'} className='lnkHome'>Back to Home</Link>
+                                           </div>
+                                        </div>}
+
+                                    {isFadeVisible && <div id="fade" class="black_overlay"></div>}
+
                                 </div>
                             </div>
 

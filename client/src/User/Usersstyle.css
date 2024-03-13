@@ -1457,10 +1457,11 @@ border-bottom: 1px solid #e4e7ed;
   border-radius: 4px 0 0 4px;
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
+  margin-top: 16px;
 }
 
 ._2KpZ6l {
-  width: 153.891px;
+  width: 160.891px;
   height: 40px;
   padding: 10px 20px;
   background: #0035c8;
@@ -1469,6 +1470,10 @@ border-bottom: 1px solid #e4e7ed;
   border: none;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
 }
 
 .orderedItemsDetailsDiv {
@@ -1491,10 +1496,11 @@ border-bottom: 1px solid #e4e7ed;
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
   margin-bottom: 20px;
+  width: 450px;
 }
 
 .col-2-12 {
-  width: 168.422px;
+  width: 169.422px;
   height: 85.766px;
   padding-left: 41.97px;
 }
@@ -1502,7 +1508,7 @@ border-bottom: 1px solid #e4e7ed;
 ._30gI7w {
   font-size: 12px;
   font-family: sans-serif;
-  margin: 8px 0px 0px;
+  margin: 8px 19px 0px;
 }
 
 .AO0UbU {
@@ -1998,12 +2004,28 @@ color: #000000;
   background-color: black;
   z-index: 1001;
   -moz-opacity: 0.8;
-  opacity: .80;
+  opacity: .8;
   filter: alpha(opacity=80);
+}
+
+.loader-white_content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 40%;
+  left: 35%;
+  width: 25%;
+  height: 10%;
+  padding: 16px;
+  background-color: white;
+  z-index: 1002;
+  
 }
 
 /* HTML: <div class="loader"></div> */
 .loader {
+  margin-left: 125px;
   width: 50px;
   padding: 8px;
   aspect-ratio: 1;
@@ -2019,3 +2041,232 @@ color: #000000;
   animation: l3 1s infinite linear;
 }
 @keyframes l3 {to{transform: rotate(1turn)}}
+
+.paymentsucessImage{
+  width: 500px;
+  height: 200px;
+  /* object-fit: contain; */
+}
+.msg1Scss{
+  font-size: 16px;
+  font-family: sans-serif;
+  margin-left: 225px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.msg2Scss{
+  font-size: 14px;
+  font-family: sans-serif;
+  margin-top: 10px;
+  margin-left: 40px;
+}
+.lnkHome{
+  font-family: sans-serif;
+  margin-top: 10px;
+  margin-left: 138px;
+  font-size: 14px;
+  color: red;
+}
+.firstDivAdd{
+  width: 1183px;
+  height: 196.359px;
+  background-color: #fff;
+  margin-bottom: 18px;
+}
+.addInnerDiv{
+  width: 642.031px;
+  height: 148.359px;
+  padding: 24px;
+}
+.addDivhead{
+  padding: 0px 0px 8px;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.addNamediv{
+ 
+  font-weight: 600;
+  font-size: 14px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.addressdiv{
+  width: 481.516px;
+  height: 39.188px;
+  padding: 10px 0px 0px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+.DAddPhnDiv{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+.SecondDivAdd{
+  width: 1135px;
+  height: 137.594px;
+  background-color: #fff;
+  margin-bottom: 18px;
+  padding: 24px;
+  display: flex;
+}
+.imgdescDiv{
+  width: 283.750px;
+  height: 119.625px;
+  display: flex;
+}
+.prdctImdDiv{
+  width: 94.563px;
+  height: 75px;
+  object-fit: contain;
+}
+.ImgDescDiv{
+  width: 189.141px;
+  height: 119.625px;
+  font-family:Roboto, Arial, sans-serif;
+
+}
+.VO74C {
+  color: #26a541;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 35px;
+}
+.Bv11UC{
+  display: inline-block;
+    position: relative;
+    margin-top: 30px;
+
+}
+.questionImgDescDiv{
+  border-radius: 50%;
+    background-color: #fff;
+    color: #878787;
+    font-weight: 500;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 16px;
+    text-align: center;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 0 1px 0 rgba(0,0,0,.2);
+    vertical-align: middle;
+    margin: 0 2px 0 8px;
+    cursor: pointer;
+}
+
+.containerStepper{
+  width: 400.828px;
+  height: 127.594px;
+  padding: 0px 50px 0px 40px;
+
+}
+.RatiingDiv{
+  color: #2874F0;
+  font-size: 14px;
+  font-family:Roboto, Arial, sans-serif;
+font-weight: 600;
+line-height: 50px;
+}
+._1dki8b{
+  margin: 0px 8px 0px 12px;
+ 
+}
+._1dki8bQues{
+  margin: 0px 8px 0px 12px;
+  width: 18px;
+  height: 18px;
+}
+.helpDiv{
+  color: #2874F0;
+  font-size: 14px;
+  font-family:Roboto, Arial, sans-serif;
+font-weight: 600;
+}
+.ratingDiv{
+  width:973px ;
+  height: 70px;
+  padding: 20px 22px;
+  background-color: #FFFFFF;
+  border-bottom:1px solid #e4e7ed;
+}
+._2sxtk {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-family:Roboto, Arial, sans-serif;
+
+}
+.ReviewprdctDiv{
+  width: 972.5px;
+  height: 312.969px;
+  padding: 20px 22px;
+  background-color: #FFFFFF;
+}
+.ReviewWriteprdctDiv{
+  width: 905px;
+  height: 163.391px;
+  padding: 15px;
+  border: 1px solid  #e4e7ed;
+}
+._24yZfu {
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #ff6161;
+font-size: 11px;
+font-family:Roboto, Arial, sans-serif;
+display: flex;
+justify-content: space-between;
+}
+._3kRe7w{
+  outline: none;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    resize: none;
+}
+.reviewTitleDiv{
+  width: 905px;
+  height: 41.391px;
+  padding: 15px;
+  border-bottom: 1px solid  #e4e7ed;
+  border-right: 1px solid  #e4e7ed;
+  border-left: 1px solid  #e4e7ed;
+}
+._24yZfuTitl{
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #000000;
+font-size: 11px;
+font-family:Roboto, Arial, sans-serif;
+
+}
+
+ .UoOCF0 {
+  width: 250px;
+  height: 55px;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  float: right;
+  margin: 0 22px 20px 0;
+  border: none;
+  cursor: pointer;
+  background: #fb641b;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+  border: none;
+  color: #fff;
+  font-family: Roboto, Arial, sans-serif;
+  letter-spacing: 0;
+ }
+ .btnSubmitDiv{
+  width: 973px;
+  height: 55px;
+  padding: 20px 22px;
+  background-color: #FFFFFF;
+ }
