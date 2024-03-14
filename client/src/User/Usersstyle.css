@@ -2270,3 +2270,141 @@ font-family:Roboto, Arial, sans-serif;
   padding: 20px 22px;
   background-color: #FFFFFF;
  }
+ ._3HKIdy{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  
+  background-color: #f1f3f6;
+  color: #212121;
+  line-height: 1.4;
+  font-family: Roboto, Arial, sans-serif;
+  background-color: #FFFFFF;
+
+
+ }
+ ._2QKOHZ{
+  width: 215.453px;
+  height: 43px;
+  padding: 24px 0px 0px 24px;
+  font-size: 24px;
+  font-weight: 600;
+ }
+ ._1q9yVr{
+ 
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.26);
+  border: none;
+  font-size: 14px;
+  color: #212121;
+  padding: 16px 36px;
+  cursor: pointer;
+  margin: 18px 18px 0 0;
+ }
+ .viewRatings{
+  width: 94.6%;
+  height: 107.578px;
+  padding: 24px;
+  background-color: #FFFFFF;
+  display: flex;
+  border-right: 1px solid #e4e7ed;
+ }
+ .ratingCount{
+  width: 110.562px;
+  height: 107.578px;
+ }
+ ._2yxeXv { 
+    font-size: 28px;
+ padding: 0 0 0 4px;
+ display: inline-block;
+ color: #212121;
+ font-family: Roboto, Arial, sans-serif;
+ }
+ ._2yxeXvstar{
+  font-size: 28px;
+ padding: 0 0 0 4px;
+ display: inline-block;
+ color: #212121;
+ line-height: 50px;
+ font-family: Roboto, Arial, sans-serif;
+ }
+ 
+.col-12-12{
+  
+  width: 100%;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: #878787;
+  width: 110.562px;
+  height: 39.188px;
+}
+.RatingBars{
+  width: 208.125px;
+  height: 107.578px;
+  padding-left: 12px;
+  border-right: 1px solid #e4e7ed;
+}
+
+* Three column layout */
+.side {
+  float: left;
+  /* width: 100%; */
+  margin-top:5px;
+}
+
+.middle {
+  margin-top:10px;
+  float: left;
+  width: 70%;
+}
+
+/* Place text to the right */
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 107.250;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+/* Individual bars */
+.bar-5 {width: 60%; height: 5px; border-radius: 10px;background-color: #04AA6D;}
+.bar-4 {width: 30%; height: 5px; border-radius: 10px;background-color: #2196F3;}
+.bar-3 {width: 10%; height: 5px; border-radius: 10px;background-color: #00bcd4;}
+.bar-2 {width: 4%; height: 5px; border-radius: 10px;background-color: #ff9800;}
+.bar-1 {width: 15%; height: 5px; border-radius: 10px;background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    /* width: 100%; */
+  }
+  .right {
+    display: none;
+  }
+}
+.RatingBarCount{
+  font-size: 14px;
+  color: #878787;
+  padding: 0px 5px 0px 12px;
+  font-family: Roboto, Arial, sans-serif;
+}
+._2LE14f{
+  width: 405.453px;
+  height: 107.578px;
+  margin-left: 2px;
+  display: flex;
+
+  align-items: center;
+}

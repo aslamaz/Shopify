@@ -1614,6 +1614,21 @@ app.get("/getReview", async (req, res) => {
     }
 });
 
+
+//Get review..............
+app.get("/getReview/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+        const getReview = await modelReview.find({productId : id});
+        res.json(getReview);
+
+        console.log(getReview);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
 // review with customer.............
 app.get("/reviewWithCustomer", async (req, res) => {
     try {

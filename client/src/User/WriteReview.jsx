@@ -2,6 +2,9 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { Rating } from 'react-simple-star-rating'
+import moment from 'moment'
+
+
 
 const WriteReview = () => {
     const { id } = useParams();
@@ -11,6 +14,9 @@ const WriteReview = () => {
     const [rating, setRating] = useState(0);
     const [reviewDesc, setReviewDesc] = useState('');
     const [ReviewTitle, setReviewTitle] = useState('');
+    
+    
+   
 
     // Catch Rating value
     const handleRating = (rate) => {
@@ -19,12 +25,15 @@ const WriteReview = () => {
 
     const addRateAndReview = () => {
 
+        const currentDateAndTime = moment().format("MMM YY"); 
+
         const data = {
             reviewRating: rating,
             customerId: Id,
             productId: id,
             reviewTitle: ReviewTitle,
             reviewContent: reviewDesc,
+            reviewDateTime:currentDateAndTime,
 
         }
 
@@ -32,7 +41,7 @@ const WriteReview = () => {
             console.log(response.data);
             setReviewDesc('')
             setReviewTitle('')
-            setRating('')
+            setRating(0)
 
         })
 
@@ -56,6 +65,7 @@ const WriteReview = () => {
                             onPointerEnter={onPointerEnter}
                             onPointerLeave={onPointerLeave}
                             onPointerMove={onPointerMove}
+                            
                         /* Available Props */
                         />
                     </div>
@@ -74,7 +84,7 @@ const WriteReview = () => {
                             <div>Description</div>
                             <div>Description cannot be empty</div>
                         </div>
-                        <textarea rows="8" placeholder="Description..." class="_3kRe7w" spellcheck="false" onChange={(event) => setReviewDesc(event.target.value)}></textarea>
+                        <textarea rows="8" placeholder="Description..." class="_3kRe7w" value={reviewDesc} spellcheck="false" onChange={(event) => setReviewDesc(event.target.value)}></textarea>
 
                     </div>
 
