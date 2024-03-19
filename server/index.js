@@ -927,6 +927,21 @@ app.get("/getProductWithId/:id", async (req, res) => {
         res.status(500).send("server eror");
     }
 });
+
+
+//Get product with id..............
+app.get("/getProductWithId/:id", async (req, res) => {
+    const Id = req.params.id
+    try {
+        const getProduct = await modelProduct.find({ _id: Id });
+        console.log(getProduct);
+        res.json(getProduct);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
 // Product with Subcategory.............
 app.get("/subCategoryWithProduct", async (req, res) => {
     try {
@@ -1554,7 +1569,7 @@ app.delete("/deleteCart/:id", async (req, res) => {
 //Review Shema....
 const collectionReviewShema = new Schema({
     reviewRating: {
-        type: String,
+        type: Number,
         require: true,
     },
     reviewContent: {
@@ -1620,9 +1635,17 @@ app.get("/getReview/:id", async (req, res) => {
     const id = req.params.id;
     try {
         const getReview = await modelReview.find({productId : id});
-        res.json(getReview);
 
-        console.log(getReview);
+        let sumOfRatings = 0;
+        for (let i = 0; i < getReview.length; i++) {
+            sumOfRatings += getReview[i].reviewRating;
+        }
+
+        const totalReviewsCount = await modelReview.countDocuments({ productId: id });
+
+        res.status(200).json({ reviews: getReview, sumOfRatings, totalReviewsCount });
+
+       
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server eror");

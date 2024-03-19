@@ -49,9 +49,9 @@ const WriteReview = () => {
     }
 
     // Optinal callback functions
-    const onPointerEnter = () => console.log('Enter')
-    const onPointerLeave = () => console.log('Leave')
-    const onPointerMove = (value, index) => console.log(value, index)
+    // const onPointerEnter = () => console.log('Enter')
+    // const onPointerLeave = () => console.log('Leave')
+    // const onPointerMove = (value, index) => console.log(value, index)
     return (
         <div  >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "32px", }}>
@@ -62,9 +62,9 @@ const WriteReview = () => {
                     <div className='RatingStarDiv'>
                         <Rating
                             onClick={handleRating}
-                            onPointerEnter={onPointerEnter}
-                            onPointerLeave={onPointerLeave}
-                            onPointerMove={onPointerMove}
+                            // onPointerEnter={onPointerEnter}
+                            // onPointerLeave={onPointerLeave}
+                            // onPointerMove={onPointerMove}
                             
                         /* Available Props */
                         />

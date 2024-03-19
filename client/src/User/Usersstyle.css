@@ -2339,10 +2339,10 @@ font-family:Roboto, Arial, sans-serif;
   height: 39.188px;
 }
 .RatingBars{
-  width: 208.125px;
+  width: 308.125px;
   height: 107.578px;
   padding-left: 12px;
-  border-right: 1px solid #e4e7ed;
+  /* border-right: 1px solid #e4e7ed; */
 }
 
 * Three column layout */

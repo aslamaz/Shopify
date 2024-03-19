@@ -5,7 +5,7 @@ import ratingstar from './UserImages/ratingstar.png'
 import tag from './UserImages/tag.png'
 import wishlistIcon from './UserImages/wishlistIcon.svg'
 import sandisklogo from './UserImages/sandisklogo.png'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
@@ -22,6 +22,7 @@ const ProductDetails = () => {
 
     const [showProduct, setShowProduct] = useState([]);
     const [showGallery, setShowGallery] = useState([]);
+    const [showRating, setShowRating] = useState([]);
     // const [customerBookingId,SetcustomerBookingId] = useState('');
     // const [bookingDate,setBookingDate] = useState('');
 
@@ -74,9 +75,19 @@ const ProductDetails = () => {
 
     const getRateAndReview = () => {
         axios.get(`http://localhost:5000/getReview/${id}`).then((response) => {
-            console.log(response.data);
-            // const data = response.data;
-
+            // console.log(response.data);
+          const sumOfRatings = response.data.sumOfRatings;
+          const totalReviewsCount = response.data.totalReviewsCount;
+         
+          // Calculate average rating out of 5
+          let averageRatingOutOf5 = 0;
+          if (totalReviewsCount !== 0) {
+              averageRatingOutOf5 = (sumOfRatings / totalReviewsCount) * (5 / 100);
+          }
+  
+          // Now you can use the averageRatingOutOf5 variable as needed
+          console.log('Average Rating (out of 5):', averageRatingOutOf5);
+           
         })
     }
 
@@ -139,7 +150,7 @@ const ProductDetails = () => {
 
                     <div className='buyButtons'>
                         <button className='btnAddcart' onClick={AddToCart}>ADD TO CART</button>
-                        <button className='btnBuynow'>BUY NOW</button>
+                        <Link to={`/User/BuyNowCheckout/${showProduct._id}`} className='Userlinks'><button className='btnBuynow'>BUY NOW</button></Link>
                     </div>
                 </div>
 
@@ -271,166 +282,171 @@ const ProductDetails = () => {
                         <div class="_3HKIdy">
                             <div class="_2QKOHZ">Ratings &amp; Reviews</div>
                             <div class="_3cH4s3">
-                                <button class=" _1q9yVr" type="submit">
-                                    <span>Rate Product</span>
-                                </button></div>
-                        </div>
+                            <Link to={`/User/WriteReview/${showProduct._id}`} className='Userlinks' >
 
-                        <div className='viewRatings'>
-                            <div className='ratingCount'>
-                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "48.797px" }}>
-                                    <div className='_2yxeXv'>4.3</div>
-                                    <div class="_2yxeXvstar">★</div>
-                                </div>
-
-                                <div class="col-12-12">
-                                    <span>3,45,607 Ratings </span>
-                                    <span style={{ display: "flex", justifyContent: "center" }}>&amp;</span>
-                                </div>
-
-                                <div class="col-12-12">
-                                    <span>38,442 Reviews</span>
-                                </div>
-
-                            </div>
-
-                            <div className='RatingBars'>
-
-
-
-                                <div style={{ display: "flex" }}>
-                                    <div class="side">
-                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>5 ★</div>
+                                    <button class=" _1q9yVr" type="submit">
+                                        <span>Rate Product</span>
+                                    </button>
+                                    </Link>
                                     </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-5"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div className='RatingBarCount'> 150</div>
-                                    </div>
-                                </div>
-
-                                <div style={{ display: "flex" }}>
-                                    <div class="side">
-                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>4 ★</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-4"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div className='RatingBarCount'>63</div>
-                                    </div>
-                                </div>
-
-                                <div style={{ display: "flex" }}>
-                                    <div class="side">
-                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>3 ★</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-3"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div className='RatingBarCount'>15</div>
-                                    </div>
-                                </div>
-
-                                <div style={{ display: "flex" }}>
-                                    <div class="side">
-                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>2 ★</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div className='RatingBarCount'>6</div>
-                                    </div>
-                                </div>
-
-                                <div style={{ display: "flex" }}>
-                                    <div class="side">
-                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>1 ★</div>
-                                    </div>
-                                    <div class="middle">
-                                        <div class="bar-container">
-                                            <div class="bar-1"></div>
-                                        </div>
-                                    </div>
-                                    <div class="side right">
-                                        <div className='RatingBarCount'>20</div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <div class="_2LE14f">
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
-
-                                        })}
-                                    />
-                                </div>
-
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
-
-                                        })}
-                                    />
-                                </div>
-
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
-
-                                        })}
-                                    />
-                                </div>
-
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
-
-                                        })}
-                                    />
-                                </div>
-                            </div>
-
-                        </div>
+                       
                     </div>
 
+                    <div className='viewRatings'>
+                        <div className='ratingCount'>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "48.797px" }}>
+                                <div className='_2yxeXv'>4.3</div>
+                                <div class="_2yxeXvstar">★</div>
+                            </div>
+
+                            <div class="col-12-12">
+                                <span>3,45,607 Ratings </span>
+                                <span style={{ display: "flex", justifyContent: "center" }}>&amp;</span>
+                            </div>
+
+                            <div class="col-12-12">
+                                <span>38,442 Reviews</span>
+                            </div>
+
+                        </div>
+
+                        <div className='RatingBars'>
 
 
 
+                            <div style={{ display: "flex" }}>
+                                <div class="side">
+                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>5 ★</div>
+                                </div>
+                                <div class="middle">
+                                    <div class="bar-container">
+                                        <div class="bar-5"></div>
+                                    </div>
+                                </div>
+                                <div class="side right">
+                                    <div className='RatingBarCount'> 150</div>
+                                </div>
+                            </div>
+
+                            <div style={{ display: "flex" }}>
+                                <div class="side">
+                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>4 ★</div>
+                                </div>
+                                <div class="middle">
+                                    <div class="bar-container">
+                                        <div class="bar-4"></div>
+                                    </div>
+                                </div>
+                                <div class="side right">
+                                    <div className='RatingBarCount'>63</div>
+                                </div>
+                            </div>
+
+                            <div style={{ display: "flex" }}>
+                                <div class="side">
+                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>3 ★</div>
+                                </div>
+                                <div class="middle">
+                                    <div class="bar-container">
+                                        <div class="bar-3"></div>
+                                    </div>
+                                </div>
+                                <div class="side right">
+                                    <div className='RatingBarCount'>15</div>
+                                </div>
+                            </div>
+
+                            <div style={{ display: "flex" }}>
+                                <div class="side">
+                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>2 ★</div>
+                                </div>
+                                <div class="middle">
+                                    <div class="bar-container">
+                                        <div class="bar-2"></div>
+                                    </div>
+                                </div>
+                                <div class="side right">
+                                    <div className='RatingBarCount'>6</div>
+                                </div>
+                            </div>
+
+                            <div style={{ display: "flex" }}>
+                                <div class="side">
+                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>1 ★</div>
+                                </div>
+                                <div class="middle">
+                                    <div class="bar-container">
+                                        <div class="bar-1"></div>
+                                    </div>
+                                </div>
+                                <div class="side right">
+                                    <div className='RatingBarCount'>20</div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        {/* <div class="_2LE14f">
+                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
+                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
+                                        strokeWidth={8}
+                                        styles={buildStyles({
+                                            pathColor: '#26A541',
+                                            textColor: '#black',
+                                            trailColor: '',
+
+                                        })}
+                                    />
+                                </div>
+
+                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
+                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
+                                        strokeWidth={8}
+                                        styles={buildStyles({
+                                            pathColor: '#26A541',
+                                            textColor: '#black',
+                                            trailColor: '',
+
+                                        })}
+                                    />
+                                </div>
+
+                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
+                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
+                                        strokeWidth={8}
+                                        styles={buildStyles({
+                                            pathColor: '#26A541',
+                                            textColor: '#black',
+                                            trailColor: '',
+
+                                        })}
+                                    />
+                                </div>
+
+                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
+                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
+                                        strokeWidth={8}
+                                        styles={buildStyles({
+                                            pathColor: '#26A541',
+                                            textColor: '#black',
+                                            trailColor: '',
+
+                                        })}
+                                    />
+                                </div>
+                            </div> */}
+
+                    </div>
                 </div>
-            </div>
 
+
+
+
+            </div>
         </div>
+
+        </div >
     )
 }
 
