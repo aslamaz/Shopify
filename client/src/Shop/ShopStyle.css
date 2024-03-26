@@ -591,3 +591,38 @@ input:not(:focus):valid~.gallery-floating-label {
 .GalleryTable{
   margin-top: 300px;
 }
+.orderStatusShopDiv{
+  width: 80%;
+ padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.MyorderImageShop {
+  /* width: 200.375px;
+  height: 75px; */
+  display: flex;
+  align-items: center;
+}
+
+.rowtextDetailsShop {
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 20px;
+  width: 280px;
+}
+
+/* .col-2-12Shop {
+  width: 100.422px;
+  height: 75.766px;
+  padding-left: 60.97px;
+  
+} */
+.chageStatusbtn{
+  width: 150px;
+  height: 30px;
+  color: #FFF;
+  background-color: #2874f0;
+  border-radius: 4px;
+}

@@ -18,6 +18,7 @@ const Sidebar = () => {
       <Link to={'/Shop/Myprofile'} className='shoplinks'> <div className='shopSideBarLinks'> Myprofile</div></Link>
       <Link to={'/Shop/Editprofile'} className='shoplinks'> <div className='shopSideBarLinks'> EditProfile</div></Link>
       <Link to={'/Shop/Changepassword'} className='shoplinks'> <div className='shopSideBarLinks'> Changepassword</div></Link>
+      <Link to={'/Shop/OrderStatus'} className='shoplinks'> <div className='shopSideBarLinks'> OrderStatus</div></Link>
 
 
 

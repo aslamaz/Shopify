@@ -1239,6 +1239,18 @@ app.get("/getBooking", async (req, res) => {
     }
 });
 
+
+//Get Booking ordered..............
+app.get("/getOrderedBooking", async (req, res) => {
+    try {
+        const getOrderedBooking = await modelBooking.find({__v:1}).populate('customerId');
+        res.json(getOrderedBooking);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
 // Booking with Customer.............
 app.get("/bookingWithCustomer", async (req, res) => {
     try {
@@ -1425,6 +1437,38 @@ app.get("/cartWithMyorder/:id", async (req, res) => {
     }
 });
 
+// cart to shop order status.............
+app.get("/cartWithOrderStatus/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+       
+
+        const cartWithOrderStatus = await modelCart.find({ __v: 0 }).populate({
+            path: 'bookingId',
+            match: {
+                __v: 1,
+            }
+        }).populate({
+            path: 'productId',
+            match: {
+                shopId : Id
+            }
+        });
+
+
+
+        const filteredcartWithOrderStatus = cartWithOrderStatus.filter(
+            (cartWithOrderStatus) => cartWithOrderStatus.bookingId
+        );
+        res.json(filteredcartWithOrderStatus);
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 // Place Order from Cart.............
 app.post("/placeOrder/:id", async (req, res) => {
     const Id = req.params.id;
@@ -1436,6 +1480,31 @@ app.post("/placeOrder/:id", async (req, res) => {
         const updatedBooking = await modelBooking.findOneAndUpdate(
             { __v: 0, customerId: Id },
             { __v: 1 },
+            { new: true }
+        );
+
+        res.json(updatedBooking);
+
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Change Order status.............
+app.post("/chageStatus/:id/:status", async (req, res) => {
+    const Id = req.params.id;
+    const status = req.params.status;
+    try {
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+        const updatedBooking = await modelBooking.findOneAndUpdate(
+            { __v: 0, customerId: Id },
+            { __v: status },
             { new: true }
         );
 
