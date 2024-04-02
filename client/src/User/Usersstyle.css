@@ -1497,6 +1497,8 @@ border-bottom: 1px solid #e4e7ed;
   font-family: Arial, Helvetica, sans-serif;
   margin-bottom: 20px;
   width: 450px;
+  color: #2874F0;
+  font-weight: 600;
 }
 
 .col-2-12 {
@@ -2103,12 +2105,13 @@ color: #000000;
   font-size: 14px;
 }
 .SecondDivAdd{
-  width: 1135px;
+  width: 700px;
   height: 137.594px;
   background-color: #fff;
   margin-bottom: 18px;
   padding: 24px;
   display: flex;
+  justify-content: space-around;
 }
 .imgdescDiv{
   width: 283.750px;
@@ -2122,7 +2125,7 @@ color: #000000;
 }
 .ImgDescDiv{
   width: 189.141px;
-  height: 119.625px;
+  height: 137.625px;
   font-family:Roboto, Arial, sans-serif;
 
 }
@@ -2157,9 +2160,11 @@ color: #000000;
 }
 
 .containerStepper{
-  width: 400.828px;
-  height: 127.594px;
-  padding: 0px 50px 0px 40px;
+  width: 1135px;
+  height: 100.594px;
+  padding:  24px;
+  background-color: #FFFFFF;
+  margin-bottom: 18px;
 
 }
 .RatiingDiv{

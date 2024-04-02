@@ -11,6 +11,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import moment from 'moment'
 
 const ProductDetails = () => {
     const percentage = 20;
@@ -34,6 +35,7 @@ const ProductDetails = () => {
             console.log(response.data);
             const data = response.data[0];
             setShowProduct(data);
+            // console.log(parseInt(showProduct.productRate)+40+69);
         })
     }
 
@@ -46,8 +48,20 @@ const ProductDetails = () => {
     }
 
     const AddToCart = () => {
+        const currentDateAndTime = moment().format("DD MMM YY");
+        const futureDateAndTime = moment().add(7, 'days').format("DD MMM YY");
+        const futureDayName = moment().add(4, 'days').format("dddd");
+
+        console.log("Future Day Name:", futureDayName);
+
+
         const data = {
-            customerId: Id
+            customerId: Id,
+            bookingDate:currentDateAndTime,
+            deliveryDate:futureDateAndTime,
+            dayName:futureDayName
+            // bookingTotalAmount:showProduct.productRate + 40 + 69
+           
         }
         axios.post('http://localhost:5000/Booking', data).then((response) => {
             console.log(response.data);

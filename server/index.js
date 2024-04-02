@@ -4,6 +4,7 @@ const cors = require("cors");
 const { connect, Schema, model, default: mongoose } = require("mongoose");
 const multer = require("multer");
 const { request } = require("https");
+const { parse } = require("querystring");
 
 
 const app = express();
@@ -929,18 +930,18 @@ app.get("/getProductWithId/:id", async (req, res) => {
 });
 
 
-//Get product with id..............
-app.get("/getProductWithId/:id", async (req, res) => {
-    const Id = req.params.id
-    try {
-        const getProduct = await modelProduct.find({ _id: Id });
-        console.log(getProduct);
-        res.json(getProduct);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send("server eror");
-    }
-});
+// //Get product with id..............
+// app.get("/getProductWithId/:id", async (req, res) => {
+//     const Id = req.params.id
+//     try {
+//         const getProduct = await modelProduct.find({ _id: Id });
+//         console.log(getProduct);
+//         res.json(getProduct);
+//     } catch (err) {
+//         console.error(err.message);
+//         res.status(500).send("server eror");
+//     }
+// });
 
 // Product with Subcategory.............
 app.get("/subCategoryWithProduct", async (req, res) => {
@@ -1186,6 +1187,14 @@ const collectionBookingShema = new Schema({
         type: String,
         require: true,
     },
+    deliveryDate: {
+        type: String,
+        require: true,
+    },
+    dayName: {
+        type: String,
+        require: true,
+    },
     bookingTotalAmount: {
         type: String,
         require: true,
@@ -1205,7 +1214,7 @@ const modelBooking = model("tblBooking", collectionBookingShema);
 //Create Booking...............
 app.post("/Booking", async (req, res) => {
     try {
-        const { bookingDate, customerId } = req.body;
+        const { bookingDate, customerId,deliveryDate,dayName } = req.body;
         const latestBooking = await modelBooking.findOne({ __v: 0, customerId }).sort({ _id: -1 });
         if (latestBooking) {
             res.json(latestBooking);
@@ -1213,7 +1222,7 @@ app.post("/Booking", async (req, res) => {
         }
         else {
             const newBooking = new modelBooking({
-                bookingDate, customerId
+                bookingDate, customerId,deliveryDate,dayName
             });
             await newBooking.save();
             res.json(newBooking);
@@ -1243,8 +1252,23 @@ app.get("/getBooking", async (req, res) => {
 //Get Booking ordered..............
 app.get("/getOrderedBooking", async (req, res) => {
     try {
-        const getOrderedBooking = await modelBooking.find({__v:1}).populate('customerId');
+        const getOrderedBooking = await modelBooking.find({ __v:  { $gt: 0 }  }).populate('customerId');
         res.json(getOrderedBooking);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
+//Get Booking MyOrder inUser..............
+app.get("/myOrderWithBooking/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        const myOrderWithBooking = await modelBooking.find({
+            __v: { $gt: 0 }, 
+            customerId:  Id
+        }).populate('customerId');
+        res.json(myOrderWithBooking);
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server eror");
@@ -1279,6 +1303,8 @@ app.get("/customerWithBooking/:id", async (req, res) => {
         res.status(500).send("server Error");
     }
 });
+
+
 
 //Update Booking...................
 app.put("/updateBooking/:id", async (req, res) => {
@@ -1375,6 +1401,18 @@ app.get("/getCart", async (req, res) => {
     }
 });
 
+//Get Cart with Bookied products..............
+app.get("/getBookedProducts/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        const getBookedProducts = await modelCart.find({bookingId:Id}).populate("productId");
+        res.json(getBookedProducts);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
 
 // Booking with cart.............
 app.get("/cartWithBooking/:id", async (req, res) => {
@@ -1413,12 +1451,12 @@ app.get("/cartWithBooking/:id", async (req, res) => {
 app.get("/cartWithMyorder/:id", async (req, res) => {
     const Id = req.params.id;
     try {
-       
+
 
         const cartWithMyorder = await modelCart.find({ __v: 0 }).populate({
             path: 'bookingId',
             match: {
-                __v: 1,
+                __v:  { $gt: 0 },
                 customerId: Id,
             }
         }).populate("productId");
@@ -1441,7 +1479,7 @@ app.get("/cartWithMyorder/:id", async (req, res) => {
 app.get("/cartWithOrderStatus/:id", async (req, res) => {
     const Id = req.params.id;
     try {
-       
+
 
         const cartWithOrderStatus = await modelCart.find({ __v: 0 }).populate({
             path: 'bookingId',
@@ -1451,7 +1489,7 @@ app.get("/cartWithOrderStatus/:id", async (req, res) => {
         }).populate({
             path: 'productId',
             match: {
-                shopId : Id
+                shopId: Id
             }
         });
 
@@ -1494,27 +1532,43 @@ app.post("/placeOrder/:id", async (req, res) => {
 });
 
 // Change Order status.............
-app.post("/chageStatus/:id/:status", async (req, res) => {
+app.post("/chageStatus/:status/:id", async (req, res) => {
     const Id = req.params.id;
     const status = req.params.status;
+
+    console.log(Id)
+    console.log(typeof (status))
     try {
         // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
         // const filteredcartWithBooking = cartWithBooking.filter(
         //     (cartWithBooking) => cartWithBooking.productId
         // );
         const updatedBooking = await modelBooking.findOneAndUpdate(
-            { __v: 0, customerId: Id },
+            { _id: Id },
             { __v: status },
             { new: true }
         );
 
         res.json(updatedBooking);
-
+        console.log(updatedBooking);
 
 
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server Error");
+    }
+});
+
+
+// Getting Order status.............
+app.get("/getOrderStatus/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        const getOrderStatus = await modelBooking.findOne({_id:Id});
+        res.json(getOrderStatus);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
     }
 });
 
@@ -1673,9 +1727,9 @@ const modelReview = model("tblReview", collectionReviewShema);
 //Create Review...............
 app.post("/Review", async (req, res) => {
     try {
-        const { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle } = req.body;
+        const { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName, reviewTitle } = req.body;
         const newReview = new modelReview({
-            reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle
+            reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName, reviewTitle
         });
         await newReview.save();
         res.json(newReview);
@@ -1703,7 +1757,7 @@ app.get("/getReview", async (req, res) => {
 app.get("/getReview/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const getReview = await modelReview.find({productId : id});
+        const getReview = await modelReview.find({ productId: id });
 
         let sumOfRatings = 0;
         for (let i = 0; i < getReview.length; i++) {
@@ -1714,7 +1768,7 @@ app.get("/getReview/:id", async (req, res) => {
 
         res.status(200).json({ reviews: getReview, sumOfRatings, totalReviewsCount });
 
-       
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server eror");
@@ -1754,10 +1808,10 @@ app.get("/customerWithReview/:id", async (req, res) => {
 app.put("/updateReview/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        const { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle } = req.body;
+        const { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName, reviewTitle } = req.body;
         const updateReview = await modelReview.findByIdAndUpdate(
             id,
-            { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName,reviewTitle }, { new: true }
+            { reviewRating, reviewContent, customerId, productId, reviewDateTime, customerName, reviewTitle }, { new: true }
         );
         res.json(updateReview);
     } catch (err) {
@@ -2038,7 +2092,7 @@ app.post("/Wishlist", async (req, res) => {
             res.send({ message: "Already Inserted" })
 
         } else {
-            
+
             console.log(newWishlist);
             let msg = ""
             if (newWishlist) {
