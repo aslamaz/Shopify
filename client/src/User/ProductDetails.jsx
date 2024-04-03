@@ -23,7 +23,8 @@ const ProductDetails = () => {
 
     const [showProduct, setShowProduct] = useState([]);
     const [showGallery, setShowGallery] = useState([]);
-    const [showRating, setShowRating] = useState([]);
+    const [review, setReview] = useState([]);
+
     // const [customerBookingId,SetcustomerBookingId] = useState('');
     // const [bookingDate,setBookingDate] = useState('');
 
@@ -57,11 +58,11 @@ const ProductDetails = () => {
 
         const data = {
             customerId: Id,
-            bookingDate:currentDateAndTime,
-            deliveryDate:futureDateAndTime,
-            dayName:futureDayName
+            bookingDate: currentDateAndTime,
+            deliveryDate: futureDateAndTime,
+            dayName: futureDayName
             // bookingTotalAmount:showProduct.productRate + 40 + 69
-           
+
         }
         axios.post('http://localhost:5000/Booking', data).then((response) => {
             console.log(response.data);
@@ -89,21 +90,27 @@ const ProductDetails = () => {
 
     const getRateAndReview = () => {
         axios.get(`http://localhost:5000/getReview/${id}`).then((response) => {
-            // console.log(response.data);
-          const sumOfRatings = response.data.sumOfRatings;
-          const totalReviewsCount = response.data.totalReviewsCount;
-         
-          // Calculate average rating out of 5
-          let averageRatingOutOf5 = 0;
-          if (totalReviewsCount !== 0) {
-              averageRatingOutOf5 = (sumOfRatings / totalReviewsCount) * (5 / 100);
-          }
-  
-          // Now you can use the averageRatingOutOf5 variable as needed
-          console.log('Average Rating (out of 5):', averageRatingOutOf5);
-           
+            console.log(response.data);
+            const data = response.data;
+            setReview(data);
+
+
+            const sumOfRatings = response.data.sumOfRatings;
+            const totalReviewsCount = response.data.totalReviewsCount;
+
+            // Calculate average rating out of 5
+            let averageRatingOutOf5 = 0;
+            if (totalReviewsCount !== 0) {
+                averageRatingOutOf5 = (sumOfRatings / totalReviewsCount) * (5 / 100);
+            }
+
+            // Now you can use the averageRatingOutOf5 variable as needed
+            console.log('Average Rating (out of 5):', averageRatingOutOf5);
+
         })
     }
+
+
 
     useEffect(() => {
         fetchProduct();
@@ -169,15 +176,8 @@ const ProductDetails = () => {
                 </div>
 
 
-                <div style={{ margin: "10px", flex: 5 }}>
-                    <div style={{
-                        fontSize: "12px",
-                        color: "#878787",
-                        fontFamily: "Roboto,Arial,sans-serif",
-
-                    }}>
-                        Home - Computers - Storage-Memmory Cards - Sandisk Me...   - Sandisk Ultra
-                    </div>
+                <div style={{ margin: "10px", flex: 5,height:"717.562px",overflowY:"scroll",scrollbarWidth: "none" }}>
+                   
                     <div style={{
                         fontSize: "18px",
                         color: "#black",
@@ -296,169 +296,172 @@ const ProductDetails = () => {
                         <div class="_3HKIdy">
                             <div class="_2QKOHZ">Ratings &amp; Reviews</div>
                             <div class="_3cH4s3">
-                            <Link to={`/User/WriteReview/${showProduct._id}`} className='Userlinks' >
+                                <Link to={`/User/WriteReview/${showProduct._id}`} className='Userlinks' >
 
                                     <button class=" _1q9yVr" type="submit">
                                         <span>Rate Product</span>
                                     </button>
-                                    </Link>
-                                    </div>
-                       
-                    </div>
-
-                    <div className='viewRatings'>
-                        <div className='ratingCount'>
-                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "48.797px" }}>
-                                <div className='_2yxeXv'>4.3</div>
-                                <div class="_2yxeXvstar">★</div>
-                            </div>
-
-                            <div class="col-12-12">
-                                <span>3,45,607 Ratings </span>
-                                <span style={{ display: "flex", justifyContent: "center" }}>&amp;</span>
-                            </div>
-
-                            <div class="col-12-12">
-                                <span>38,442 Reviews</span>
+                                </Link>
                             </div>
 
                         </div>
 
-                        <div className='RatingBars'>
-
-
-
-                            <div style={{ display: "flex" }}>
-                                <div class="side">
-                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>5 ★</div>
+                        <div className='viewRatings'>
+                            <div className='ratingCount'>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "48.797px" }}>
+                                    <div className='_2yxeXv'>4.3</div>
+                                    <div class="_2yxeXvstar">★</div>
                                 </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-5"></div>
-                                    </div>
+
+                                <div class="col-12-12">
+                                    <span>3,45,607 Ratings </span>
+                                    <span style={{ display: "flex", justifyContent: "center" }}>&amp;</span>
                                 </div>
-                                <div class="side right">
-                                    <div className='RatingBarCount'> 150</div>
+
+                                <div class="col-12-12">
+                                    <span>38,442 Reviews</span>
                                 </div>
+
                             </div>
 
-                            <div style={{ display: "flex" }}>
-                                <div class="side">
-                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>4 ★</div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-4"></div>
+                            <div className='RatingBars'>
+
+
+
+                                <div style={{ display: "flex" }}>
+                                    <div class="side">
+                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>5 ★</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-5"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div className='RatingBarCount'> 150</div>
                                     </div>
                                 </div>
-                                <div class="side right">
-                                    <div className='RatingBarCount'>63</div>
-                                </div>
-                            </div>
 
-                            <div style={{ display: "flex" }}>
-                                <div class="side">
-                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>3 ★</div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-3"></div>
+                                <div style={{ display: "flex" }}>
+                                    <div class="side">
+                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>4 ★</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-4"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div className='RatingBarCount'>63</div>
                                     </div>
                                 </div>
-                                <div class="side right">
-                                    <div className='RatingBarCount'>15</div>
-                                </div>
-                            </div>
 
-                            <div style={{ display: "flex" }}>
-                                <div class="side">
-                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>2 ★</div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-2"></div>
+                                <div style={{ display: "flex" }}>
+                                    <div class="side">
+                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>3 ★</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div className='RatingBarCount'>15</div>
                                     </div>
                                 </div>
-                                <div class="side right">
-                                    <div className='RatingBarCount'>6</div>
-                                </div>
-                            </div>
 
-                            <div style={{ display: "flex" }}>
-                                <div class="side">
-                                    <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>1 ★</div>
-                                </div>
-                                <div class="middle">
-                                    <div class="bar-container">
-                                        <div class="bar-1"></div>
+                                <div style={{ display: "flex" }}>
+                                    <div class="side">
+                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>2 ★</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div className='RatingBarCount'>6</div>
                                     </div>
                                 </div>
-                                <div class="side right">
-                                    <div className='RatingBarCount'>20</div>
+
+                                <div style={{ display: "flex" }}>
+                                    <div class="side">
+                                        <div style={{ width: "35px", fontSize: "14px", fontFamily: "Roboto, Arial, sans-serif" }}>1 ★</div>
+                                    </div>
+                                    <div class="middle">
+                                        <div class="bar-container">
+                                            <div class="bar-1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="side right">
+                                        <div className='RatingBarCount'>20</div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    {review.map((reviewData,key)=>(
 
 
+                    <div className='showReviewsAndRatingsDiv'>
+                        <div style={{ display: "flex" }}>
+                            <div class="_3LWZlK">
+                                <div>{reviewData.reviewRating}</div>
+                                <div>
+                                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMiI+PHBhdGggZmlsbD0iI0ZGRiIgZD0iTTYuNSA5LjQzOWwtMy42NzQgMi4yMy45NC00LjI2LTMuMjEtMi44ODMgNC4yNTQtLjQwNEw2LjUuMTEybDEuNjkgNC4wMSA0LjI1NC40MDQtMy4yMSAyLjg4Mi45NCA0LjI2eiIvPjwvc3ZnPg==" className="_1wB99o" />
+                                </div>
+
+
+                            </div>
+                            <div className="_2-N8zTTitle">{reviewData.reviewTitle}</div>
                         </div>
 
-                        {/* <div class="_2LE14f">
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
+                        <div className='ReviewDivRow'>
+                            <div style={{
+                                lineheight: "1.4",
+                                fontsize: "14px",
+                                color: " #212121"
+                            }}>
+                                {reviewData.reviewContent}
+                            </div>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <div className='BuyerDetailsDiv'>
+                                <div className="_2sc7ZR">{reviewData.customerId.customerName}</div>
+                                <svg width="14" height="14" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="_2a1p_T">
+                                    <g><circle cx="6" cy="6" r="6" fill="#878787"></circle>
+                                        <path stroke="#FFF" stroke-width="1.5" d="M3 6l2 2 4-4" fill="#878787"></path>
+                                    </g>
+                                </svg>
+                                <p class="_2mcZGG">
+                                    <span>Certified Buyer</span>
+                                    <span>, {reviewData.customerId.placeId.districtId.districtName}</span>
+                                </p>
+                                <p class="_2sc7ZRDate">{reviewData.reviewDateTime}</p>
+                            </div>
 
-                                        })}
-                                    />
+
+                            <div className='likeAndDislikediv'>
+                                <div className='likeBtnDiv'>
+                                    <img width="15" height="15" src="https://img.icons8.com/material-rounded/24/878787/thumb-up.png" alt="thumb-up" />                                <div className="_3c3Px5">25</div>
                                 </div>
 
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
-
-                                        })}
-                                    />
+                                <div className='likeBtnDiv'>
+                                    <img width="15" height="15" src="https://img.icons8.com/material-rounded/24/878787/thumbs-down.png" alt="thumbs-down" />
+                                    <div className="_3c3Px5">25</div>
                                 </div>
 
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
+                            </div>
 
-                                        })}
-                                    />
-                                </div>
-
-                                <div style={{ width: "70.359px", height: " 70.359px", padding: "12px 20px 0px" }}>
-                                    <CircularProgressbar value={percentage} text={`${percentage}%`}
-                                        strokeWidth={8}
-                                        styles={buildStyles({
-                                            pathColor: '#26A541',
-                                            textColor: '#black',
-                                            trailColor: '',
-
-                                        })}
-                                    />
-                                </div>
-                            </div> */}
-
+                        </div>
                     </div>
+                    ))}
+
+
+
+
                 </div>
-
-
-
-
             </div>
-        </div>
 
         </div >
     )

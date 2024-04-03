@@ -1753,8 +1753,8 @@ app.get("/getReview", async (req, res) => {
 });
 
 
-//Get review..............
-app.get("/getReview/:id", async (req, res) => {
+//Get getRatingAverage..............
+app.get("/getRatingAverage/:id", async (req, res) => {
     const id = req.params.id;
     try {
         const getReview = await modelReview.find({ productId: id });
@@ -1768,6 +1768,29 @@ app.get("/getReview/:id", async (req, res) => {
 
         res.status(200).json({ reviews: getReview, sumOfRatings, totalReviewsCount });
 
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server eror");
+    }
+});
+
+//Get getRatingAverage..............
+app.get("/getReview/:id", async (req, res) => {
+    const id = req.params.id;
+        try {
+            const getReview = await modelReview.find({productId:id}).populate({
+                path: "customerId",
+                populate: {
+                    path: "placeId",
+                    model: "tblPlaces",
+                    populate: {
+                        path: "districtId", // Assuming "district" is a field in the tblPlaces model
+                        model: "tblDistrict" // Replace "DistrictModel" with the actual model name for district
+                    }
+                }
+            });
+            res.json(getReview);
 
     } catch (err) {
         console.error(err.message);

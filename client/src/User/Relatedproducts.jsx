@@ -343,6 +343,7 @@ const Relatedproducts = () => {
                   </div>
                 </div>
               </div>
+
             ))}
 
             {/* <div className='prdctcards'>
