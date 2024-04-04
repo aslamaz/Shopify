@@ -8,9 +8,9 @@ import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import paymentsucessImage from './UserImages/paymentSucessPage.jpg'
 
 const BuyNowCheckout = () => {
-    const {pId} = useParams();
+    const { id } = useParams();
     const Id = sessionStorage.getItem("customerId");
-   
+
     const [showBookedProduct, setShowBookedProduct] = useState([]);
     const [priceDetails, setPriceDetails] = useState([]);
     const [totalPrice, setTotalPrice] = useState('');
@@ -22,7 +22,7 @@ const BuyNowCheckout = () => {
     const [continueDivDisabled, setContinueDivDisabled] = useState(false);
     const [cartprdctSpecificationDiv, setCartprdctSpecificationDiv] = useState(false)
     const [showcardPayment, setShowCardPayment] = useState(false)
-    const [getBookingId, setbookingId] = useState()
+    const [getCartQuatity, setCartQuatity] = useState()
     const [isLightVisible, setLightVisible] = useState(false);
     const [isFadeVisible, setFadeVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -53,20 +53,16 @@ const BuyNowCheckout = () => {
 
 
     const addCartProduct = () => {
-        axios.get(`http://localhost:5000/getProductwithId/${pId}`).then((response) => {
+        axios.get(`http://localhost:5000/buyNowWithBooking/${Id}`).then((response) => {
             console.log(response.data);
-            
-            const cartLength = response.data.length;
-           
-            
-            setbookingId(cartLength)
+
+            // const getBookingId = response.data[0]._id
+            // const cartLength = response.data.length;
+            // console.log(getBookingId);
+            // setbookingId(cartLength)
+
             const data = response.data;
             setShowBookedProduct(data);
-
-
-
-
-
         })
     }
 
@@ -90,7 +86,6 @@ const BuyNowCheckout = () => {
             const data = response.data;
             setPriceDetails(data.cartQuantity)
             addCartProduct()
-
             calculateTotal()
         })
     };
@@ -127,7 +122,7 @@ const BuyNowCheckout = () => {
     }
 
     const calculateTotal = () => {
-        axios.get(`http://localhost:5000/CartTotal/${Id}`).then((response) => {
+        axios.get(`http://localhost:5000/BuyNowTotal/${Id}`).then((response) => {
             console.log(response.data);
             const data = response.data;
             setTotalPrice(data)
@@ -155,6 +150,7 @@ const BuyNowCheckout = () => {
 
 
     }
+    
 
 
 
@@ -198,8 +194,8 @@ const BuyNowCheckout = () => {
     }
 
 
-  return (
-    <div className='cartMaindiv'>
+    return (
+        <div className='cartMaindiv'>
             <div>
 
                 <div className='cartheadlinesdivCheckout'>
@@ -264,7 +260,7 @@ const BuyNowCheckout = () => {
                             </div>
                             <div>
                                 <div style={{ display: "flex" }}>
-                                    {getBookingId} items
+                                    {getCartQuatity} items
                                 </div>
                             </div>
                         </div>
@@ -282,15 +278,15 @@ const BuyNowCheckout = () => {
                             left: "640px"
                         }}> Delivery by Sat Dec 16 | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
 
-                       {showBookedProduct.map((checkoutPrdcts,key)=>(
+                        {showBookedProduct.map((checkoutPrdcts, key) => (
                             <div>
                                 <div className='prdctSpecificationandImage'>
-                                    <div className='pixelImage'><img src={checkoutPrdcts.prdctimgsrc} alt="img" style={{ width: "112px", height: "92px", objectFit: "contain" }} /></div>
+                                    <div className='pixelImage'><img src={checkoutPrdcts.productId.prdctimgsrc} alt="img" style={{ width: "112px", height: "92px", objectFit: "contain" }} /></div>
                                     <div className='pixel7aSpecifications'>
                                         <div style={{
                                             fontFamily: "Arial, Helvetica, sans-serif",
                                             fontSize: "16px"
-                                        }} >{checkoutPrdcts.productName}</div>
+                                        }} >{checkoutPrdcts.productId.productName}</div>
 
 
                                         <div style={{
@@ -301,7 +297,7 @@ const BuyNowCheckout = () => {
                                         <div style={{ display: "flex", }}>
 
                                             <del style={{ color: "#878787", fontSize: "14px", margin: "22px 10px 0px 0px", fontFamily: "Arial, Helvetica, sans-serif" }}>₹43,999</del>
-                                            <div style={{ fontSize: "18px bold", margin: "18px 8px 0px 0px", }}>{checkoutPrdcts.productRate}</div>
+                                            <div style={{ fontSize: "18px bold", margin: "18px 8px 0px 0px", }}>{checkoutPrdcts.productId.productRate}</div>
                                             <div style={{ color: "#388E3C", fontSize: "14px", margin: "22px 12px 0px 0px" }}>13% Off</div>
                                             <div style={{ color: "#388E3C", fontSize: "14px", margin: "22px 0px 0px 0px" }}>2 offers applied</div> <img src={infoicon} alt="img" style={{ width: "14px", height: "14px", objectFit: "contain", margin: "18px 0px 50px 0px" }} />
                                         </div>
@@ -314,15 +310,15 @@ const BuyNowCheckout = () => {
                                 {/* { console.log(cartProducts._id)
                            } */}
                                 <div className='quatityAndRemove'>
-                                    <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => decrementCount('')}>-</button>
+                                    <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => decrementCount(checkoutPrdcts._id)}>-</button>
 
-                                    <div style={{ width: "46px", height: "28px", border: "1px solid #e4e7ed", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "5px", marginRight: "5px" }}>{''}</div>
-                                    <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => incrementCount('')}>+</button>
-                                    <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "20px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => Wishlist('')}>WISHLIST</button>
-                                    <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "10px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => removeCart('')}>REMOVE</button>
+                                    <div style={{ width: "46px", height: "28px", border: "1px solid #e4e7ed", display: "flex", justifyContent: "center", alignItems: "center", marginLeft: "5px", marginRight: "5px" }}>{checkoutPrdcts.cartQuantity}</div>
+                                    <button style={{ width: "28px", height: "28px", padding: "1px", borderRadius: "50%", border: "1px solid #e4e7ed" }} onClick={() => incrementCount(checkoutPrdcts._id)}>+</button>
+                                    <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "20px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => Wishlist(checkoutPrdcts.productId._id)}>WISHLIST</button>
+                                    <button style={{ fontSize: "16px", fontFamily: "sans-serif", marginLeft: "10px", marginRight: "10px", marginTop: "5px", border: "none", backgroundColor: "#FFFFFF" }} onClick={() => removeCart(checkoutPrdcts._id)}>REMOVE</button>
                                 </div>
                             </div>
-                    ))}
+                        ))}
                     </div> : cartprdctSpecificationDiv}
 
                 {!showDiv ?
@@ -402,34 +398,34 @@ const BuyNowCheckout = () => {
 
                                     </div>
                                 </div>
-                                {showBookedProduct.map((checkoutPrdcts,key)=>(
-                                <div>
-                                    <button className='btnPayCheckOut' onClick={placeOrder}>PAY ₹{parseInt(checkoutPrdcts.productRate)+40+69}</button>
+                              
+                                    <div>
+                                        <button className='btnPayCheckOut' onClick={placeOrder}>PAY ₹{totalPrice + 40 + 69}</button>
 
-                                    {isLoading &&
-                                        <div id="light" class="loader-white_content">
-                                            <div class="loader"></div>
-                                        </div>
-                                    }
-                                  
-                                    {isLightVisible &&
-
-                                        <div id="light" class="white_content">
-                                            <div style={{ fontSize: "28",display:"flex",justifyContent:"center" }}>
-                                                <img src={paymentsucessImage} alt='img' className='paymentsucessImage'></img>
+                                        {isLoading &&
+                                            <div id="light" class="loader-white_content">
+                                                <div class="loader"></div>
                                             </div>
-                                            <div className='msg1Scss'> Your Payment is Successfull</div>
-                                            <div  className='msg2Scss'>Thank you for your Payment. an automated payment receipt will be sent to your registered email.</div>
-                                           <div className='lnkHome'>
+                                        }
 
-                                            <Link to={'/User'} className='lnkHome'>Back to Home</Link>
-                                           </div>
-                                        </div>}
+                                        {isLightVisible &&
 
-                                    {isFadeVisible && <div id="fade" class="black_overlay"></div>}
+                                            <div id="light" class="white_content">
+                                                <div style={{ fontSize: "28", display: "flex", justifyContent: "center" }}>
+                                                    <img src={paymentsucessImage} alt='img' className='paymentsucessImage'></img>
+                                                </div>
+                                                <div className='msg1Scss'> Your Payment is Successfull</div>
+                                                <div className='msg2Scss'>Thank you for your Payment. an automated payment receipt will be sent to your registered email.</div>
+                                                <div className='lnkHome'>
 
-                                </div>
-                                ))}
+                                                    <Link to={'/User'} className='lnkHome'>Back to Home</Link>
+                                                </div>
+                                            </div>}
+
+                                        {isFadeVisible && <div id="fade" class="black_overlay"></div>}
+
+                                    </div>
+                               
                             </div>
 
                         </div>
@@ -444,41 +440,41 @@ const BuyNowCheckout = () => {
 
 
 
-            {showBookedProduct.map((checkoutPrdcts,key)=>(
-            <div className='orderSummary'>
-                <span className='PricedetailsDiv'>PRICE DETAILS</span>
-                <div className='priceAndValue'>
-                    <div className='orderSummarypricediv'>Price</div>
-                    <span className="orderSummaryValueediv">{checkoutPrdcts.productRate}</span>
-                </div>
-
-
-
-                <div className='priceAndValue'>
-                    <div className='orderSummarydeliverydiv'>Delivery Charges</div>
-                    <span className="orderSummarydiscountdiv"><div style={{ color: "#717478" }}>₹40</div></span>
-                </div>
-
-                <div className='priceAndValue'>
-                    <div className='packagingFeediv'>Secured Packaging Fee</div>
-                    <span className="orderSummarydiscountdiv">₹69</span>
-                </div>
-
-                <div className='amountfulldiv'>
-                    <div className='totalAmountdiv'>
-                        <div className='amountTag'>Total Amount</div>
-                        <div className='amount'>{parseInt(checkoutPrdcts.productRate)+40+69}</div>
+           
+                <div className='orderSummary'>
+                    <span className='PricedetailsDiv'>PRICE DETAILS</span>
+                    <div className='priceAndValue'>
+                        <div className='orderSummarypricediv'>Price({priceDetails} items)</div>
+                        <span className="orderSummaryValueediv">{totalPrice}</span>
                     </div>
+
+
+
+                    <div className='priceAndValue'>
+                        <div className='orderSummarydeliverydiv'>Delivery Charges</div>
+                        <span className="orderSummarydiscountdiv"><div style={{ color: "#717478" }}>₹40</div></span>
+                    </div>
+
+                    <div className='priceAndValue'>
+                        <div className='packagingFeediv'>Secured Packaging Fee</div>
+                        <span className="orderSummarydiscountdiv">₹69</span>
+                    </div>
+
+                    <div className='amountfulldiv'>
+                        <div className='totalAmountdiv'>
+                            <div className='amountTag'>Total Amount</div>
+                            <div className='amount'>{totalPrice + 40 + 69}</div>
+                        </div>
+                    </div>
+
+
+                    <div class="_1RVm3P">
+                        <div ><img src={safetyimg} alt="img" className='safetyshieldimg' /></div>
+                        <div style={{ marginLeft: "10px" }}> Safe and Secure Payments.Easy returns.100% Authentic products.</div></div>
                 </div>
-
-
-                <div class="_1RVm3P">
-                    <div ><img src={safetyimg} alt="img" className='safetyshieldimg' /></div>
-                    <div style={{ marginLeft: "10px" }}> Safe and Secure Payments.Easy returns.100% Authentic products.</div></div>
-            </div>
-            ))}
+           
         </div >
-  )
+    )
 }
 
 export default BuyNowCheckout

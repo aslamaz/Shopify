@@ -694,6 +694,7 @@ height: 737.562px; */
 .pincodeAndDeliveryDate {
   display: flex;
   align-items: center;
+  margin-top: 20px;
 }
 
 .inputStyleDiv {

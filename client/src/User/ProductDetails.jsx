@@ -24,6 +24,7 @@ const ProductDetails = () => {
     const [showProduct, setShowProduct] = useState([]);
     const [showGallery, setShowGallery] = useState([]);
     const [review, setReview] = useState([]);
+    const [bookingDate, setBookingDate] = useState('');
 
     // const [customerBookingId,SetcustomerBookingId] = useState('');
     // const [bookingDate,setBookingDate] = useState('');
@@ -45,6 +46,8 @@ const ProductDetails = () => {
             console.log(response.data);
             const data = response.data;
             setShowGallery(data);
+        }).catch((error)=> {
+            console.log(error);
         })
     }
 
@@ -75,6 +78,39 @@ const ProductDetails = () => {
                 alert(response.data.message)
                 navigate("/User/PageCart")
             })
+        })
+    }
+
+    const buyNow = () => {
+        const currentDateAndTime = moment().format("DD MMM YY");
+        const futureDateAndTime = moment().add(7, 'days').format("DD MMM YY");
+        const futureDayName = moment().add(4, 'days').format("dddd");
+
+        console.log("Future Day Name:", futureDayName);
+
+
+        const data = {
+            customerId: Id,
+            bookingDate: currentDateAndTime,
+            deliveryDate: futureDateAndTime,
+            dayName: futureDayName
+            // bookingTotalAmount:showProduct.productRate + 40 + 69
+
+        }
+        axios.post('http://localhost:5000/Booking', data).then((response) => {
+            console.log(response.data);
+            const bookingData = {
+                bookingId: response.data._id,
+                productId: id,
+            }
+            axios.post('http://localhost:5000/Cart', bookingData).then((response) => {
+                console.log(response.data.message);
+                
+            })
+            axios.post(`http://localhost:5000/buyNowStatusChange/${Id}`).then((response) => {
+            console.log(response.data);
+        })
+           
         })
     }
 
@@ -110,12 +146,21 @@ const ProductDetails = () => {
         })
     }
 
+    const calculateFutureDate = () => {
+        const currentDate = new Date();
+        const futureDate = new Date(currentDate);
+        futureDate.setDate(currentDate.getDate() + 7);
+        const options = { weekday: 'short', month: 'short', day: 'numeric' }; // Customize date format
+        const formattedDate = futureDate.toLocaleDateString('en-US', options); // Format date
+        setBookingDate(formattedDate);
+    };
 
 
     useEffect(() => {
         fetchProduct();
         fetchGallery();
         getRateAndReview();
+        calculateFutureDate();
     }, [])
     return (
         <div className='productDetailsMainDiv'>
@@ -171,7 +216,7 @@ const ProductDetails = () => {
 
                     <div className='buyButtons'>
                         <button className='btnAddcart' onClick={AddToCart}>ADD TO CART</button>
-                        <Link to={`/User/BuyNowCheckout/${showProduct._id}`} className='Userlinks'><button className='btnBuynow'>BUY NOW</button></Link>
+                        <Link to={`/User/BuyNowCheckout/${showProduct._id}`} className='Userlinks'><button className='btnBuynow' onClick={buyNow}>BUY NOW</button></Link>
                     </div>
                 </div>
 
@@ -270,10 +315,7 @@ const ProductDetails = () => {
                         marginTop: "10px"
                     }}>View 7 more Offers</div>
 
-                    <div className='delivery'>
-                        <div style={{ width: "110px", height: "32px", padding: "0px" }}><img src={sandisklogo} alt="img" className='sandisklogo' /></div>
-                        <div style={{ fontFamily: "Roboto,Arial,sans-serif", marginTop: "25px" }}>10 Year Warranty</div>
-                    </div>
+                    
 
                     <div>
                         <div className='pincodeAndDeliveryDate'>
@@ -285,9 +327,7 @@ const ProductDetails = () => {
                                     <input class="_36yFo0" placeholder="Enter Delivery Pincode" type="text" maxlength="6" id="pincodeInputId" value=""></input>
                                     <button className='pincodecheckbtn'>Check</button>
                                 </div>
-                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px", marginTop: "10px" }}>Delivery by14 Dec, Thursday|<del style={{ color: "#388e3c" }}>Free<del style={{ color: "#9e9e9e" }}>₹40</del></del></div>
-                                <div style={{ fontSize: "12px", fontWeight: "500", fontFamily: "Roboto,Arial,sans-serif" }}>if ordered before 1:08 PM</div>
-                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px", marginTop: "10px", color: "#2874F0" }}>View Details</div>
+                                <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "14px", marginTop: "10px" }}>Delivery by {bookingDate}|<del style={{ color: "#388e3c" }}>Free<del style={{ color: "#9e9e9e" }}>₹40</del></del></div>
                             </div>
                         </div>
                     </div>

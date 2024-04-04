@@ -1139,7 +1139,7 @@ app.get("/galleryWithProduct/:id", async (req, res) => {
     try {
         const galleryWithProduct = await modelGallery.find({ productId: id }).populate("productId")
         if (galleryWithProduct.length === 0) {
-            return res.status(404).json({ msg: "no Gallery found" });
+            return res.status(500).json({ msg: "no Gallery found" });
         }
         res.json(galleryWithProduct).status(200);
     } catch (err) {
@@ -1401,7 +1401,7 @@ app.get("/getCart", async (req, res) => {
     }
 });
 
-//Get Cart with Bookied products..............
+//Get Cart with Booked products..............
 app.get("/getBookedProducts/:id", async (req, res) => {
     const Id = req.params.id;
     try {
@@ -1438,6 +1438,34 @@ app.get("/cartWithBooking/:id", async (req, res) => {
         );
         res.json(filteredcartWithBooking);
 
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
+// Buy now Booking to checkout.............
+app.get("/buyNowWithBooking/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+
+        const cartWithBooking = await modelCart.find({ __v: 0 }).populate({
+            path: 'bookingId',
+            match: {
+                __v: 1,
+                customerId: Id,
+            }
+        }).populate("productId");
+
+        const filteredcartWithBooking = cartWithBooking.filter(
+            (cartWithBooking) => cartWithBooking.bookingId
+        );
+        res.json(filteredcartWithBooking);
 
     } catch (err) {
         console.error(err.message);
@@ -1531,6 +1559,31 @@ app.post("/placeOrder/:id", async (req, res) => {
     }
 });
 
+
+// buyNowStatusChange.............
+app.post("/buyNowStatusChange/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+        const updatedBooking = await modelBooking.findOneAndUpdate(
+            { __v: 0, customerId: Id },
+            { __v: 1 },
+            { new: true }
+        );
+
+        res.json(updatedBooking);
+
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 // Change Order status.............
 app.post("/chageStatus/:status/:id", async (req, res) => {
     const Id = req.params.id;
@@ -1569,6 +1622,48 @@ app.get("/getOrderStatus/:id", async (req, res) => {
     } catch (err) {
         console.error(err.message);
         res.status(500).send("server eror");
+    }
+});
+
+//  Buy now total.............
+app.get("/BuyNowTotal/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        // const cartWithBooking = await modelCart.find().populate("bookingId").populate("productId")
+        // const filteredcartWithBooking = cartWithBooking.filter(
+        //     (cartWithBooking) => cartWithBooking.productId
+        // );
+
+        const cartWithBooking = await modelCart.find({ __v: 0 }).populate({
+            path: 'bookingId',
+            match: {
+                __v: 1,
+                customerId: Id,
+            }
+        }).populate("productId");
+
+
+
+        const filteredcartWithBooking = cartWithBooking.filter(
+            (cartWithBooking) => cartWithBooking.bookingId
+        );
+
+        console.log(filteredcartWithBooking);
+        let totalPrice = 0
+        const Amount = filteredcartWithBooking.map((data) => {
+            totalPrice += parseInt(data.cartQuantity) * parseInt(data.productId.productRate)
+            console.log(totalPrice);
+
+        })
+        console.log(totalPrice);
+
+
+        res.json(totalPrice);
+
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
     }
 });
 

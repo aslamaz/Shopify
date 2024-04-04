@@ -11,6 +11,8 @@ const PageCart = () => {
     const [totalPrice, setTotalPrice] = useState('');
     const [showCustomerName, setShowCustomerName] = useState([]);
     const [showCustomerAddress, setShowCustomerAddress] = useState([]);
+    const [bookingDate, setBookingDate] = useState('');
+
 
 
     const addCartProduct = () => {
@@ -86,11 +88,21 @@ const PageCart = () => {
         })
     }
 
+    const calculateFutureDate = () => {
+        const currentDate = new Date();
+        const futureDate = new Date(currentDate);
+        futureDate.setDate(currentDate.getDate() + 7);
+        const options = { weekday: 'short', month: 'short', day: 'numeric' }; // Customize date format
+        const formattedDate = futureDate.toLocaleDateString('en-US', options); // Format date
+        setBookingDate(formattedDate);
+    };
+
     
     useEffect(() => {
         addCartProduct();
         calculateTotal();
         getUser();
+        calculateFutureDate();
     }, [])
 
 
@@ -117,7 +129,7 @@ const PageCart = () => {
                         height: "19.594px", display: "flex",
                         position: "absolute",
                         left: "640px"
-                    }}> Delivery by Sat Dec 16 | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
+                    }}> Delivery by {bookingDate} | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
 
                     {showBookedProduct.map((cartProducts, key) => (
                         <div>

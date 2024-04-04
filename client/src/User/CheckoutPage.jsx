@@ -24,6 +24,7 @@ const CheckoutPage = () => {
     const [getBookingId, setbookingId] = useState()
     const [isLightVisible, setLightVisible] = useState(false);
     const [isFadeVisible, setFadeVisible] = useState(false);
+    const [bookingDate, setBookingDate] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [state, setState] = useState({
         number: '',
@@ -54,11 +55,12 @@ const CheckoutPage = () => {
     const addCartProduct = () => {
         axios.get(`http://localhost:5000/cartWithBooking/${Id}`).then((response) => {
             console.log(response.data);
+
             const getBookingId = response.data[0]._id
             const cartLength = response.data.length;
-           
             console.log(getBookingId);
             setbookingId(cartLength)
+
             const data = response.data;
             setShowBookedProduct(data);
 
@@ -155,12 +157,20 @@ const CheckoutPage = () => {
 
     }
 
-
+    const calculateFutureDate = () => {
+        const currentDate = new Date();
+        const futureDate = new Date(currentDate);
+        futureDate.setDate(currentDate.getDate() + 7);
+        const options = { weekday: 'short', month: 'short', day: 'numeric' }; // Customize date format
+        const formattedDate = futureDate.toLocaleDateString('en-US', options); // Format date
+        setBookingDate(formattedDate);
+    };
 
     useEffect(() => {
         addCartProduct();
         calculateTotal();
         getUser();
+        calculateFutureDate();
     }, [])
 
 
@@ -279,7 +289,7 @@ const CheckoutPage = () => {
                             height: "19.594px", display: "flex",
                             position: "absolute",
                             left: "640px"
-                        }}> Delivery by Sat Dec 16 | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
+                        }}> Delivery by {bookingDate} | <div style={{ color: "#878787", marginRight: "5px", marginLeft: "3px" }}>₹40</div></div>
 
                         {showBookedProduct.map((cartProducts, key) => (
                             <div>

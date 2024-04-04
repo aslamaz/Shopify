@@ -15,6 +15,7 @@ const Relatedproducts = () => {
 
 
   const [showPrdcts, setShowPrdct] = useState([]);
+  const [showSubCategoryName,setSubCategoryName] = useState('');
 
   const Wishlist = (prdctId) =>{
     const data = {
@@ -30,6 +31,10 @@ const Relatedproducts = () => {
   useEffect(() => {
     axios.get(`http://localhost:5000/productWithSubCategory/${id}`).then((response) => {
       console.log(response.data);
+
+      const SubCategoryName = response.data[0];
+      setSubCategoryName(SubCategoryName.subCategoryId.subCategoryName);
+
       const data = response.data;
       setShowPrdct(data);
     })
@@ -258,12 +263,13 @@ const Relatedproducts = () => {
             </div>
 
             <div style={{ display: "flex", alignItems: "center", marginTop: "10px", }}>
+            
               <div style={{
                 fontSize: "18px",
                 color: "#black",
                 fontFamily: "Roboto,Arial,sans-serif",
                 marginRight: "10px"
-              }}>printers</div>
+              }}>{showSubCategoryName}</div>
 
               <div style={{
                 fontSize: "12px",
@@ -318,11 +324,7 @@ const Relatedproducts = () => {
 
                   <div style={{ fontSize: "14px" }}>{truncateText(productsdtls.ProductDescription, 7) + '...'}</div>
 
-                  <div style={{
-                    fontSize: "12px",
-                    color: "#878787",
-                    fontFamily: "Roboto,Arial,sans-serif", marginTop: "5px"
-                  }}>with adapter</div>
+                  
 
                   <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
                     <div style={{

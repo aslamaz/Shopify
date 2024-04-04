@@ -19,7 +19,7 @@ const WishList = () => {
 
     const [showCustomer, setShowCustomer] = useState([]);
     const [showWishlistPrdct, setShowWishlistPrdct] = useState([]);
-    // const [dltWishlist,setDltWishlist] = useState('');
+    const [WishlistLen,setWishlistLen] = useState([]);
 
     const Id = sessionStorage.getItem("customerId");
 
@@ -40,7 +40,9 @@ const WishList = () => {
 
     const getWishlist = () =>{
         axios.get(`http://localhost:5000/getWishlist/${Id}`).then((response) => {
-            console.log(response.data);
+            console.log(response.data.length);
+            const wishlistLength = response.data.length;
+            setWishlistLen(wishlistLength);
             const data = response.data;
             setShowWishlistPrdct(data);
     
@@ -137,7 +139,7 @@ const WishList = () => {
                 </div>
 
                 <div className='wishlistitemsDiv'>
-                    <div className='wishlistitemshead'>My Wishlist (2)</div>
+                    <div className='wishlistitemshead'>My Wishlist ({WishlistLen})</div>
                     {showWishlistPrdct.map((wishlistPrdct, key) => (
 
 
