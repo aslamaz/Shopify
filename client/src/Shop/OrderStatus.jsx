@@ -69,9 +69,6 @@ const OrderStatus = () => {
                         ) : orderedCustomer.__v === 4 ? (
                             <button className='chageStatusbtn' onClick={() => ChangeStatus(5, orderedCustomer._id)}>Delivered</button>
 
-                        ) : orderedCustomer.__v === 5 ? (
-                            <button className='chageStatusbtn' onClick={() => ChangeStatus(6, orderedCustomer._id)}>Complete</button>
-
                         ) : "completed"
                         }
                     </div>

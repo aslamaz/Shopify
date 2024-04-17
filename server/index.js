@@ -502,6 +502,20 @@ app.get("/subCategoryWithCategory", async (req, res) => {
     }
 });
 
+// subCategory with category.............
+app.get("/subCategoryWithCategoryHome/:id", async (req, res) => {
+    const Id = req.params.id;
+    try {
+        const subCategories = await modelSubCategory.find({ categoryId:Id }).populate("categoryId");
+       
+        res.json(subCategories);
+        // console.log(categorySubcategoryMap);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 // Category Based Subcategories.................
 app.get("/categoryWithSubcategory/:id", async (req, res) => {
     const id = req.params.id;

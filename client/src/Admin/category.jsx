@@ -57,7 +57,7 @@ const Category = () => {
 
   useEffect(() => {
     fetchCategory();
-  },[])
+  }, [])
   return (
     <div><div className='category'>
       <div className='containercategory'>
@@ -73,7 +73,7 @@ const Category = () => {
             <input type='text' name='Category' value={Category} placeholder='Category...' className='inputcategory' onChange={(event) => setCategory(event.target.value)} />
           </div>
           <div>
-            <input type="file" onChange={(event)=>setCategoryPhoto(event.target.files[0])} />
+            <input type="file" onChange={(event) => setCategoryPhoto(event.target.files[0])} />
           </div>
         </div>
 

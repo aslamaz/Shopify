@@ -57,9 +57,9 @@ const BuyNowCheckout = () => {
             console.log(response.data);
 
             // const getBookingId = response.data[0]._id
-            // const cartLength = response.data.length;
-            // console.log(getBookingId);
-            // setbookingId(cartLength)
+            const cartLength = response.data.length;
+           
+            setCartQuatity(cartLength)
 
             const data = response.data;
             setShowBookedProduct(data);
@@ -261,7 +261,9 @@ const BuyNowCheckout = () => {
                             <div>
                                 <div style={{ display: "flex" }}>
                                     {getCartQuatity} items
+                                    
                                 </div>
+                                
                             </div>
                         </div>
                     </div>}

@@ -199,8 +199,8 @@ const ProductDetails = () => {
                         </div>
                         {
                             showGallery.map((galleryImg, key) => (
-                                <div className='prdctDetailImagediv'>
-                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{ objectFit: "contain" }} />
+                                <div className='prdctDetailSubImagediv'>
+                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{ objectFit: "contain",height:"0px" }} />
                                 </div>
 
                             ))

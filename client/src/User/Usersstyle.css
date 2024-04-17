@@ -310,20 +310,9 @@ object-fit: contain;
   justify-content: space-between;
 }
 
-.arrowpath {
-  width: 36px;
-  height: 30px;
-}
-
-.arrowlogodiv {
-  display: flex;
-  justify-content: center;
-}
 
 .productsection {
-  display: flex;
-
-
+  /* display: flex; */
 }
 
 .headandprdctimages {
@@ -598,7 +587,7 @@ object-fit: contain;
 }
 
 .prdctDetailImagediv {
-  /* width: 437.484px; */
+  width: 437.484px;
   height: 446px;
   border: 1px solid #ccc;
   margin-top: 10px;

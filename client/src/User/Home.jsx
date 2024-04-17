@@ -19,7 +19,6 @@ import camera from './UserImages/camera.jpg'
 import sdcard from './UserImages/sdusb.jpg'
 import keyboard from './UserImages/keyboard.jpg'
 import flightadd from './UserImages/addflight.jpg'
-import Arrowpath from './UserImages/rightArrowPath.png'
 import gearcycle from './UserImages/gearcycle.jpg'
 import electriccycle from './UserImages/electriccycle.jpg'
 import gym from './UserImages/gym.jpg'
@@ -28,7 +27,7 @@ import remotecar from './UserImages/remotecar.jpg'
 import trycycle from './UserImages/ridions.jpg'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import {Carousel} from 'react-responsive-carousel'
+import { Carousel } from 'react-responsive-carousel'
 
 
 
@@ -39,37 +38,41 @@ const Home = () => {
   const [ShowSubCategory, setShowSubCategory] = useState([]);
 
 
-  const fetchProduct = () => {
-    axios.get('http://localhost:5000/subCategoryWithProduct').then((response) => {
-      console.log(response.data);
-      const data = response.data;
-      setShowPrdct(data);
+  // const fetchProduct = () => {
+  //   axios.get('http://localhost:5000/subCategoryWithProduct').then((response) => {
+  //     console.log(response.data);
+  //     const data = response.data;
+  //     setShowPrdct(data);
 
-    })
-  }
+  //   })
+  // }
 
   const fetchCategory = async () => {
-    axios.get('http://localhost:5000/getCategory').then(async (response) => {
-      console.log(response.data);
-      const data = response.data;
+    const response = await axios.get('http://localhost:5000/getCategory');
+    const categoriesData = response.data;
+
+    const updatedShowSubCategory = await Promise.all(categoriesData.map(async (category) => {
+      const subCategoryResponse = await axios.get(`http://localhost:5000/subCategoryWithCategoryHome/${category._id}`);
+      const subCategoryData = subCategoryResponse.data;
+
+      return { 'category': category.category, 'subCategory': subCategoryData };
+    }));
+
+    setShowSubCategory(updatedShowSubCategory);
+  }
+  console.log(ShowSubCategory);
 
 
-      setShowCategory(data);
-    })
-  }
-  const fetchSubCategory = () => {
-  axios.get('http://localhost:5000/subCategoryWithCategory').then((response) => {
-    console.log(response.data);
-    const data = response.data;
-    setShowSubCategory(data);
-  })
-  }
+
+
 
   useEffect(() => {
     fetchCategory();
-    fetchProduct();
-    fetchSubCategory();
+    // fetchProduct();
+    // fetchSubCategory();
   }, [])
+
+
 
   return (
     <div>
@@ -275,37 +278,38 @@ const Home = () => {
 
       <div className='scrollingimage'>
 
-      <Carousel showThumbs={false} showIndicators={false} showStatus={false} showArrows={false} autoPlay={true} infiniteLoop={true}>
-                <div>
-                <img src={slide1} alt="img" className='slideimage' />
-                </div>
-                <div>
-                <img src={slide2} alt="img" className='slideimage' />
-                </div>
-                <div>
-                <img src={slide3} alt="img" className='slideimage' />
-                </div>
-                <div>
-                <img src={slide4} alt="img" className='slideimage' />
-                </div>
-                <div>
-                <img src={slide5} alt="img" className='slideimage' />
-                </div>
-            </Carousel>
+        <Carousel showThumbs={false} showIndicators={false} showStatus={false} showArrows={false} autoPlay={true} infiniteLoop={true}>
+          <div>
+            <img src={slide1} alt="img" className='slideimage' />
+          </div>
+          <div>
+            <img src={slide2} alt="img" className='slideimage' />
+          </div>
+          <div>
+            <img src={slide3} alt="img" className='slideimage' />
+          </div>
+          <div>
+            <img src={slide4} alt="img" className='slideimage' />
+          </div>
+          <div>
+            <img src={slide5} alt="img" className='slideimage' />
+          </div>
+        </Carousel>
         {/* <marquee speed="500" behavior="alternate" scrollamount="10"> */}
-          
-          
-          
-          {/* <img src={slide3} alt="img" className='slideimage' /> */}
+
+
+
+        {/* <img src={slide3} alt="img" className='slideimage' /> */}
 
         {/* </marquee> */}
 
       </div>
-
-      {showCategory.map((Categories, key) => (
+<div style={{display:"flex"}}>
+  <div>
+      {ShowSubCategory.map((Categories, key) => (
 
         <div className='productsection'>
-         
+
 
           <div className='headandprdctimages'>
             <div className='prdctheading'>
@@ -313,77 +317,52 @@ const Home = () => {
                 fontSize: "24px",
                 fontFamily: "inter_semi_bold,fallback-inter_semi_bold"
               }}><b>{Categories.category}</b></div>
-              <div className='arrowlogodiv'><img src={Arrowpath} alt="img" className='arrowpath' /></div>
+
             </div>
 
 
 
             <div className='electronicprdcts'>
 
-              {ShowSubCategory.map((subCategories, key) => (
-                <Link to={`/User/Relatedproducts/${subCategories._id}`} className='Userlinks'>
+              {Categories.subCategory.map((subcategory, key) => (
+
+                <Link to={`/User/Relatedproducts/${subcategory._id}`} className='Userlinks'>
                   <div className='priceandimage'>
                     <div className='imagediv'>
-                      <img src={subCategories.subCategoryimgsrc} alt="img" className='eletronicsprdctimages' />
+                      <img src={subcategory.subCategoryimgsrc} alt="img" className='eletronicsprdctimages' />
                     </div>
                     <div className='pricenamediv'>
-                      <div style={{ display: "flex", justifyContent: "center", }}>{subCategories.subCategoryName}</div>
+                      <div style={{ display: "flex", justifyContent: "center", }}>{subcategory.subCategoryName}</div>
                       {/* <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>{prdctimages.productRate}</div> */}
                     </div>
 
                   </div>
-                  </Link>
+                </Link>
               ))}
-             
-                  {/* <div className='priceandimage'>
-                <div className='imagediv'>
-                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={usb} alt="img" className='eletronicsprdctimages' /></Link>
-
-                </div>
-                <div className='pricenamediv'>
-                  <div style={{ display: "flex", justifyContent: "center", }}>USB Gadjets</div>
-                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $179</div>
-                </div>
-              </div>
-              <div className='priceandimage'>
-                <div className='imagediv'>
-                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={camera} alt="img" className='eletronicsprdctimages' /></Link>
-                </div>
-                <div className='pricenamediv'>
-                  <div style={{ display: "flex", justifyContent: "center", }}>Top Mirrorless Camera</div>
-                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>Shop Now!</div>
-                </div>
-              </div>
-              <div className='priceandimage'>
-                <div className='imagediv'>
-                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={sdcard} alt="img" className='eletronicsprdctimages' /></Link>
-                </div>
-                <div className='pricenamediv'>
-                  <div style={{ display: "flex", justifyContent: "center", }}>USB & Pendrives</div>
-                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $289</div>
-                </div>
-              </div>
-              <div className='priceandimage'>
-                <div className='imagediv'>
-                  <Link to={'/User/Relatedproducts'} className='Userlinks'><img src={keyboard} alt="img" className='eletronicsprdctimages' /></Link>
-                </div>
-                <div className='pricenamediv'>
-                  <div style={{ display: "flex", justifyContent: "center", }}>Keyboard & Mouse</div>
-                  <div style={{ display: "flex", justifyContent: "center", fontSize: "20px" }}>From $169</div>
-                </div>
-              </div> */}
-                </div>
-
-          </div>
-
-            <div className='add'>
-              <img src={flightadd} alt="img" className='addflight' />
             </div>
+
           </div>
+        </div>
       ))}
+      </div>
 
+      <div className='add'>
+        <img src={flightadd} alt="img" className='addflight' />
+      </div>
 
-          {/* <div className='bueatytoysmore'>
+      </div>
+
+      {/* <div>
+         
+
+            {
+              ShowSubCategory.map((categories,key)=>{
+                console.log(categories.category)
+              })
+            }
+        </div> */}
+
+      {/* <div className='bueatytoysmore'>
         <div className='bueatytoysprdctheading'>
           <div style={{
             fontSize: "24px",
@@ -450,9 +429,9 @@ const Home = () => {
           </div>
         </div>
       </div> */}
-        </div>
+    </div>
 
-      )
+  )
 }
 
-      export default Home
+export default Home
