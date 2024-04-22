@@ -7,6 +7,13 @@ import assuredlogo from './UserImages/flipkartAssuredlogo.png'
 import ratingstar from './UserImages/ratingstar.png'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
+
+
+function valuetext(value) {
+  return `${value}`;
+}
 
 const Relatedproducts = () => {
 
@@ -15,17 +22,33 @@ const Relatedproducts = () => {
 
 
   const [showPrdcts, setShowPrdct] = useState([]);
-  const [showSubCategoryName,setSubCategoryName] = useState('');
+  const [showPrdctsCopy, setShowPrdctCopy] = useState([]);
+  const [showSubCategoryName, setSubCategoryName] = useState('');
+  const [value, setValue] = React.useState([100, 1000]);
 
-  const Wishlist = (prdctId) =>{
+
+  const handleChange = (event, newValue) => {
+    const [one,two] = newValue
+    setShowPrdct(showPrdctsCopy);
+    const filteredProductsByPrice = showPrdctsCopy.filter(
+      (productsFiltration) =>parseInt( productsFiltration.productRate )> one && parseInt(productsFiltration.productRate) < two
+    )
+    setShowPrdct(filteredProductsByPrice);
+    setValue(newValue);
+    // console.log(showPrdcts);
+    console.log(filteredProductsByPrice);
+  };
+  
+
+  const Wishlist = (prdctId) => {
     const data = {
-      productId : prdctId,
-       customerId : Id
+      productId: prdctId,
+      customerId: Id
     }
-    axios.post(`http://localhost:5000/Wishlist`,data).then((response)=>{
+    axios.post(`http://localhost:5000/Wishlist`, data).then((response) => {
       console.log(response.data);
     })
-}
+  }
 
 
   useEffect(() => {
@@ -37,6 +60,7 @@ const Relatedproducts = () => {
 
       const data = response.data;
       setShowPrdct(data);
+      setShowPrdctCopy(data)
     })
   }, [])
 
@@ -84,7 +108,18 @@ const Relatedproducts = () => {
               </div>
 
               <div className='pricefilter'>
-                <div className="_151IuQ">✕ Min-₹60000+</div>
+                <Box sx={{ width: 300 }}>
+                  <Slider
+                    getAriaLabel={() => 'Temperature range'}
+                    value={value}
+                    onChange={handleChange}
+                    valueLabelDisplay="auto"
+                    getAriaValueText={valuetext}
+                    min={1000} // Set the minimum value of the slider
+                    max={30000} // Set the maximum value of the slider
+                    
+                  />
+                </Box>
               </div>
             </div>
 
@@ -263,7 +298,7 @@ const Relatedproducts = () => {
             </div>
 
             <div style={{ display: "flex", alignItems: "center", marginTop: "10px", }}>
-            
+
               <div style={{
                 fontSize: "18px",
                 color: "#black",
@@ -299,7 +334,7 @@ const Relatedproducts = () => {
 
           <div className='Allprdctcards'>
             {showPrdcts.map((productsdtls, key) => (
-                  
+
 
 
               <div className='prdctcards'>
@@ -309,8 +344,8 @@ const Relatedproducts = () => {
 
                 <div className='wishlistIconDiv'>
                   <div className='wishlistIconDiv2'>
-                   <button onClick={()=> Wishlist(productsdtls._id)}>
-                     <img src={wishlistIcon} alt="img"  />
+                    <button onClick={() => Wishlist(productsdtls._id)}>
+                      <img src={wishlistIcon} alt="img" />
                     </button>
                   </div>
                 </div>
@@ -324,7 +359,7 @@ const Relatedproducts = () => {
 
                   <div style={{ fontSize: "14px" }}>{truncateText(productsdtls.ProductDescription, 7) + '...'}</div>
 
-                  
+
 
                   <div style={{ display: "flex", alignItems: "center", marginTop: "5px" }}>
                     <div style={{
