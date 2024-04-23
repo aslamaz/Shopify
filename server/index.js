@@ -930,6 +930,32 @@ app.get("/getProduct", async (req, res) => {
     }
 });
 
+
+//Get Mobile Phones product ..............
+app.get("/geMobileProduct/:id", async (req, res) => {
+    const Id = req.params.id;
+console.log(Id);
+    try {
+        const getProducts = await modelProduct.find().populate({
+            path: "subCategoryId",
+            populate: {
+                path: "categoryId",
+                model: "tblCategory",
+            }
+        });
+       ;
+
+        const filteredProducts = getProducts.filter(product => product.subCategoryId.categoryId._id == Id);
+
+        res.json(filteredProducts);
+        console.log(filteredProducts);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server error");
+    }
+});
+
+
 //Get product with id..............
 app.get("/getProductWithId/:id", async (req, res) => {
     const Id = req.params.id

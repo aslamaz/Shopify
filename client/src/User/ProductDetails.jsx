@@ -195,12 +195,12 @@ const ProductDetails = () => {
                     <Carousel showArrows={false} showStatus={false} showIndicators={false} axis={'horizontal'} style={{ display: 'flex' }}>
 
                         <div className='prdctDetailImagediv'>
-                            <img src={showProduct.prdctimgsrc} alt='img' style={{ objectFit: "contain", }} />
+                            <img src={showProduct.prdctimgsrc} alt='img' style={{ objectFit: "contain",height:"426px" }} />
                         </div>
                         {
                             showGallery.map((galleryImg, key) => (
                                 <div className='prdctDetailSubImagediv'>
-                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{ objectFit: "contain",height:"0px" }} />
+                                    <img src={galleryImg.Galleryimgsrc} alt='img' style={{ objectFit: "contain" }} />
                                 </div>
 
                             ))

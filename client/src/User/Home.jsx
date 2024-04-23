@@ -50,7 +50,7 @@ const Home = () => {
   const fetchCategory = async () => {
     const response = await axios.get('http://localhost:5000/getCategory');
     const categoriesData = response.data;
-
+    
     const updatedShowSubCategory = await Promise.all(categoriesData.map(async (category) => {
       const subCategoryResponse = await axios.get(`http://localhost:5000/subCategoryWithCategoryHome/${category._id}`);
       const subCategoryData = subCategoryResponse.data;
@@ -60,8 +60,9 @@ const Home = () => {
 
     setShowSubCategory(updatedShowSubCategory);
   }
-  console.log(ShowSubCategory);
+  
 
+ 
 
 
 
@@ -75,6 +76,7 @@ const Home = () => {
 
 
   return (
+    
     <div>
       <div className='homemainDiv'>
 
@@ -108,9 +110,8 @@ const Home = () => {
           </div>
         </div>
 
-
-
-
+       
+        <Link to={`/User/Mobiles/${"65a79b7466c4a55b4d17810b"}`} className='Userlinks'>
         <div className='linkimage'>
           <div className='imageDiv'>
             <img src={mobile} alt="img" className='productsimage' />
@@ -119,6 +120,8 @@ const Home = () => {
 
           </div>
         </div>
+        </Link>
+        {/* ))} */}
 
         <div className='linkimage'>
           <div className='Grocery-dropdown'>

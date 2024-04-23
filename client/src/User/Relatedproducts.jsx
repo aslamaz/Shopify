@@ -28,17 +28,17 @@ const Relatedproducts = () => {
 
 
   const handleChange = (event, newValue) => {
-    const [one,two] = newValue
+    const [one, two] = newValue
     setShowPrdct(showPrdctsCopy);
     const filteredProductsByPrice = showPrdctsCopy.filter(
-      (productsFiltration) =>parseInt( productsFiltration.productRate )> one && parseInt(productsFiltration.productRate) < two
+      (productsFiltration) => parseInt(productsFiltration.productRate) > one && parseInt(productsFiltration.productRate) < two
     )
     setShowPrdct(filteredProductsByPrice);
     setValue(newValue);
     // console.log(showPrdcts);
     console.log(filteredProductsByPrice);
   };
-  
+
 
   const Wishlist = (prdctId) => {
     const data = {
@@ -97,7 +97,7 @@ const Relatedproducts = () => {
             </div>
             <div className='imgdetails'>
 
-              <div style={{ padding: "10px 0px 0px 15px", fontSize: "18px", fontFamily: "Roboto,Arial,sans-serif" }}>Top Selling External SSD</div>
+              <div style={{ padding: "10px 0px 0px 15px", fontSize: "18px", fontFamily: "Roboto,Arial,sans-serif" }}>Top Selling External SSD </div>
               <div style={{ padding: "0px 0px 0px 15px", fontSize: "14px" }}>Grab Now Upto 60% Off</div>
             </div>
 
@@ -117,7 +117,7 @@ const Relatedproducts = () => {
                     getAriaValueText={valuetext}
                     min={1000} // Set the minimum value of the slider
                     max={30000} // Set the maximum value of the slider
-                    
+
                   />
                 </Box>
               </div>
@@ -133,149 +133,27 @@ const Relatedproducts = () => {
               </div>
             </div>
 
-            <div className='availabilities'>
-              <select name="brand" id="dropdownlists">
+            
 
-                <option value="" selected>BRAND</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
+            
+            
 
-            <div className='availabilities'>
-              <select name="customerRating" id="dropdownlists">
+            
 
-                <option value="" selected>CUSTOMER RATING</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
+            
 
-            <div className='availabilities'>
-              <select name="Discount" id="dropdownlists">
+           
 
-                <option value="" selected>DISCOUNT</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
+           
 
-            <div className='availabilities'>
-              <select name="gst" id="dropdownlists">
+            
 
-                <option value="" selected>GST INVOICE AVAILABLE</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
+           
 
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
+           
 
-                <option value="" selected>AVAILABILITY</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
-
-                <option value="" selected>OFFERS</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
-
-                <option value="" selected>CAPACITY</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
-
-                <option value="" selected>TYPES</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
-
-                <option value="" selected>DEVICE TYPE</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
-
-                <option value="" selected>INTERFACE TYPE</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
-            <div className='availabilities'>
-              <select name="avilability" id="dropdownlists">
-
-                <option value="" selected>FORM FACTOR</option>
-                <option value="">PNY</option>
-                <option value="">Sandisk</option>
-                <option value="" >HP</option>
-                <option value="" >WD</option>
-                <option value="" >Seagate</option>
-                <option value="" >2fortherroad</option>
-              </select>
-            </div>
-
+            
+              
           </div>
         </div>
 
