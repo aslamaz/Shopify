@@ -28,17 +28,17 @@ const Mobiles = () => {
     const [showCategoryName, setCategoryName] = useState('');
     const [value, setValue] = React.useState([100, 1000]);
     const [prdctlnght, setPrdctlnght] = useState([]);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    // const [anchorEl, setAnchorEl] = React.useState(null);
+    const [showSubCategory, setShowSubCategory] = useState([]);
+    const [subCategoryIds, setSubCategoryIds] = useState([]);
 
+   const clearFilter = () =>{
+    setValue([100,1000]);
+    setShowPrdct(showPrdctsCopy);
+   }
 
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
+    
+   
 
 
     const handleChange = (event, newValue) => {
@@ -63,9 +63,43 @@ const Mobiles = () => {
             console.log(response.data);
         })
     }
+    const fetchSubcategory = () => {
+        axios.get(`http://localhost:5000/getSubCategoryByCategoryId/${id}`).then((response) => {
+            console.log(response.data);
+            const data = response.data;
+            setShowSubCategory(data);
+
+        })
+    }
+
+    const subcategoryBasedProducts = (subCategoryId) => {
+        // Assuming setSubCategoryIds is a state setter function provided by React useState hook
+        // Assuming subCategoryIds is a state variable holding an array of subcategory IDs
+
+        // Update the state to include the new subcategory ID
+        setSubCategoryIds((prevState) => {
+            // Using spread operator to create a new array with the previous state and the new subcategory ID
+            const updatedIds = [...prevState, subCategoryId];
+            // Making the API call using Axios
+            axios.get(`http://localhost:5000/subCategoryMobileProducts/${updatedIds}`)
+                .then((response) => {
+                    // Once the data is fetched, log it and update the state to show the products
+                    console.log(response.data);
+                    setShowPrdct(response.data);
+                })
+                .catch((error) => {
+                    // Handle any errors that occur during the API call
+                    console.error('Error fetching products:', error);
+                });
+
+            // Return the updated array of subcategory IDs
+            return updatedIds;
+        });
+    }
 
 
     useEffect(() => {
+        fetchSubcategory();
         axios.get(`http://localhost:5000/geMobileProduct/${id}`).then((response) => {
             console.log(response.data);
 
@@ -88,7 +122,7 @@ const Mobiles = () => {
         return words.slice(0, maxWords).join(' ');
     }
 
-    
+
     return (
         <div>
 
@@ -121,10 +155,11 @@ const Mobiles = () => {
                         <div className='filterSection'>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                 <div style={{ fontSize: "18px", fontFamily: "Roboto,Arial,sans-serif" }}>Filters</div>
-                                <div style={{ fontSize: "12px", fontFamily: "Roboto,Arial,sans-serif", fontWeight: "500", color: "#2874f0" }}>CLEAR ALL</div>
+                                <button style={{ fontSize: "12px", fontFamily: "Roboto,Arial,sans-serif", fontWeight: "500", color: "#2874f0" }} onClick={clearFilter}>CLEAR ALL</button>
                             </div>
 
                             <div className='pricefilter'>
+
                                 <Box sx={{ width: 300 }}>
                                     <Slider
                                         getAriaLabel={() => 'Temperature range'}
@@ -151,7 +186,31 @@ const Mobiles = () => {
                         </div>
 
                         <div className='availabilities'>
-                           <Button
+
+                            <div className="brand_Style">
+                                <details style={{width:"238px",height:"18.188px" }}>
+
+
+                                    <summary >BRAND</summary>
+                                   
+
+                                    {showSubCategory.map((subCategories, key) => (
+                                        <div style={{backgroundColor:"white",width:"238px",paddingLeft:"10px",paddingRight:"6px"}}>
+                                            <input
+                                                type="checkbox"
+                                                style={{ margin: "10px", }}
+                                                onClick={() => subcategoryBasedProducts(subCategories._id)}
+                                            />
+                                            {subCategories.subCategoryName} <br />
+                                        </div>
+                                    ))}
+                                </details>
+                            </div>
+
+
+
+
+                            {/* <Button
                                 id="basic-button"
                                 aria-controls={open ? 'basic-menu' : undefined}
                                 aria-haspopup="true"
@@ -168,18 +227,20 @@ const Mobiles = () => {
                                 MenuListProps={{
                                     'aria-labelledby': 'basic-button',
                                 }}
-                            >
-                                <MenuItem  sx={{width:"238px"}}>
-                                    <Checkbox  size="small"/>
-                                    POCO
-                                    </MenuItem>
-                                <MenuItem > <Checkbox  size="small"/>Realme</MenuItem>
+                            > */}
+                            {/*                                
+                                    <MenuItem sx={{ width: "238px" }} onClick={() => subcategoryBasedProducts(subCategories._id)}>
+                                        <Checkbox size="small" />
+                                        
+                                    </MenuItem> */}
+
+                            {/* <MenuItem > <Checkbox  size="small"/>Realme</MenuItem>
                                 <MenuItem > <Checkbox  size="small"/>Samsung</MenuItem>
                                 <MenuItem > <Checkbox size="small"/>Apple</MenuItem>
                                 <MenuItem > <Checkbox size="small"/>Google</MenuItem>
                                 <MenuItem > <Checkbox size="small"/>Motorolla</MenuItem>
-                                <MenuItem > <Checkbox size="small"/>Redmi</MenuItem>
-                            </Menu>
+                                <MenuItem > <Checkbox size="small"/>Redmi</MenuItem> */}
+
                         </div>
 
 

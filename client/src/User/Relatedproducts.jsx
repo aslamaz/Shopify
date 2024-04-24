@@ -26,6 +26,10 @@ const Relatedproducts = () => {
   const [showSubCategoryName, setSubCategoryName] = useState('');
   const [value, setValue] = React.useState([100, 1000]);
 
+  const clearFilter = () =>{
+    setValue([100,1000]);
+    setShowPrdct(showPrdctsCopy);
+   }
 
   const handleChange = (event, newValue) => {
     const [one, two] = newValue
@@ -104,7 +108,7 @@ const Relatedproducts = () => {
             <div className='filterSection'>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ fontSize: "18px", fontFamily: "Roboto,Arial,sans-serif" }}>Filters</div>
-                <div style={{ fontSize: "12px", fontFamily: "Roboto,Arial,sans-serif", fontWeight: "500", color: "#2874f0" }}>CLEAR ALL</div>
+                <button style={{ fontSize: "12px", fontFamily: "Roboto,Arial,sans-serif", fontWeight: "500", color: "#2874f0" }}onClick={clearFilter}>CLEAR ALL</button>
               </div>
 
               <div className='pricefilter'>
@@ -133,27 +137,6 @@ const Relatedproducts = () => {
               </div>
             </div>
 
-            
-
-            
-            
-
-            
-
-            
-
-           
-
-           
-
-            
-
-           
-
-           
-
-            
-              
           </div>
         </div>
 

@@ -488,6 +488,19 @@ app.get("/getSubCategoryById/:id", async (req, res) => {
     }
 });
 
+
+//Get subCategory by same categoryid...............
+app.get("/getSubCategoryByCategoryId/:id", async (req, res) => {
+    try {
+        const Id = req.params.id
+        const getsubCategory = await modelSubCategory.find({categoryId : Id });
+        res.json(getsubCategory);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("server Error");
+    }
+});
+
 // subCategory with category.............
 app.get("/subCategoryWithCategory", async (req, res) => {
     try {
@@ -1010,6 +1023,7 @@ app.get("/subCategoryWithProduct", async (req, res) => {
     }
 });
 
+//subcategory with products.............
 app.get("/subCategoryWithProduct/:id", async (req, res) => {
     try {
         const id = req.params.id
@@ -1037,6 +1051,24 @@ app.get("/subCategoryWithProduct/:id", async (req, res) => {
         res.status(500).send("server Error");
     }
 });
+
+//subcategoryId with products in mobiles Page.............
+app.get("/subCategoryMobileProducts/:ids", async (req, res) => {
+    try {
+        const ids = req.params.ids.split(","); // Split the ids string into an array
+        console.log("hello");
+        console.log(ids);
+        const subCategoryWithProduct = await modelProduct.find({ subCategoryId: { $in: ids } });
+
+        // console.log(subCategoryWithProduct);
+        res.json(subCategoryWithProduct);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server Error");
+    }
+});
+
+
 
 
 // Category with Product...........
