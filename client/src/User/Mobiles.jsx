@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import sdcardimage from './UserImages/sdcardAdd.png'
+import MobileAdd from './UserImages/mobileAdd.jpg'
 // import memorycard from './UserImages/memmorycard.jpg'
 import wishlistIcon from './UserImages/wishlistIcon.svg'
 // import wishlistColorIcon from './UserImages/wishlistColorIcon.svg'
@@ -143,13 +143,13 @@ const Mobiles = () => {
                     <div className='relatedPrdctsSideSection'>
 
                         <div className='relatedcardimg'>
-                            <img src={sdcardimage} alt="img" style={{ width: "267px", height: "144px", objectFit: "contain" }} />
+                            <img src={MobileAdd} alt="img" style={{ width: "267px", height: "144px", objectFit: "contain" }} />
                             <hr></hr>
                         </div>
                         <div className='imgdetails'>
 
-                            <div style={{ padding: "10px 0px 0px 15px", fontSize: "18px", fontFamily: "Roboto,Arial,sans-serif" }}>Top Selling External SSD</div>
-                            <div style={{ padding: "0px 0px 0px 15px", fontSize: "14px" }}>Grab Now Upto 60% Off</div>
+                            <div style={{ padding: "10px 0px 0px 15px", fontSize: "18px", fontFamily: "Roboto,Arial,sans-serif" }}>Top Selling Smartphones</div>
+                            <div style={{ padding: "0px 0px 0px 15px", fontSize: "14px" }}>Latest Technology,Best Brands</div>
                         </div>
 
                         <div className='filterSection'>
@@ -175,15 +175,6 @@ const Mobiles = () => {
                             </div>
                         </div>
 
-                        <div className='relatedcategory'>
-                            <div style={{ fontFamily: "Roboto,Arial,sans-serif", fontSize: "12px", fontWeight: "500" }}><b>CATEGORIES</b></div>
-                            <div >
-                                <ul style={{ listStyleType: "square", color: "black" }}>
-                                    <li>Computers </li>
-                                    <li>Storage</li>
-                                </ul>
-                            </div>
-                        </div>
 
                         <div className='availabilities'>
 
